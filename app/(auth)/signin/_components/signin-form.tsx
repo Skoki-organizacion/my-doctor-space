@@ -19,6 +19,8 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import signInAction from "../actions";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function SignInForm() {
   const router = useRouter();
@@ -102,15 +104,4 @@ export default function SignInForm() {
       </CardFooter>
     </Card>
   );
-}
-function zodResolver(
-  courseSchema: any
-):
-  | import("react-hook-form").Resolver<
-      { email: string; password: string },
-      any,
-      TFieldValues
-    >
-  | undefined {
-  throw new Error("Function not implemented.");
 }

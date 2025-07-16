@@ -1,8 +1,11 @@
 "use server";
 
 import { ApiResponse } from "@/lib/api-response";
+import { SignInSchemaType } from "@/lib/zod-schema";
 
-export default async function signInAction(): Promise<ApiResponse> {
+export default async function signInAction(
+  values: SignInSchemaType
+): Promise<ApiResponse> {
   try {
     return {
       status: "success",
