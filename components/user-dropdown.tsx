@@ -21,7 +21,7 @@ import { Skeleton } from "./ui/skeleton";
 
 export default function UserDropdown() {
   const [isPending, startTransition] = useTransition();
-  const { data: session, isPending: pendingSession } = authClient.useSession();
+  const { data: session } = authClient.useSession();
 
   function onLogout() {
     startTransition(async () => {
