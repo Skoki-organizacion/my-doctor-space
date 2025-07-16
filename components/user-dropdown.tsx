@@ -3,14 +3,13 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { RiSettingsLine, RiTeamLine, RiLogoutBoxLine } from "@remixicon/react";
+import { RiLogoutBoxLine } from "@remixicon/react";
 
 export default function UserDropdown() {
   return (
@@ -37,21 +36,6 @@ export default function UserDropdown() {
             k.kennedy@originui.com
           </span>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <RiSettingsLine
-              size={16}
-              className="opacity-60"
-              aria-hidden="true"
-            />
-            <span>Account settings</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <RiTeamLine size={16} className="opacity-60" aria-hidden="true" />
-            <span>Affiliate area</span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <RiLogoutBoxLine
