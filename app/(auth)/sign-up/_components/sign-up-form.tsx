@@ -11,7 +11,12 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { signInSchema, SignInSchemaType } from "@/lib/zod-schema";
+import {
+  signInSchema,
+  SignInSchemaType,
+  signUpSchema,
+  SignUpSchemaType,
+} from "@/lib/zod-schema";
 import { GalleryVerticalEnd, Loader2 } from "lucide-react";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -27,30 +32,34 @@ import {
 } from "@/components/ui/form";
 import { authClient } from "@/lib/auth-client";
 
-export default function SignInForm() {
+export default function SignUpForm() {
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<SignInSchemaType>({
-    resolver: zodResolver(signInSchema),
+  const form = useForm<SignUpSchemaType>({
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
+      password_confirm: "",
     },
   });
 
-  function onSubmit({ email, password }: SignInSchemaType) {
+  function onSubmit({ name, email, password }: SignUpSchemaType) {
     startTransition(async () => {
-      await authClient.signIn.email({
+      await authClient.signUp.email({
+        name,
         email,
         password,
         callbackURL: "/dashboard",
         fetchOptions: {
           onSuccess: () => {
-            toast.success("Welcome to the doctor space");
+            toast.success("New user is successfully registered");
           },
-          onError: () => {
+          onError: (error) => {
             toast.success(
-              "Unable to log you in at this moment. Please refresh the page and try again."
+              error.error.message ??
+                "Unexpected error happen during registering new user"
             );
           },
         },
@@ -84,6 +93,20 @@ export default function SignInForm() {
           <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="Name" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem className="w-full">
@@ -114,6 +137,20 @@ export default function SignInForm() {
               )}
             />
 
+            <FormField
+              control={form.control}
+              name="password_confirm"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Confirm password</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="password" placeholder="*********" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <Button
               className="flex gap-2 w-full"
               type="submit"
@@ -121,11 +158,12 @@ export default function SignInForm() {
             >
               {isPending ? (
                 <>
-                  <Loader2 className="animate-spin ml-1" size={16} /> Signin...
+                  <Loader2 className="animate-spin ml-1" size={16} />{" "}
+                  Registering...
                 </>
               ) : (
                 <>
-                  <span>Sign in</span>
+                  <span>Register</span>
                 </>
               )}
             </Button>
