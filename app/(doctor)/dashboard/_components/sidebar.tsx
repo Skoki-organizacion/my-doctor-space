@@ -25,7 +25,7 @@ import {
 } from "@remixicon/react";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
-import { redirect, usePathname } from "next/navigation";
+import { redirect, usePathname, useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
@@ -83,10 +83,9 @@ const data = {
 export function DoctorDashboardSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const pathname = usePathname();
-
-  console.log(pathname, "PATHNAME");
 
   function onLogout() {
     startTransition(async () => {
@@ -94,7 +93,7 @@ export function DoctorDashboardSidebar({
         fetchOptions: {
           onSuccess: () => {
             toast.success("You have been successfully logged out");
-            redirect("/sign-in");
+            router.push("/sign-in");
           },
           onError: (error) => {
             toast.success(
