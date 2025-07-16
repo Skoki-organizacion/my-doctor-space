@@ -56,7 +56,7 @@ export default function SignUpForm() {
             toast.success("New user is successfully registered");
           },
           onError: (error) => {
-            toast.success(error.error.message);
+            toast.error(error.error.message);
           },
         },
       });

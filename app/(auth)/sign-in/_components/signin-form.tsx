@@ -26,6 +26,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { authClient } from "@/lib/auth-client";
+import { redirect } from "next/navigation";
 
 export default function SignInForm() {
   const [isPending, startTransition] = useTransition();
@@ -43,13 +44,13 @@ export default function SignInForm() {
       await authClient.signIn.email({
         email,
         password,
-        callbackURL: "/dashboard",
         fetchOptions: {
           onSuccess: () => {
-            toast.success("Welcome to the doctor space");
+            toast.success("Welcome back");
+            redirect("/dashboard");
           },
           onError: (error) => {
-            toast.success(error.error.message);
+            toast.error(error.error.message);
           },
         },
       });
