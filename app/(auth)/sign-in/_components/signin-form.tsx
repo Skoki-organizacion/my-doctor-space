@@ -26,9 +26,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { authClient } from "@/lib/auth-client";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function SignInForm() {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<SignInSchemaType>({
@@ -47,7 +48,7 @@ export default function SignInForm() {
         fetchOptions: {
           onSuccess: () => {
             toast.success("Welcome back");
-            redirect("/dashboard");
+            router.push("/dashboard");
           },
           onError: (error) => {
             toast.error(error.error.message);

@@ -17,9 +17,11 @@ import { Loader2 } from "lucide-react";
 import { redirect } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
+import { Skeleton } from "./ui/skeleton";
 
 export default function UserDropdown() {
   const [isPending, startTransition] = useTransition();
+  const { data: session, isPending: pendingSession } = authClient.useSession();
 
   function onLogout() {
     startTransition(async () => {
@@ -57,11 +59,19 @@ export default function UserDropdown() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="max-w-64" align="end">
         <DropdownMenuLabel className="flex min-w-0 flex-col">
-          <span className="truncate text-sm font-medium text-foreground">
-            Keith Kennedy
+          <span className="truncate text-sm font-medium text-foreground mb-1">
+            {session ? (
+              session.user.name
+            ) : (
+              <Skeleton className="h-5 w-full rounded-full" />
+            )}
           </span>
           <span className="truncate text-xs font-normal text-muted-foreground">
-            k.kennedy@originui.com
+            {session ? (
+              session.user.email
+            ) : (
+              <Skeleton className="h-4 w-full rounded-full" />
+            )}
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
