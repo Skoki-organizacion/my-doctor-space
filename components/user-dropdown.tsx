@@ -11,7 +11,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { authClient } from "@/lib/auth-client";
-
 import { RiLogoutBoxLine } from "@remixicon/react";
 import { Loader2 } from "lucide-react";
 import { redirect } from "next/navigation";
@@ -19,9 +18,23 @@ import { useTransition } from "react";
 import { toast } from "sonner";
 import { Skeleton } from "./ui/skeleton";
 
-export default function UserDropdown() {
+type iAppProps = {
+  user:
+    | {
+        id: string;
+        name: string;
+        emailVerified: boolean;
+        email: string;
+        createdAt: Date;
+        updatedAt: Date;
+        image?: string | null | undefined | undefined;
+      }
+    | null
+    | undefined;
+} | null;
+
+export default function UserDropdown(data: iAppProps) {
   const [isPending, startTransition] = useTransition();
-  const { data: session } = authClient.useSession();
 
   function onLogout() {
     startTransition(async () => {
@@ -60,15 +73,15 @@ export default function UserDropdown() {
       <DropdownMenuContent className="max-w-64" align="end">
         <DropdownMenuLabel className="flex min-w-0 flex-col">
           <span className="truncate text-sm font-medium text-foreground mb-1">
-            {session ? (
-              session.user.name
+            {data?.user ? (
+              data?.user.name
             ) : (
               <Skeleton className="h-5 w-full rounded-full" />
             )}
           </span>
           <span className="truncate text-xs font-normal text-muted-foreground">
-            {session ? (
-              session.user.email
+            {data?.user ? (
+              data.user.email
             ) : (
               <Skeleton className="h-4 w-full rounded-full" />
             )}

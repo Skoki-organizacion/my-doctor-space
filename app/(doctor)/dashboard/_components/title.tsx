@@ -3,17 +3,27 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { authClient } from "@/lib/auth-client";
 
-export default function DoctorDashboardTitle() {
-  const { data: session } = authClient.useSession();
+type iAppProps = {
+  user: {
+    id: string;
+    name: string;
+    emailVerified: boolean;
+    email: string;
+    createdAt: Date;
+    updatedAt: Date;
+    image?: string | null | undefined | undefined;
+  } | null;
+} | null;
 
+export default function DoctorDashboardTitle(data: iAppProps) {
   return (
     <div className="flex flex-1 flex-col gap-4 lg:gap-6 py-4 lg:py-6">
       <div className="flex items-center justify-between gap-4">
         <div className="space-y-1">
           <h1 className="text-2xl font-semibold flex gap-2">
             Oilà,{" "}
-            {session ? (
-              `${session.user.name}!`
+            {data?.user ? (
+              `${data.user.name}!`
             ) : (
               <Skeleton className="h-8 w-[150px] rounded-full" />
             )}

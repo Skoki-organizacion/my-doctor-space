@@ -11,7 +11,19 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import UserDropdown from "@/components/user-dropdown";
 import { RiScanLine } from "@remixicon/react";
 
-export default function DoctorDashboardHeader() {
+type iAppProps = {
+  user: {
+    id: string;
+    name: string;
+    emailVerified: boolean;
+    email: string;
+    createdAt: Date;
+    updatedAt: Date;
+    image?: string | null | undefined | undefined;
+  } | null;
+} | null;
+
+export default function DoctorDashboardHeader(data: iAppProps) {
   return (
     <header className="flex h-16 shrink-0 items-center gap-2 border-b">
       <div className="flex flex-1 items-center gap-2 px-3">
@@ -36,7 +48,7 @@ export default function DoctorDashboardHeader() {
         </Breadcrumb>
       </div>
       <div className="flex gap-3 ml-auto">
-        <UserDropdown />
+        <UserDropdown user={data?.user} />
       </div>
     </header>
   );
