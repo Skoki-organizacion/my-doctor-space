@@ -49,9 +49,7 @@ export default function SignInForm() {
             toast.success("Welcome to the doctor space");
           },
           onError: (error) => {
-            toast.success(
-              error.error.message ?? "Unexpected error happen during signing in"
-            );
+            toast.success(error.error.message);
           },
         },
       });

@@ -56,10 +56,7 @@ export default function SignUpForm() {
             toast.success("New user is successfully registered");
           },
           onError: (error) => {
-            toast.success(
-              error.error.message ??
-                "Unexpected error happen during registering new user"
-            );
+            toast.success(error.error.message);
           },
         },
       });
