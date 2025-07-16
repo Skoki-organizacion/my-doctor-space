@@ -1,3 +1,5 @@
+"use client";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,10 +10,36 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { authClient } from "@/lib/auth-client";
 
 import { RiLogoutBoxLine } from "@remixicon/react";
+import { Loader2 } from "lucide-react";
+import { redirect } from "next/navigation";
+import { useTransition } from "react";
+import { toast } from "sonner";
 
 export default function UserDropdown() {
+  const [isPending, startTransition] = useTransition();
+
+  function onLogout() {
+    startTransition(async () => {
+      await authClient.signOut({
+        fetchOptions: {
+          onSuccess: () => {
+            toast.success("You have been successfully logged out");
+            redirect("/sign-in");
+          },
+          onError: (error) => {
+            toast.success(
+              error.error.message ??
+                "Unexpected error happen during logging out"
+            );
+          },
+        },
+      });
+    });
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -37,13 +65,21 @@ export default function UserDropdown() {
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem disabled={isPending} onClick={onLogout}>
           <RiLogoutBoxLine
             size={16}
             className="opacity-60"
             aria-hidden="true"
           />
-          <span>Sign out</span>
+          {isPending ? (
+            <>
+              <Loader2 className="animate-spin ml-1" size={16} /> Logging out...
+            </>
+          ) : (
+            <>
+              <span>Sign Out</span>
+            </>
+          )}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

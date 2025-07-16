@@ -158,13 +158,13 @@ export function DoctorDashboardSidebar({
             <SidebarMenuButton
               className="font-medium gap-3 h-9 rounded-md bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto"
               onClick={onLogout}
+              disabled={isPending}
             >
               <RiLogoutBoxLine
                 className="text-muted-foreground/60 group-data-[active=true]/menu-button:text-primary"
                 size={22}
                 aria-hidden="true"
               />
-
               {isPending ? (
                 <>
                   <Loader2 className="animate-spin ml-1" size={16} /> Logging
