@@ -51,7 +51,6 @@ export default function SignUpForm() {
         name,
         email,
         password,
-        callbackURL: "/dashboard",
         fetchOptions: {
           onSuccess: () => {
             toast.success("New user is successfully registered");

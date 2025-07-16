@@ -43,6 +43,7 @@ export default function SignInForm() {
       await authClient.signIn.email({
         email,
         password,
+        callbackURL: "/dashboard",
         fetchOptions: {
           onSuccess: () => {
             toast.success("Welcome to the doctor space");
