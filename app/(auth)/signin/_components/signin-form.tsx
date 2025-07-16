@@ -21,6 +21,14 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import signInAction from "../actions";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 export default function SignInForm() {
   const router = useRouter();
@@ -56,7 +64,7 @@ export default function SignInForm() {
     <Card>
       <CardHeader>
         <CardTitle>
-          <div className="flex items-center gap-2 w-full justify-center">
+          <div className="flex items-center gap-2 w-full justify-center mb-6">
             <div className="flex size-8 items-center justify-center rounded-md">
               <GalleryVerticalEnd className="size-6" />
             </div>
@@ -74,24 +82,39 @@ export default function SignInForm() {
       </CardHeader>
 
       <CardContent>
-        <form>
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-3">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                />
-              </div>
-              <Button type="submit" className="w-full">
-                Login
-              </Button>
-            </div>
-          </div>
-        </form>
+        <Form {...form}>
+          <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="email" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="password" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button className="w-full">Sign in</Button>
+          </form>
+        </Form>
       </CardContent>
 
       <CardFooter>

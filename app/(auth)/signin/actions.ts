@@ -6,6 +6,8 @@ import { SignInSchemaType } from "@/lib/zod-schema";
 export default async function signInAction(
   values: SignInSchemaType
 ): Promise<ApiResponse> {
+  console.log(values, "VALues");
+
   try {
     return {
       status: "success",
