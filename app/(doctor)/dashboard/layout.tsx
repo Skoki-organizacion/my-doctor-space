@@ -7,7 +7,6 @@ export default function DoctorDashboardLayout({
 }) {
   return (
     <>
-      <h1>Dashboard navigation</h1>
       <div>{children}</div>
     </>
   );
