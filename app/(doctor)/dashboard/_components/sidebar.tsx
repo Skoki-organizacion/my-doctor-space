@@ -1,6 +1,5 @@
 "use client";
 
-import { SearchForm } from "@/components/search-form";
 import { TeamSwitcher } from "@/components/team-switcher";
 import {
   Sidebar,
@@ -25,7 +24,8 @@ import {
   RiUserFollowLine,
 } from "@remixicon/react";
 import { Loader2 } from "lucide-react";
-import { redirect } from "next/navigation";
+import Link from "next/link";
+import { redirect, usePathname } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
@@ -51,19 +51,13 @@ const data = {
       items: [
         {
           title: "Dashboard",
-          url: "#",
+          url: "/dashboard",
           icon: RiScanLine,
         },
         {
           title: "Insights",
-          url: "#",
+          url: "/insights",
           icon: RiBardLine,
-        },
-        {
-          title: "Contacts",
-          url: "#",
-          icon: RiUserFollowLine,
-          isActive: true,
         },
       ],
     },
@@ -90,6 +84,9 @@ export function DoctorDashboardSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
   const [isPending, startTransition] = useTransition();
+  const pathname = usePathname();
+
+  console.log(pathname, "PATHNAME");
 
   function onLogout() {
     startTransition(async () => {
@@ -115,10 +112,8 @@ export function DoctorDashboardSidebar({
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
         <hr className="border-t border-border mx-2 -mt-px" />
-        <SearchForm className="mt-3" />
       </SidebarHeader>
       <SidebarContent>
-        {/* We create a SidebarGroup for each parent. */}
         {data.navMain.map((item) => (
           <SidebarGroup key={item.title}>
             <SidebarGroupLabel className="uppercase text-muted-foreground/60">
@@ -131,9 +126,9 @@ export function DoctorDashboardSidebar({
                     <SidebarMenuButton
                       asChild
                       className="group/menu-button font-medium gap-3 h-9 rounded-md bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto"
-                      isActive={item.isActive}
+                      isActive={pathname === item.url}
                     >
-                      <a href={item.url}>
+                      <Link href={item.url}>
                         {item.icon && (
                           <item.icon
                             className="text-muted-foreground/60 group-data-[active=true]/menu-button:text-primary"
@@ -142,7 +137,7 @@ export function DoctorDashboardSidebar({
                           />
                         )}
                         <span>{item.title}</span>
-                      </a>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}

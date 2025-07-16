@@ -1,6 +1,5 @@
 import * as React from "react";
 
-import { SearchForm } from "@/components/search-form";
 import { TeamSwitcher } from "@/components/team-switcher";
 import {
   Sidebar,
@@ -111,7 +110,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
         <hr className="border-t border-border mx-2 -mt-px" />
-        <SearchForm className="mt-3" />
       </SidebarHeader>
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}
