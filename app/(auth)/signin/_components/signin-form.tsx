@@ -10,16 +10,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { tryCatch } from "@/hooks/try-catch";
 import { cn } from "@/lib/utils";
 import { signInSchema, SignInSchemaType } from "@/lib/zod-schema";
-import { GalleryVerticalEnd } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { GalleryVerticalEnd, Loader2 } from "lucide-react";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import signInAction from "../actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -29,9 +25,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { authClient } from "@/lib/auth-client";
 
 export default function SignInForm() {
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<SignInSchemaType>({
@@ -42,21 +38,23 @@ export default function SignInForm() {
     },
   });
 
-  function onSubmit(values: SignInSchemaType) {
+  function onSubmit({ email, password }: SignInSchemaType) {
     startTransition(async () => {
-      const { data: result, error } = await tryCatch(signInAction(values));
-
-      if (error) {
-        toast.error("An unexpected error occured");
-      }
-
-      if (result?.status === "success") {
-        toast.success(result.message);
-        form.reset();
-        router.push("/dashboard");
-      } else if (result?.status === "error") {
-        toast.error(result.message);
-      }
+      await authClient.signIn.email({
+        email,
+        password,
+        callbackURL: "/dashboard",
+        fetchOptions: {
+          onSuccess: () => {
+            toast.success("Welcome to the doctor space");
+          },
+          onError: () => {
+            toast.success(
+              "Unable to log you in at this moment. Please refresh the page and try again."
+            );
+          },
+        },
+      });
     });
   }
 
@@ -91,7 +89,11 @@ export default function SignInForm() {
                 <FormItem className="w-full">
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input {...field} type="email" />
+                    <Input
+                      {...field}
+                      type="email"
+                      placeholder="example@test.com"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -105,14 +107,28 @@ export default function SignInForm() {
                 <FormItem className="w-full">
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" />
+                    <Input {...field} type="password" placeholder="*********" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <Button className="w-full">Sign in</Button>
+            <Button
+              className="flex gap-2 w-full"
+              type="submit"
+              disabled={isPending}
+            >
+              {isPending ? (
+                <>
+                  <Loader2 className="animate-spin ml-1" size={16} /> Signin...
+                </>
+              ) : (
+                <>
+                  <span>Sign in</span>
+                </>
+              )}
+            </Button>
           </form>
         </Form>
       </CardContent>
