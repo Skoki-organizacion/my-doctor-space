@@ -1,3 +1,5 @@
+"use client";
+
 import { SearchForm } from "@/components/search-form";
 import { TeamSwitcher } from "@/components/team-switcher";
 import {
@@ -13,6 +15,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { authClient } from "@/lib/auth-client";
 import {
   RiBardLine,
   RiLeafLine,
@@ -21,6 +24,10 @@ import {
   RiSettings3Line,
   RiUserFollowLine,
 } from "@remixicon/react";
+import { Loader2 } from "lucide-react";
+import { redirect } from "next/navigation";
+import { useTransition } from "react";
+import { toast } from "sonner";
 
 const data = {
   teams: [
@@ -82,6 +89,27 @@ const data = {
 export function DoctorDashboardSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
+  const [isPending, startTransition] = useTransition();
+
+  function onLogout() {
+    startTransition(async () => {
+      await authClient.signOut({
+        fetchOptions: {
+          onSuccess: () => {
+            toast.success("You have been successfully logged out");
+            redirect("/sign-in");
+          },
+          onError: (error) => {
+            toast.success(
+              error.error.message ??
+                "Unexpected error happen during logging out"
+            );
+          },
+        },
+      });
+    });
+  }
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -127,13 +155,26 @@ export function DoctorDashboardSidebar({
         <hr className="border-t border-border mx-2 -mt-px" />
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton className="font-medium gap-3 h-9 rounded-md bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto">
+            <SidebarMenuButton
+              className="font-medium gap-3 h-9 rounded-md bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto"
+              onClick={onLogout}
+            >
               <RiLogoutBoxLine
                 className="text-muted-foreground/60 group-data-[active=true]/menu-button:text-primary"
                 size={22}
                 aria-hidden="true"
               />
-              <span>Sign Out</span>
+
+              {isPending ? (
+                <>
+                  <Loader2 className="animate-spin ml-1" size={16} /> Logging
+                  out...
+                </>
+              ) : (
+                <>
+                  <span>Sign Out</span>
+                </>
+              )}
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
