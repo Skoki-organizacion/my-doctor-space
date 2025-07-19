@@ -16,18 +16,16 @@ export function StatsCard({ title, value, change, icon }: StatsCardProps) {
   const trendColor = isPositive ? "text-emerald-500" : "text-red-500";
 
   return (
-    <div className="relative p-4 lg:p-5 group before:absolute before:inset-y-8 before:right-0 before:w-px before:bg-gradient-to-b before:from-input/30 before:via-input before:to-input/30 last:before:hidden">
+    <div className="relative p-4 lg:p-5 group before:absolute before:inset-x-8 before:bottom-0 before:h-px before:bg-gradient-to-r before:from-input/30 before:via-input before:to-input/30 last:before:hidden">
       <div className="relative flex items-center gap-4">
         <RiArrowRightUpLine
           className="absolute right-0 top-0 opacity-0 group-has-[a:hover]:opacity-100 transition-opacity text-emerald-500"
           size={20}
           aria-hidden="true"
         />
-        {/* Icon */}
         <div className="max-[480px]:hidden size-10 shrink-0 rounded-full bg-emerald-600/25 border border-emerald-600/50 flex items-center justify-center text-emerald-500">
           {icon}
         </div>
-        {/* Content */}
         <div>
           <a
             href="#"

@@ -45,11 +45,8 @@ export default function SignInForm() {
       await authClient.signIn.email({
         email,
         password,
+        callbackURL: "/dashboard",
         fetchOptions: {
-          onSuccess: () => {
-            toast.success("Welcome back");
-            router.push("/dashboard");
-          },
           onError: (error) => {
             toast.error(error.error.message);
           },
