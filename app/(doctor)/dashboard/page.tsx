@@ -3,7 +3,7 @@ import DoctorDashboardHeader from "./_components/header";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import DoctorDashboardMainContent from "./_components/main-content";
-import { StatsGrid } from "@/components/stats-grid";
+import { StatsGrid } from "@/app/(admin)/admin/dashboard/_components/stats-grid";
 
 export default async function DoctorDashboardPage() {
   const session = await auth.api.getSession({

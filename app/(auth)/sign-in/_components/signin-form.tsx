@@ -48,7 +48,7 @@ export default function SignInForm() {
         callbackURL: "/dashboard",
         fetchOptions: {
           onError: (error) => {
-            toast.error(error.error.message);
+            toast.error(error.error.message ?? error.error.statusText);
           },
         },
       });

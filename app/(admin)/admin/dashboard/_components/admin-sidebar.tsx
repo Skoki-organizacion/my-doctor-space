@@ -1,4 +1,4 @@
-import * as React from "react";
+"use client";
 
 import { TeamSwitcher } from "@/components/team-switcher";
 import {
@@ -14,19 +14,20 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { authClient } from "@/lib/auth-client";
 import {
-  RiScanLine,
   RiBardLine,
-  RiUserFollowLine,
-  RiCodeSSlashLine,
-  RiLoginCircleLine,
-  RiLayoutLeftLine,
-  RiSettings3Line,
   RiLeafLine,
   RiLogoutBoxLine,
+  RiScanLine,
+  RiSettings3Line,
 } from "@remixicon/react";
+import { Loader2 } from "lucide-react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useTransition } from "react";
+import { toast } from "sonner";
 
-// This is sample data.
 const data = {
   teams: [
     {
@@ -49,39 +50,18 @@ const data = {
       items: [
         {
           title: "Dashboard",
-          url: "#",
+          url: "/admin/dashboard",
           icon: RiScanLine,
         },
         {
-          title: "Insights",
-          url: "#",
+          title: "Users",
+          url: "/admin/users",
           icon: RiBardLine,
         },
         {
-          title: "Contacts",
-          url: "#",
-          icon: RiUserFollowLine,
-          isActive: true,
-        },
-        {
-          title: "Tools",
-          url: "#",
-          icon: RiCodeSSlashLine,
-        },
-        {
-          title: "Integration",
-          url: "#",
-          icon: RiLoginCircleLine,
-        },
-        {
-          title: "Layouts",
-          url: "#",
-          icon: RiLayoutLeftLine,
-        },
-        {
-          title: "Reports",
-          url: "#",
-          icon: RiLeafLine,
+          title: "Studies",
+          url: "/admin/studies",
+          icon: RiBardLine,
         },
       ],
     },
@@ -104,7 +84,32 @@ const data = {
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AdminDashboardSidebar({
+  ...props
+}: React.ComponentProps<typeof Sidebar>) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const pathname = usePathname();
+
+  function onLogout() {
+    startTransition(async () => {
+      await authClient.signOut({
+        fetchOptions: {
+          onSuccess: () => {
+            toast.success("You have been successfully logged out");
+            router.push("/sign-in");
+          },
+          onError: (error) => {
+            toast.success(
+              error.error.message ??
+                "Unexpected error happen during logging out"
+            );
+          },
+        },
+      });
+    });
+  }
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -112,7 +117,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <hr className="border-t border-border mx-2 -mt-px" />
       </SidebarHeader>
       <SidebarContent>
-        {/* We create a SidebarGroup for each parent. */}
         {data.navMain.map((item) => (
           <SidebarGroup key={item.title}>
             <SidebarGroupLabel className="uppercase text-muted-foreground/60">
@@ -125,9 +129,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     <SidebarMenuButton
                       asChild
                       className="group/menu-button font-medium gap-3 h-9 rounded-md bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto"
-                      isActive={item.isActive}
+                      isActive={pathname === item.url}
                     >
-                      <a href={item.url}>
+                      <Link href={item.url}>
                         {item.icon && (
                           <item.icon
                             className="text-muted-foreground/60 group-data-[active=true]/menu-button:text-primary"
@@ -136,7 +140,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                           />
                         )}
                         <span>{item.title}</span>
-                      </a>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
@@ -149,13 +153,26 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <hr className="border-t border-border mx-2 -mt-px" />
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton className="font-medium gap-3 h-9 rounded-md bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto">
+            <SidebarMenuButton
+              className="font-medium gap-3 h-9 rounded-md bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto"
+              onClick={onLogout}
+              disabled={isPending}
+            >
               <RiLogoutBoxLine
                 className="text-muted-foreground/60 group-data-[active=true]/menu-button:text-primary"
                 size={22}
                 aria-hidden="true"
               />
-              <span>Sign Out</span>
+              {isPending ? (
+                <>
+                  <Loader2 className="animate-spin ml-1" size={16} /> Logging
+                  out...
+                </>
+              ) : (
+                <>
+                  <span>Sign Out</span>
+                </>
+              )}
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

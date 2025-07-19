@@ -25,7 +25,7 @@ import {
 } from "@remixicon/react";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
-import { redirect, usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
 

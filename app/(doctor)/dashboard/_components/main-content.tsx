@@ -1,4 +1,7 @@
-import { StatsCard, StatsGrid } from "@/components/stats-grid";
+import {
+  StatsCard,
+  StatsGrid,
+} from "@/app/(admin)/admin/dashboard/_components/stats-grid";
 import React from "react";
 import { NavigationItem } from "./navigation-item";
 import { ScrollArea } from "@/components/ui/scroll-area";
