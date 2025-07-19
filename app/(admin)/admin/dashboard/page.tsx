@@ -1,21 +1,15 @@
 import { SidebarInset } from "@/components/ui/sidebar";
 import ContactsTable from "@/app/(admin)/admin/dashboard/_components/contacts-table";
 import { StatsGrid } from "@/app/(admin)/admin/dashboard/_components/stats-grid";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-import DoctorDashboardHeader from "@/app/(doctor)/dashboard/_components/header";
 import AdminDashboardTitle from "./_components/admin-title";
+import AdminDashboardHeader from "./_components/admin-header";
 
 export default async function DoctorDashboardPage() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
   return (
     <SidebarInset className="overflow-hidden px-4 md:px-6 lg:px-8">
       <div className="flex flex-1 flex-col gap-4 lg:gap-6">
-        <DoctorDashboardHeader user={session ? session.user : null} />
-        <AdminDashboardTitle user={session ? session.user : null} />
+        <AdminDashboardHeader />
+        <AdminDashboardTitle />
 
         <StatsGrid
           stats={[

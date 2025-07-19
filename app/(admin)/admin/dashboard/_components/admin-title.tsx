@@ -1,26 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import Link from "next/link";
 
-type iAppProps = {
-  user: {
-    id: string;
-    name: string;
-    emailVerified: boolean;
-    email: string;
-    createdAt: Date;
-    updatedAt: Date;
-    image?: string | null | undefined | undefined;
-  } | null;
-} | null;
+export default async function AdminDashboardTitle() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
-export default function AdminDashboardTitle(data: iAppProps) {
   return (
     <div className="flex items-center justify-between gap-4">
       <div className="space-y-1">
         <h1 className="text-2xl font-semibold flex gap-2">
           Oilà,{" "}
-          {data?.user ? (
-            `${data.user.name}!`
+          {session?.user ? (
+            `${session.user.name}!`
           ) : (
             <Skeleton className="h-8 w-[150px] rounded-full" />
           )}
@@ -31,7 +26,9 @@ export default function AdminDashboardTitle(data: iAppProps) {
         </p>
       </div>
 
-      <Button className="px-3">Add Contact</Button>
+      <Link href={"/admin/dashboard/sign-up"}>
+        <Button className="px-3">Add Contact</Button>
+      </Link>
     </div>
   );
 }

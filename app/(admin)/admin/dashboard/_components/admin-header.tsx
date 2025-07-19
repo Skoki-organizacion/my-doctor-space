@@ -1,3 +1,5 @@
+import { ModeToggle } from "@/components/toggle-button";
+import { Badge } from "@/components/ui/badge";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -6,11 +8,12 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { RiScanLine } from "@remixicon/react";
 
-export default function DoctorDashboardHeader() {
+export default function AdminDashboardHeader() {
   return (
     <header className="flex h-16 shrink-0 items-center gap-2 border-b">
       <div className="flex flex-1 items-center gap-2 px-3">
@@ -33,6 +36,11 @@ export default function DoctorDashboardHeader() {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
+      </div>
+      <div className="flex gap-3 ml-auto">
+        <div className="bg-sidebar py-2 px-4 rounded-2xl text-sm">
+          Version: 1.0
+        </div>
       </div>
     </header>
   );

@@ -5,18 +5,11 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
-import {
-  signInSchema,
-  SignInSchemaType,
-  signUpSchema,
-  SignUpSchemaType,
-} from "@/lib/zod-schema";
+import { signUpSchema, SignUpSchemaType } from "@/lib/zod-schema";
 import { GalleryVerticalEnd, Loader2 } from "lucide-react";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -31,9 +24,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { authClient } from "@/lib/auth-client";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function SignUpForm() {
   const [isPending, startTransition] = useTransition();
+  const clinics = ["Favoriten", "Florisdorf"];
 
   const form = useForm<SignUpSchemaType>({
     resolver: zodResolver(signUpSchema),
@@ -64,7 +65,7 @@ export default function SignUpForm() {
   }
 
   return (
-    <Card>
+    <Card className="w-full sm:max-w-[450px]">
       <CardHeader>
         <CardTitle>
           <div className="flex items-center gap-2 w-full justify-center mb-6">
@@ -147,6 +148,38 @@ export default function SignUpForm() {
               )}
             />
 
+            <FormField
+              control={form.control}
+              name="password_confirm"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Status</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {clinics.map((clinic) => (
+                        <SelectItem
+                          key={clinic}
+                          value={clinic}
+                          className="cursor-pointer"
+                        >
+                          {clinic}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <Button
               className="flex gap-2 w-full"
               type="submit"
@@ -166,15 +199,6 @@ export default function SignUpForm() {
           </form>
         </Form>
       </CardContent>
-
-      <CardFooter>
-        <div className={cn("flex flex-col gap-6")}>
-          <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
-            By clicking continue, you agree to our{" "}
-            <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
-          </div>
-        </div>
-      </CardFooter>
     </Card>
   );
 }
