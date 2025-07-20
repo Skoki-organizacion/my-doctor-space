@@ -1,17 +1,8 @@
-import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-  BreadcrumbPage,
-} from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { RiScanLine } from "@remixicon/react";
 import { GitPullRequestCreateArrow } from "lucide-react";
 
-export default function AdminDashboardHeader() {
+export default function DashboardHeader() {
   return (
     <header className="flex h-16 shrink-0 items-center gap-2 border-b">
       <div className="flex flex-1 items-center gap-2 px-3">
@@ -20,20 +11,6 @@ export default function AdminDashboardHeader() {
           orientation="vertical"
           className="mr-2 data-[orientation=vertical]:h-4"
         />
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem className="hidden md:block">
-              <BreadcrumbLink href="#">
-                <RiScanLine size={22} aria-hidden="true" />
-                <span className="sr-only">Dashboard</span>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className="hidden md:block" />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Contacts</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
       </div>
       <div className="flex gap-3 ml-auto">
         <div className=" rounded-md bg-gradient-to-r bg-transparent from-primary/40 to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto px-4 py-2">

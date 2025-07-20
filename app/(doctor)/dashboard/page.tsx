@@ -1,12 +1,12 @@
 import { SidebarInset } from "@/components/ui/sidebar";
-import DoctorDashboardHeader from "./_components/header";
 import DoctorDashboardMainContent from "./_components/main-content";
 import { StatsGrid } from "@/app/(admin)/admin/dashboard/_components/stats-grid";
+import DashboardHeader from "@/components/dashboard-header";
 
 export default async function DoctorDashboardPage() {
   return (
     <SidebarInset className="overflow-hidden px-4 md:px-6 lg:px-8">
-      <DoctorDashboardHeader />
+      <DashboardHeader />
       <div className="flex flex-1 flex-col gap-4 lg:gap-6 py-4 lg:py-6">
         <StatsGrid
           stats={[

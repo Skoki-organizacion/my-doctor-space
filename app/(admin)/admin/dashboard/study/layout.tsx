@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import AdminDashboardHeader from "../_components/admin-header";
+import AdminDashboardHeader from "../../../../../components/dashboard-header";
 import { SidebarInset } from "@/components/ui/sidebar";
 
 export default function StudyAdminLayout({
