@@ -13,9 +13,9 @@ export const requireAdmin = async () => {
     return redirect("/sign-in");
   }
 
-  //   if (session.user !== "ADMIN") {
-  //     return redirect("/not-admin");
-  //   }
+  if (session.user.role !== "admin") {
+    return redirect("/not-admin");
+  }
 
   return session;
 };

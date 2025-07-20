@@ -24,45 +24,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { authClient } from "@/lib/auth-client";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { prisma } from "@/lib/db";
-import { tryCatch } from "@/hooks/try-catch";
 import { useRouter } from "next/navigation";
 
 export default function SignUpForm() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const clinics = [
-    "Favoriten",
-    "Florisdorf",
-    "Hietzing",
-    "Landstraße",
-    "Mistelbach-Gänserndorf",
-    "Landesklinikum Horn",
-  ];
-
-  const departments = [
-    "Akutgeriatrie und Remobilisation",
-    "Anästhesie und operative Intersivmedizin",
-    "Chirurgie",
-    "Gynäkologie und Geburtshilfe",
-    "Infektions und Tropenmedizin",
-    "Interdisziplinäre Wochenstation",
-    "Kardiologie",
-    "Kinder und Jugendheilkunde",
-    "Nephrologie, Intensivmedizin, Diabetologie und Psyhosomatik",
-    "Neurologie",
-    "Onkologie und Hemätologie",
-    "Psychiatrie",
-    "Rheumatologie und Osteologie",
-    "Urologie",
-  ];
 
   const form = useForm<SignUpSchemaType>({
     resolver: zodResolver(signUpSchema),
@@ -77,16 +43,35 @@ export default function SignUpForm() {
 
   function onSubmit({ name, email, password }: SignUpSchemaType) {
     startTransition(async () => {
-      await authClient.signUp.email({
+      // await authClient.signUp.email({
+      //   name,
+      //   email,
+      //   password,
+      //   fetchOptions: {
+      //     onSuccess: () => {
+      //       toast.success("New user is successfully registered");
+      //     },
+      //     onError: (error) => {
+      //       toast.error(error.error.message ?? error.error.statusText);
+      //     },
+      //   },
+      // });
+
+      await authClient.admin.createUser({
         name,
         email,
         password,
+        role: "user",
         fetchOptions: {
-          onSuccess: () => {
-            toast.success("New user is successfully registered");
+          onSuccess: (user) => {
+            toast.success(
+              "New doctor is successfully registered. Please provide additional informations."
+            );
+
+            router.push(`/admin/dashboard/sign-up/${user.data.user.id}`);
           },
           onError: (error) => {
-            toast.error(error.error.message);
+            toast.error(error.error.message ?? error.error.statusText);
           },
         },
       });
@@ -94,7 +79,7 @@ export default function SignUpForm() {
   }
 
   return (
-    <Card className="w-full sm:max-w-[450px]">
+    <Card className="w-full sm:max-w-[550px]">
       <CardHeader>
         <CardTitle>
           <div className="flex items-center gap-2 w-full justify-center mb-6">

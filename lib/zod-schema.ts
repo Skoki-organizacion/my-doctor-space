@@ -25,7 +25,7 @@ export const signUpSchema = z
   });
 
 export const confirmUserSchema = z.object({
-  user_id: z.string().min(1, { message: "Please provide proper user" }),
+  userId: z.string().min(1, { message: "Please provide proper user" }),
   clinic: z.string().min(1, "Please select a clinic"),
   department: z.string().min(1, "Please select a department"),
   study: z

@@ -10,25 +10,40 @@ datasource db {
 }
 
 model User {
-  id         String  @id
-  name       String
-  email      String
-  image      String?
-  role       String?
-  clinic     String
-  department String
-  study      String
+  id    String  @id @default(uuid())
+  name  String
+  email String
+  image String?
+  role  String?
 
-  createdAt DateTime
-  updatedAt DateTime
+  doctor DoctorInfo?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   sessions Session[]
   accounts Account[]
 
   emailVerified Boolean
 
+  banned     Boolean?
+  banReason  String?
+  banExpires DateTime?
+
   @@unique([email])
   @@map("user")
+}
+
+model DoctorInfo {
+  id         String @id @default(uuid())
+  clinic     String
+  department String
+  study      String
+
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Session {
@@ -42,6 +57,8 @@ model Session {
   userAgent String?
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  impersonatedBy String?
 
   @@unique([token])
   @@map("session")
