@@ -62,8 +62,8 @@ export default function SignInForm() {
             <Image
               src={"/logo.png"}
               alt={"Doctor space logo"}
-              width={72}
-              height={72}
+              width={153}
+              height={57}
               priority
             />
           </div>

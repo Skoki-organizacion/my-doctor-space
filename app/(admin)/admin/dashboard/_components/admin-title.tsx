@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { auth } from "@/lib/auth";
+import { BookPlus, ClipboardPlus } from "lucide-react";
 import { headers } from "next/headers";
 import Link from "next/link";
 
@@ -26,9 +27,21 @@ export default async function AdminDashboardTitle() {
         </p>
       </div>
 
-      <Link href={"/admin/dashboard/sign-up"}>
-        <Button className="px-3">New Doctor</Button>
-      </Link>
+      <div className="flex gap-3 justify-center items-center">
+        <Link href={"/admin/dashboard/study"}>
+          <Button variant={"outline"}>
+            {" "}
+            <BookPlus className="size-4 text-primary" />
+            New Study
+          </Button>
+        </Link>
+        <Link href={"/admin/dashboard/sign-up"}>
+          <Button variant={"outline"} className="flex">
+            <ClipboardPlus className="size-4 text-primary" />
+            New Doctor
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }
