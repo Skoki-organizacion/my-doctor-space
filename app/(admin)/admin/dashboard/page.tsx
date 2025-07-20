@@ -1,6 +1,5 @@
 import { SidebarInset } from "@/components/ui/sidebar";
 import ContactsTable from "@/app/(admin)/admin/dashboard/_components/contacts-table";
-import { StatsGrid } from "@/app/(admin)/admin/dashboard/_components/stats-grid";
 import AdminDashboardTitle from "./_components/admin-title";
 import AdminDashboardHeader from "./_components/admin-header";
 import AdminStatsGrid from "./_components/admin-stats-grid";

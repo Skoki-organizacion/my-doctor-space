@@ -16,7 +16,7 @@ model User {
   image String?
   role  String?
 
-  doctor DoctorInfo?
+  doctor DoctorInfo[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -25,10 +25,9 @@ model User {
   accounts Account[]
 
   emailVerified Boolean
-
-  banned     Boolean?
-  banReason  String?
-  banExpires DateTime?
+  banned        Boolean?
+  banReason     String?
+  banExpires    DateTime?
 
   @@unique([email])
   @@map("user")
@@ -40,7 +39,7 @@ model DoctorInfo {
   department String
   study      String
 
-  userId    String   @unique
+  userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

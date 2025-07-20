@@ -1,11 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { auth } from "@/lib/auth";
-import { BookPlus, ClipboardPlus } from "lucide-react";
+import { ClipboardPlus } from "lucide-react";
 import { headers } from "next/headers";
 import Link from "next/link";
+import { UserSwitcher } from "./admin-user-toggler";
+import { getAllDoctors } from "@/app/data/admin/get-doctors";
 
 export default async function AdminDashboardTitle() {
+  const doctors = await getAllDoctors();
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -28,13 +31,7 @@ export default async function AdminDashboardTitle() {
       </div>
 
       <div className="flex gap-3 justify-center items-center">
-        <Link href={"/admin/dashboard/study"}>
-          <Button variant={"outline"}>
-            {" "}
-            <BookPlus className="size-4 text-primary" />
-            New Study
-          </Button>
-        </Link>
+        <UserSwitcher doctors={doctors} />
         <Link href={"/admin/dashboard/sign-up"}>
           <Button variant={"outline"} className="flex">
             <ClipboardPlus className="size-4 text-primary" />
