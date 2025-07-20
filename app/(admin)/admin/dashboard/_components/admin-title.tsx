@@ -27,7 +27,7 @@ export default async function AdminDashboardTitle() {
       </div>
 
       <Link href={"/admin/dashboard/sign-up"}>
-        <Button className="px-3">Add Contact</Button>
+        <Button className="px-3">New Doctor</Button>
       </Link>
     </div>
   );

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { signUpSchema, SignUpSchemaType } from "@/lib/zod-schema";
-import { GalleryVerticalEnd, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -31,16 +31,45 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { prisma } from "@/lib/db";
+import { tryCatch } from "@/hooks/try-catch";
+import { useRouter } from "next/navigation";
 
 export default function SignUpForm() {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const clinics = ["Favoriten", "Florisdorf"];
+  const clinics = [
+    "Favoriten",
+    "Florisdorf",
+    "Hietzing",
+    "Landstraße",
+    "Mistelbach-Gänserndorf",
+    "Landesklinikum Horn",
+  ];
+
+  const departments = [
+    "Akutgeriatrie und Remobilisation",
+    "Anästhesie und operative Intersivmedizin",
+    "Chirurgie",
+    "Gynäkologie und Geburtshilfe",
+    "Infektions und Tropenmedizin",
+    "Interdisziplinäre Wochenstation",
+    "Kardiologie",
+    "Kinder und Jugendheilkunde",
+    "Nephrologie, Intensivmedizin, Diabetologie und Psyhosomatik",
+    "Neurologie",
+    "Onkologie und Hemätologie",
+    "Psychiatrie",
+    "Rheumatologie und Osteologie",
+    "Urologie",
+  ];
 
   const form = useForm<SignUpSchemaType>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       name: "",
       email: "",
+      image: "",
       password: "",
       password_confirm: "",
     },
@@ -69,12 +98,8 @@ export default function SignUpForm() {
       <CardHeader>
         <CardTitle>
           <div className="flex items-center gap-2 w-full justify-center mb-6">
-            <div className="flex size-8 items-center justify-center rounded-md">
-              <GalleryVerticalEnd className="size-6" />
-            </div>
-
             <h1 className="text-lg font-semibold">
-              <span className="text-xl font-bold">Doctor space</span>
+              <span className="text-xl font-bold">Create Doctor Profile</span>
             </h1>
           </div>
         </CardTitle>
@@ -143,38 +168,6 @@ export default function SignUpForm() {
                   <FormControl>
                     <Input {...field} type="password" placeholder="*********" />
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="password_confirm"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Status</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="w-full">
-                        <SelectValue />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {clinics.map((clinic) => (
-                        <SelectItem
-                          key={clinic}
-                          value={clinic}
-                          className="cursor-pointer"
-                        >
-                          {clinic}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

@@ -9,75 +9,72 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  ADMIN
-  USER
-}
-
 model User {
-  id                                  String         @id
-  name                                String
-  email                               String
-  image                               String?
-  role                                Role
-  clinic                              String
-  department                          String
-  study                               String
+  id         String  @id
+  name       String
+  email      String
+  image      String?
+  role       String?
+  clinic     String
+  department String
+  study      String
 
-  createdAt                           DateTime
-  updatedAt                           DateTime
+  createdAt DateTime
+  updatedAt DateTime
 
-  sessions                            Session[]
-  accounts                            Account[]
+  sessions Session[]
+  accounts Account[]
+
+  emailVerified Boolean
 
   @@unique([email])
   @@map("user")
 }
 
 model Session {
-  id                                  String         @id
-  token                               String
+  id    String @id
+  token String
 
-  expiresAt                           DateTime
-  createdAt                           DateTime
-  updatedAt                           DateTime
-  ipAddress                           String?
-  userAgent                           String?
-  userId                              String
-  user                                User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([token])
   @@map("session")
 }
 
 model Account {
-  id                                  String         @id
-  accountId                           String
-  providerId                          String
-  userId                              String
-  user                                User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessToken                         String?
-  refreshToken                        String?
-  idToken                             String?
-  scope                               String?
-  password                            String?
+  id           String  @id
+  accountId    String
+  providerId   String
+  userId       String
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken  String?
+  refreshToken String?
+  idToken      String?
+  scope        String?
+  password     String?
 
-  createdAt                           DateTime
-  updatedAt                           DateTime
-  accessTokenExpiresAt                DateTime?
-  refreshTokenExpiresAt               DateTime?
+  createdAt             DateTime
+  updatedAt             DateTime
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
 
   @@map("account")
 }
 
 model Verification {
-  id                                  String         @id
-  identifier                          String
-  value                               String
+  id         String @id
+  identifier String
+  value      String
 
-  expiresAt  DateTime
-  createdAt  DateTime?
-  updatedAt  DateTime?
+  expiresAt DateTime
+  createdAt DateTime?
+  updatedAt DateTime?
 
   @@map("verification")
 }
