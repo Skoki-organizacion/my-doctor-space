@@ -8,7 +8,7 @@ interface NavigationItemProps {
   date: string | null;
 }
 
-export function NavigationItem({ title, checked, date }: NavigationItemProps) {
+export function NavigationItem({ title, checked }: NavigationItemProps) {
   const iconColor = checked
     ? " bg-emerald-500/10  text-emerald-400"
     : "bg-background  text-sidebar";

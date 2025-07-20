@@ -26,11 +26,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 export default function SignInForm() {
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<SignInSchemaType>({

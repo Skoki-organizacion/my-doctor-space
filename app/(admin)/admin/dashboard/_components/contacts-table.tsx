@@ -72,20 +72,14 @@ import {
   RiCheckLine,
   RiMoreLine,
 } from "@remixicon/react";
-import {
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-  useTransition,
-} from "react";
+import { useId, useMemo, useRef, useState, useTransition } from "react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import Image from "next/image";
 
 type Item = {
   id: string;
@@ -146,7 +140,7 @@ const getColumns = ({ data, setData }: GetColumnsProps): ColumnDef<Item>[] => [
     accessorKey: "name",
     cell: ({ row }) => (
       <div className="flex items-center gap-3">
-        <img
+        <Image
           className="rounded-full"
           src={row.original.image}
           width={32}
@@ -230,7 +224,7 @@ const getColumns = ({ data, setData }: GetColumnsProps): ColumnDef<Item>[] => [
     accessorKey: "referral",
     cell: ({ row }) => (
       <div className="flex items-center gap-3">
-        <img
+        <Image
           className="rounded-full"
           src={row.original.referral.image}
           width={20}
@@ -295,7 +289,7 @@ export default function ContactsTable() {
   ]);
 
   const [data, setData] = useState<Item[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
 
   const columns = useMemo(() => getColumns({ data, setData }), [data]);
 

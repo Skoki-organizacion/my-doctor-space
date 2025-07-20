@@ -1,6 +1,5 @@
 "use client";
 
-import { TeamSwitcher } from "@/components/team-switcher";
 import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,

@@ -1,6 +1,5 @@
 "use client";
 
-import { TeamSwitcher } from "@/components/team-switcher";
 import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
@@ -22,7 +21,6 @@ import {
   RiLogoutBoxLine,
   RiScanLine,
   RiSettings3Line,
-  RiUserFollowLine,
 } from "@remixicon/react";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
