@@ -1,6 +1,7 @@
 "use client";
 
 import { TeamSwitcher } from "@/components/team-switcher";
+import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
   SidebarContent,
@@ -24,6 +25,7 @@ import {
   RiUserFollowLine,
 } from "@remixicon/react";
 import { Loader2 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useTransition } from "react";
@@ -108,9 +110,17 @@ export function DoctorDashboardSidebar({
 
   return (
     <Sidebar {...props}>
-      <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
-        <hr className="border-t border-border mx-2 -mt-px" />
+      <SidebarHeader className="flex justify-center items-center">
+        <Link href={"/admin/dashboard"}>
+          <Image
+            src={"/logo.png"}
+            alt={"Doctor space logo"}
+            width={135}
+            height={135}
+            priority
+          />
+        </Link>
+        <Separator />
       </SidebarHeader>
       <SidebarContent>
         {data.navMain.map((item) => (
