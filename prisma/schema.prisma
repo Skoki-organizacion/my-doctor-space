@@ -24,11 +24,6 @@ model User {
   sessions Session[]
   accounts Account[]
 
-  emailVerified Boolean
-  banned        Boolean?
-  banReason     String?
-  banExpires    DateTime?
-
   @@unique([email])
   @@map("user")
 }
