@@ -19,10 +19,9 @@ import {
   RiBardLine,
   RiLeafLine,
   RiLogoutBoxLine,
-  RiScanLine,
   RiSettings3Line,
 } from "@remixicon/react";
-import { Loader2 } from "lucide-react";
+import { LayoutDashboard, Loader2, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -30,20 +29,6 @@ import { useTransition } from "react";
 import { toast } from "sonner";
 
 const data = {
-  teams: [
-    {
-      name: "InnovaCraft",
-      logo: "https://raw.githubusercontent.com/origin-space/origin-images/refs/heads/main/exp1/logo-01_kp2j8x.png",
-    },
-    {
-      name: "Acme Corp.",
-      logo: "https://raw.githubusercontent.com/origin-space/origin-images/refs/heads/main/exp1/logo-01_kp2j8x.png",
-    },
-    {
-      name: "Evil Corp.",
-      logo: "https://raw.githubusercontent.com/origin-space/origin-images/refs/heads/main/exp1/logo-01_kp2j8x.png",
-    },
-  ],
   navMain: [
     {
       title: "Sections",
@@ -52,12 +37,12 @@ const data = {
         {
           title: "Dashboard",
           url: "/admin/dashboard",
-          icon: RiScanLine,
+          icon: LayoutDashboard,
         },
         {
-          title: "Users",
-          url: "/admin/users",
-          icon: RiBardLine,
+          title: "Doctors",
+          url: "/admin/doctors",
+          icon: Users,
         },
         {
           title: "Studies",
@@ -143,8 +128,7 @@ export function AdminDashboardSidebar({
                       <Link href={item.url}>
                         {item.icon && (
                           <item.icon
-                            className="text-muted-foreground/60 group-data-[active=true]/menu-button:text-primary"
-                            size={22}
+                            className="size-4 text-muted-foreground/60 group-data-[active=true]/menu-button:text-emerald-400"
                             aria-hidden="true"
                           />
                         )}

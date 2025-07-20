@@ -11,8 +11,8 @@ export default async function AdminStatsGrid() {
     <div className="grid grid-cols-2 min-[1200px]:grid-cols-4 rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">
       <AdminStatsItem
         icon={Users}
-        link={"/admin/users"}
-        title={"Users"}
+        link={"/admin/doctors"}
+        title={"Doctors"}
         data={doctors.length}
       />
 
