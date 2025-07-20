@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { signInSchema, SignInSchemaType } from "@/lib/zod-schema";
-import { GalleryVerticalEnd, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/form";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function SignInForm() {
   const router = useRouter();
@@ -60,13 +61,13 @@ export default function SignInForm() {
       <CardHeader>
         <CardTitle>
           <div className="flex items-center gap-2 w-full justify-center mb-6">
-            <div className="flex size-8 items-center justify-center rounded-md">
-              <GalleryVerticalEnd className="size-6" />
-            </div>
-
-            <h1 className="text-lg font-semibold">
-              <span className="text-xl font-bold">Doctor space</span>
-            </h1>
+            <Image
+              src={"/logo.png"}
+              alt={"Doctor space logo"}
+              width={72}
+              height={72}
+              priority
+            />
           </div>
         </CardTitle>
 

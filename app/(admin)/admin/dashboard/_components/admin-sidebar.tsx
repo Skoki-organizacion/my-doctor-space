@@ -119,8 +119,8 @@ export function AdminDashboardSidebar({
           <Image
             src={"/logo.png"}
             alt={"Doctor space logo"}
-            width={135}
-            height={135}
+            width={72}
+            height={72}
             priority
           />
         </Link>
