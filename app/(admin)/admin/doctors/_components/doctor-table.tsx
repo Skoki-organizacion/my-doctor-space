@@ -29,11 +29,7 @@ import {
   PaginationContent,
   PaginationItem,
 } from "@/components/ui/pagination";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent } from "@/components/ui/popover";
 import {
   Table,
   TableBody,
@@ -45,7 +41,6 @@ import {
 import {
   ColumnDef,
   ColumnFiltersState,
-  FilterFn,
   PaginationState,
   SortingState,
   VisibilityState,
@@ -63,19 +58,10 @@ import {
   RiErrorWarningLine,
   RiCloseCircleLine,
   RiDeleteBinLine,
-  RiBardLine,
-  RiFilter3Line,
   RiSearch2Line,
   RiMoreLine,
 } from "@remixicon/react";
-import {
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-  useTransition,
-} from "react";
+import { useId, useMemo, useRef, useState, useTransition } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -83,16 +69,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { GetAllDoctorsType } from "@/app/data/admin/get-doctors";
-
-const statusFilterFn: FilterFn<GetAllDoctorsType> = (
-  row,
-  columnId,
-  filterValue: string[]
-) => {
-  if (!filterValue?.length) return true;
-  const status = row.getValue(columnId) as string;
-  return filterValue.includes(status);
-};
+import { tryCatch } from "@/hooks/try-catch";
+import { toast } from "sonner";
+import { deleteDoctors } from "../actions";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface GetColumnsProps {
   data: GetAllDoctorsType[];
@@ -191,6 +171,7 @@ type iAppProps = {
 };
 
 export default function DoctorsTable({ doctors }: iAppProps) {
+  const [isPending, startTransition] = useTransition();
   const id = useId();
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -207,15 +188,31 @@ export default function DoctorsTable({ doctors }: iAppProps) {
     },
   ]);
 
-  const [data, setData] = useState<GetAllDoctorsType[]>([]);
+  const [data, setData] = useState<GetAllDoctorsType[]>(doctors);
 
   const columns = useMemo(() => getColumns({ data, setData }), [data]);
 
   const handleDeleteRows = () => {
     const selectedRows = table.getSelectedRowModel().rows;
-    const updatedData = data.filter(
-      (item) => !selectedRows.some((row) => row.original.id === item.id)
+    const updatedData = data.filter((item) =>
+      selectedRows.some((row) => row.original.id === item.id)
     );
+
+    startTransition(async () => {
+      const ids = updatedData.map(({ id }) => id);
+
+      const { data: result, error } = await tryCatch(deleteDoctors(ids));
+
+      if (error) {
+        toast.error("An unexpected error occured");
+      }
+
+      if (result?.status === "success") {
+        toast.success(result.message);
+      } else if (result?.status === "error") {
+        toast.error(result.message);
+      }
+    });
 
     setData(updatedData);
     table.resetRowSelection();
@@ -242,31 +239,10 @@ export default function DoctorsTable({ doctors }: iAppProps) {
     },
   });
 
-  const handleStatusChange = (checked: boolean, value: string) => {
-    const filterValue = table.getColumn("status")?.getFilterValue() as string[];
-    const newFilterValue = filterValue ? [...filterValue] : [];
-
-    if (checked) {
-      newFilterValue.push(value);
-    } else {
-      const index = newFilterValue.indexOf(value);
-      if (index > -1) {
-        newFilterValue.splice(index, 1);
-      }
-    }
-
-    table
-      .getColumn("status")
-      ?.setFilterValue(newFilterValue.length ? newFilterValue : undefined);
-  };
-
   return (
     <div className="space-y-4">
-      {/* Actions */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        {/* Left side */}
         <div className="flex items-center gap-3">
-          {/* Filter by name */}
           <div className="relative">
             <Input
               id={`${id}-input`}
@@ -344,8 +320,13 @@ export default function DoctorsTable({ doctors }: iAppProps) {
                   </AlertDialogHeader>
                 </div>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleDeleteRows}>
+                  <AlertDialogCancel className="bg-destructive hover:bg-destructive-foreground cursor-pointer">
+                    Cancel
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={handleDeleteRows}
+                    className="cursor-pointer"
+                  >
                     Delete
                   </AlertDialogAction>
                 </AlertDialogFooter>
@@ -476,7 +457,8 @@ export default function DoctorsTable({ doctors }: iAppProps) {
                   disabled={!table.getCanPreviousPage()}
                   aria-label="Go to previous page"
                 >
-                  Previous
+                  <ChevronLeft className="size-4 text-primary" />{" "}
+                  <span>Previous</span>
                 </Button>
               </PaginationItem>
               <PaginationItem>
@@ -487,7 +469,8 @@ export default function DoctorsTable({ doctors }: iAppProps) {
                   disabled={!table.getCanNextPage()}
                   aria-label="Go to next page"
                 >
-                  Next
+                  <span>Next</span>{" "}
+                  <ChevronRight className="size-4 text-primary" />
                 </Button>
               </PaginationItem>
             </PaginationContent>
