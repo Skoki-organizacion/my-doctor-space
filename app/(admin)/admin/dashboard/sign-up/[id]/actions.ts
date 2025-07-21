@@ -13,8 +13,6 @@ export default async function addDoctorInfo(
 
     const validation = confirmUserSchema.safeParse(values);
 
-    console.log(values, "VALUES");
-
     if (!validation.success) {
       return {
         status: "error",
@@ -32,8 +30,7 @@ export default async function addDoctorInfo(
       status: "success",
       message: "Additional info successfully added",
     };
-  } catch (error) {
-    console.log(error, "ERROR");
+  } catch {
     return {
       status: "error",
       message: "Failed to add additional information",

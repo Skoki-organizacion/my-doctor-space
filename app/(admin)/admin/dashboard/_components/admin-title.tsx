@@ -5,10 +5,13 @@ import { ClipboardPlus } from "lucide-react";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { UserSwitcher } from "./admin-user-toggler";
-import { getAllDoctors } from "@/app/data/admin/get-doctors";
+import { GetAllDoctorsType } from "@/app/data/admin/get-doctors";
 
-export default async function AdminDashboardTitle() {
-  const doctors = await getAllDoctors();
+type iAppProps = {
+  doctors: GetAllDoctorsType[];
+};
+
+export default async function AdminDashboardTitle({ doctors }: iAppProps) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
