@@ -116,16 +116,8 @@ const getColumns = ({
         <div className="font-medium">{row.getValue("name")}</div>
       </div>
     ),
-    size: 180,
+    size: 130,
     enableHiding: false,
-  },
-  {
-    header: "ID",
-    accessorKey: "id",
-    cell: ({ row }) => (
-      <span className="text-muted-foreground">{row.getValue("id")}</span>
-    ),
-    size: 110,
   },
   {
     header: "Email",
@@ -133,28 +125,26 @@ const getColumns = ({
     cell: ({ row }) => (
       <span className="text-muted-foreground">{row.getValue("email")}</span>
     ),
-    size: 140,
+    size: 150,
   },
   {
-    header: "Value",
-    accessorKey: "value",
-    cell: ({ row }) => {
-      const value = row.getValue("value") as number;
-      return (
-        <TooltipProvider delayDuration={0}>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div className="flex h-full w-full items-center">
-                <Progress className="h-1 max-w-14" value={value} />
-              </div>
-            </TooltipTrigger>
-            <TooltipContent align="start" sideOffset={-8}>
-              <p>{value}%</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      );
-    },
+    header: "Clinic",
+    accessorKey: "clinic",
+    cell: ({ row }) => (
+      <span className="text-muted-foreground">
+        {row.original.doctor.map(({ clinic }) => clinic).join(",")}
+      </span>
+    ),
+    size: 130,
+  },
+  {
+    header: "Department",
+    accessorKey: "studie",
+    cell: ({ row }) => (
+      <span className="text-muted-foreground">
+        {row.original.doctor.map(({ department }) => department).join(",")}
+      </span>
+    ),
     size: 80,
   },
   {
