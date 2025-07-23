@@ -28,7 +28,7 @@ export default async function DoctorDetailsPage({
 
         <div className="grid grid-col-1 sm:grid-cols-2 lg:grid-cols-3">
           <div className="relative p-4 lg:p-5 group rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">
-            <div className="relative flex items-center gap-4">
+            <div className="relative flex items-start gap-4">
               <div className="max-[480px]:hidden size-10 shrink-0 rounded-full flex items-center justify-center bg-emerald-500/10 text-emerald-400">
                 <User2 className="size-6" />
               </div>
@@ -38,7 +38,8 @@ export default async function DoctorDetailsPage({
                 </div>
                 <div className="text-2xl font-semibold">{data?.name}</div>
                 <div className="text-sm text-muted-foreground/80 mb-2">
-                  Created at: {finalDate}
+                  Created at:{" "}
+                  <span className="text-muted-foreground/90">{finalDate}</span>
                 </div>
 
                 <div className="text-base text-muted-foreground">
