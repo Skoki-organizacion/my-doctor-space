@@ -8,8 +8,6 @@ import { notFound } from "next/navigation";
 export async function getDoctor(id: string) {
   await requireAdmin();
 
-  console.log(id, "ODAVDE");
-
   const data = cache(
     async () =>
       await prisma.user.findFirst({
