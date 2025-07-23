@@ -72,7 +72,8 @@ import { GetAllDoctorsType } from "@/app/data/admin/get-doctors";
 import { tryCatch } from "@/hooks/try-catch";
 import { toast } from "sonner";
 import { deleteDoctors } from "../actions";
-import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Eye, Loader2, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface GetColumnsProps {
   data: GetAllDoctorsType[];
@@ -139,13 +140,28 @@ const getColumns = ({
   },
   {
     header: "Department",
-    accessorKey: "studie",
+    accessorKey: "department",
     cell: ({ row }) => (
       <span className="text-muted-foreground">
         {row.original.doctor.map(({ department }) => department).join(",")}
       </span>
     ),
-    size: 80,
+    size: 180,
+  },
+  {
+    header: "Stydies",
+    accessorKey: "studie",
+    cell: ({ row }) => (
+      <span className="text-muted-foreground">
+        {row.original.doctor.length > 2
+          ? row.original.doctor
+              .slice(0, 3)
+              .map(({ study }) => study)
+              .join(", ") + "..."
+          : row.original.doctor.map(({ study }) => study).join(", ")}
+      </span>
+    ),
+    size: 180,
   },
   {
     id: "actions",
@@ -496,22 +512,12 @@ function RowActions({
   item: GetAllDoctorsType;
   isPending: boolean;
 }) {
+  const router = useRouter();
   const [isUpdatePending, startUpdateTransition] = useTransition();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
-  const handleStatusToggle = () => {
-    startUpdateTransition(() => {
-      const updatedData = data.map((dataItem) => {
-        if (dataItem.id === item.id) {
-          return {
-            ...dataItem,
-            status: item.email === "Active" ? "Inactive" : "Active",
-          };
-        }
-        return dataItem;
-      });
-      setData(updatedData);
-    });
+  const handleStatusToggle = ({ id }: GetAllDoctorsType) => {
+    router.push(`/admin/doctors/${id}`);
   };
 
   const handleVerifiedToggle = () => {
@@ -555,27 +561,15 @@ function RowActions({
         <DropdownMenuContent align="end" className="w-auto">
           <DropdownMenuGroup>
             <DropdownMenuItem
-              onClick={handleStatusToggle}
+              onClick={() => handleStatusToggle(item)}
               disabled={isUpdatePending}
             >
-              {item.name === "Active"
-                ? "Deactivate contact"
-                : "Activate contact"}
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={handleVerifiedToggle}
-              disabled={isUpdatePending}
-            >
-              {item.name ? "Unverify contact" : "Verify contact"}
+              <Eye className="size-4" /> View
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => setShowDeleteDialog(true)}
-            variant="destructive"
-            className="dark:data-[variant=destructive]:focus:bg-destructive/10"
-          >
-            Delete
+          <DropdownMenuItem onClick={() => setShowDeleteDialog(true)}>
+            <Trash2 className="size-4 text-destructive" /> Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
