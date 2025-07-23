@@ -520,27 +520,27 @@ function RowActions({
     router.push(`/admin/doctors/${id}`);
   };
 
-  const handleVerifiedToggle = () => {
-    startUpdateTransition(() => {
-      const updatedData = data.map((dataItem) => {
-        if (dataItem.id === item.id) {
-          return {
-            ...dataItem,
-            verified: true,
-          };
-        }
-        return dataItem;
-      });
-      setData(updatedData);
-    });
-  };
-
   const handleDelete = () => {
-    startUpdateTransition(() => {
-      const updatedData = data.filter((dataItem) => dataItem.id !== item.id);
-      setData(updatedData);
-      setShowDeleteDialog(false);
+    const updatedData = data.filter((dataItem) => dataItem.id !== item.id);
+
+    startUpdateTransition(async () => {
+      const ids = [item.id];
+
+      const { data: result, error } = await tryCatch(deleteDoctors(ids));
+
+      if (error) {
+        toast.error("An unexpected error occured");
+      }
+
+      if (result?.status === "success") {
+        toast.success(result.message);
+      } else if (result?.status === "error") {
+        toast.error(result.message);
+      }
     });
+
+    setData(updatedData);
+    setShowDeleteDialog(false);
   };
 
   return (
@@ -569,7 +569,12 @@ function RowActions({
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setShowDeleteDialog(true)}>
-            <Trash2 className="size-4 text-destructive" /> Delete
+            <RiDeleteBinLine
+              className="-ms-1 opacity-60"
+              size={16}
+              aria-hidden="true"
+            />{" "}
+            Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
