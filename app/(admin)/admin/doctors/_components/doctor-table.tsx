@@ -72,16 +72,18 @@ import { GetAllDoctorsType } from "@/app/data/admin/get-doctors";
 import { tryCatch } from "@/hooks/try-catch";
 import { toast } from "sonner";
 import { deleteDoctors } from "../actions";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 
 interface GetColumnsProps {
   data: GetAllDoctorsType[];
   setData: React.Dispatch<React.SetStateAction<GetAllDoctorsType[]>>;
+  isPending: boolean;
 }
 
 const getColumns = ({
   data,
   setData,
+  isPending,
 }: GetColumnsProps): ColumnDef<GetAllDoctorsType>[] => [
   {
     id: "select",
@@ -159,7 +161,12 @@ const getColumns = ({
     id: "actions",
     header: () => <span className="sr-only">Actions</span>,
     cell: ({ row }) => (
-      <RowActions setData={setData} data={data} item={row.original} />
+      <RowActions
+        setData={setData}
+        data={data}
+        item={row.original}
+        isPending={isPending}
+      />
     ),
     size: 60,
     enableHiding: false,
@@ -190,12 +197,19 @@ export default function DoctorsTable({ doctors }: iAppProps) {
 
   const [data, setData] = useState<GetAllDoctorsType[]>(doctors);
 
-  const columns = useMemo(() => getColumns({ data, setData }), [data]);
+  const columns = useMemo(
+    () => getColumns({ data, setData, isPending }),
+    [data]
+  );
 
   const handleDeleteRows = () => {
     const selectedRows = table.getSelectedRowModel().rows;
     const updatedData = data.filter((item) =>
       selectedRows.some((row) => row.original.id === item.id)
+    );
+
+    const updatedDataAfterDeletion = data.filter(
+      (item) => !selectedRows.some((row) => row.original.id === item.id)
     );
 
     startTransition(async () => {
@@ -214,7 +228,7 @@ export default function DoctorsTable({ doctors }: iAppProps) {
       }
     });
 
-    setData(updatedData);
+    setData(updatedDataAfterDeletion);
     table.resetRowSelection();
   };
 
@@ -485,10 +499,12 @@ function RowActions({
   setData,
   data,
   item,
+  isPending,
 }: {
   setData: React.Dispatch<React.SetStateAction<GetAllDoctorsType[]>>;
   data: GetAllDoctorsType[];
   item: GetAllDoctorsType;
+  isPending: boolean;
 }) {
   const [isUpdatePending, startUpdateTransition] = useTransition();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -592,7 +608,16 @@ function RowActions({
               disabled={isUpdatePending}
               className="bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40"
             >
-              Delete
+              {isPending ? (
+                <>
+                  <Loader2 className="animate-spin ml-1" size={16} />{" "}
+                  Deleting...
+                </>
+              ) : (
+                <>
+                  <span>Delete</span>
+                </>
+              )}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
