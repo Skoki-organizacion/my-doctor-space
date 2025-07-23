@@ -21,7 +21,7 @@ export async function deleteDoctors(ids: string[]): Promise<ApiResponse> {
 
     return {
       status: "success",
-      message: "Selected doctors are removed successfully",
+      message: "Selected doctor are removed successfully",
     };
   } catch {
     return {

@@ -62,12 +62,6 @@ import {
   RiMoreLine,
 } from "@remixicon/react";
 import { useId, useMemo, useRef, useState, useTransition } from "react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { GetAllDoctorsType } from "@/app/data/admin/get-doctors";
 import { tryCatch } from "@/hooks/try-catch";
 import { toast } from "sonner";
@@ -117,7 +111,7 @@ const getColumns = ({
         <div className="font-medium">{row.getValue("name")}</div>
       </div>
     ),
-    size: 130,
+    size: 180,
     enableHiding: false,
   },
   {
@@ -133,7 +127,12 @@ const getColumns = ({
     accessorKey: "clinic",
     cell: ({ row }) => (
       <span className="text-muted-foreground">
-        {row.original.doctor.map(({ clinic }) => clinic).join(", ")}
+        {row.original.doctor.length > 2
+          ? row.original.doctor
+              .slice(0, 2)
+              .map(({ clinic }) => clinic)
+              .join(", ") + "..."
+          : row.original.doctor.map(({ clinic }) => clinic).join(", ")}
       </span>
     ),
     size: 130,
@@ -143,7 +142,12 @@ const getColumns = ({
     accessorKey: "department",
     cell: ({ row }) => (
       <span className="text-muted-foreground">
-        {row.original.doctor.map(({ department }) => department).join(", ")}
+        {row.original.doctor.length > 2
+          ? row.original.doctor
+              .slice(0, 3)
+              .map(({ department }) => department)
+              .join(", ") + "..."
+          : row.original.doctor.map(({ department }) => department).join(", ")}
       </span>
     ),
     size: 180,
