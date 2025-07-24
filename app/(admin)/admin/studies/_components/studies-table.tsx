@@ -488,7 +488,7 @@ function RowActions({
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const handleStatusToggle = ({ id }: GetAllStudiesType) => {
-    router.push(`/admin/doctors/${id}`);
+    router.push(`/admin/studies/${id}`);
   };
 
   const handleDelete = () => {
