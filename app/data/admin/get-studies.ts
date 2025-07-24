@@ -19,6 +19,7 @@ export default async function getAllStudies() {
           user: {
             select: {
               id: true,
+              name: true,
             },
           },
         },
