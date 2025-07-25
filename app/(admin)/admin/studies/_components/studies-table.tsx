@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Progress } from "@/components/ui/progress";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -62,11 +61,12 @@ import {
   RiMoreLine,
 } from "@remixicon/react";
 import { useId, useMemo, useRef, useState, useTransition } from "react";
-import { tryCatch } from "@/hooks/try-catch";
-import { toast } from "sonner";
-import { ChevronLeft, ChevronRight, Eye, Loader2, Trash2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Eye, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { GetAllStudiesType } from "@/app/data/admin/get-studies";
+import { deleteDoctors } from "../../doctors/actions";
+import { tryCatch } from "@/hooks/try-catch";
+import { toast } from "sonner";
 
 interface GetColumnsProps {
   data: GetAllStudiesType[];
@@ -181,7 +181,7 @@ export default function StudiusTable({ studies }: iAppProps) {
 
   const columns = useMemo(
     () => getColumns({ data, setData, isPending }),
-    [data]
+    [data, isPending]
   );
 
   const handleDeleteRows = () => {
@@ -195,16 +195,16 @@ export default function StudiusTable({ studies }: iAppProps) {
     );
 
     startTransition(async () => {
-      //   const ids = updatedData.map(({ id }) => id);
-      //   const { data: result, error } = await tryCatch(deleteDoctors(ids));
-      //   if (error) {
-      //     toast.error("An unexpected error occured");
-      //   }
-      //   if (result?.status === "success") {
-      //     toast.success(result.message);
-      //   } else if (result?.status === "error") {
-      //     toast.error(result.message);
-      //   }
+      const ids = updatedData.map(({ id }) => id);
+      const { data: result, error } = await tryCatch(deleteDoctors(ids));
+      if (error) {
+        toast.error("An unexpected error occured");
+      }
+      if (result?.status === "success") {
+        toast.success(result.message);
+      } else if (result?.status === "error") {
+        toast.error(result.message);
+      }
     });
 
     setData(updatedDataAfterDeletion);

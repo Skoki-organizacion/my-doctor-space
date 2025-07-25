@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Progress } from "@/components/ui/progress";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -66,7 +65,7 @@ import { GetAllDoctorsType } from "@/app/data/admin/get-doctors";
 import { tryCatch } from "@/hooks/try-catch";
 import { toast } from "sonner";
 import { deleteDoctors } from "../actions";
-import { ChevronLeft, ChevronRight, Eye, Loader2, Trash2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Eye, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface GetColumnsProps {
@@ -209,7 +208,7 @@ export default function DoctorsTable({ doctors }: iAppProps) {
 
   const columns = useMemo(
     () => getColumns({ data, setData, isPending }),
-    [data]
+    [data, isPending]
   );
 
   const handleDeleteRows = () => {

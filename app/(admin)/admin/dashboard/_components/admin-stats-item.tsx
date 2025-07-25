@@ -1,4 +1,3 @@
-import { RiArrowRightUpLine } from "@remixicon/react";
 import Link from "next/link";
 
 type iAppProps = {
