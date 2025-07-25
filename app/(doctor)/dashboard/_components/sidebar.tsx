@@ -30,20 +30,6 @@ import { useTransition } from "react";
 import { toast } from "sonner";
 
 const data = {
-  teams: [
-    {
-      name: "InnovaCraft",
-      logo: "https://raw.githubusercontent.com/origin-space/origin-images/refs/heads/main/exp1/logo-01_kp2j8x.png",
-    },
-    {
-      name: "Acme Corp.",
-      logo: "https://raw.githubusercontent.com/origin-space/origin-images/refs/heads/main/exp1/logo-01_kp2j8x.png",
-    },
-    {
-      name: "Evil Corp.",
-      logo: "https://raw.githubusercontent.com/origin-space/origin-images/refs/heads/main/exp1/logo-01_kp2j8x.png",
-    },
-  ],
   navMain: [
     {
       title: "Sections",
@@ -138,7 +124,7 @@ export function DoctorDashboardSidebar({
                       <Link href={item.url}>
                         {item.icon && (
                           <item.icon
-                            className="text-muted-foreground/60 group-data-[active=true]/menu-button:text-primary"
+                            className="text-muted-foreground/60 group-data-[active=true]/menu-button:text-emerald-400 group-data-[active=true]/menu-button:bg-transparent"
                             size={22}
                             aria-hidden="true"
                           />
