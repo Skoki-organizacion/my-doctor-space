@@ -16,7 +16,7 @@ type iAppProps =
   | undefined;
 
 export default function DoctorDashboardMainContent() {
-  const [current, setCurrent] = useState<iAppProps>();
+  const [current, setCurrent] = useState<iAppProps>(stats[0]);
 
   function getSelectedElement(item: iAppProps) {
     console.log(item, "ITEM");
@@ -27,7 +27,7 @@ export default function DoctorDashboardMainContent() {
     <div className="grid grid-cols-1 min-[1200px]:grid-cols-3 gap-6">
       <div className="flex flex-col rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">
         <div className="relative p-4 lg:p-5 group">
-          <h1 className="text-xl font-semibold">Navigation</h1>
+          <h1 className="text-lg font-semibold">Navigation</h1>
         </div>
 
         <ScrollArea
@@ -56,7 +56,7 @@ export default function DoctorDashboardMainContent() {
 
       <div className="flex flex-col rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">
         <div className="relative p-4 lg:p-5 group">
-          <h1 className="text-xl font-semibold">{current?.title}</h1>
+          <h1 className="text-lg font-semibold">{current?.title}</h1>
         </div>
       </div>
 
