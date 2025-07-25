@@ -1,20 +1,34 @@
+"use client";
+
 import { cn } from "@/lib/utils";
-import Link from "next/link";
 
 interface NavigationItemProps {
   id: number;
   title: string;
   checked: boolean;
+  field: string;
   date: string | null;
+  selectedItem: (
+    item: Pick<NavigationItemProps, "id" | "title" | "checked" | "field">
+  ) => void;
 }
 
-export function NavigationItem({ title, checked }: NavigationItemProps) {
+export function NavigationItem({
+  id,
+  title,
+  field,
+  checked,
+  selectedItem,
+}: NavigationItemProps) {
   const iconColor = checked
     ? " bg-emerald-500/10  text-emerald-400"
     : "bg-background  text-sidebar";
 
   return (
-    <Link href={"/dashboard"} className="w-full">
+    <div
+      className="w-full cursor-pointer"
+      onClick={() => selectedItem({ id, title, checked, field })}
+    >
       <div className="relative p-4 lg:p-5 group before:absolute before:inset-x-8 before:bottom-0 before:h-px before:bg-gradient-to-r before:from-input/30 before:via-input before:to-input/30">
         <div className="relative flex items-center gap-4">
           <div
@@ -46,6 +60,6 @@ export function NavigationItem({ title, checked }: NavigationItemProps) {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
