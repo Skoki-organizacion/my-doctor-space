@@ -148,11 +148,6 @@ export function DoctorDashboardSidebar({
               onClick={onLogout}
               disabled={isPending}
             >
-              <RiLogoutBoxLine
-                className="text-muted-foreground/60 group-data-[active=true]/menu-button:text-primary"
-                size={22}
-                aria-hidden="true"
-              />
               {isPending ? (
                 <>
                   <Loader2 className="animate-spin ml-1" size={16} /> Logging
@@ -160,7 +155,14 @@ export function DoctorDashboardSidebar({
                 </>
               ) : (
                 <>
-                  <span>Sign Out</span>
+                  <span className="flex gap-3">
+                    <RiLogoutBoxLine
+                      className="text-muted-foreground/60 group-data-[active=true]/menu-button:text-primary"
+                      size={22}
+                      aria-hidden="true"
+                    />{" "}
+                    Sign Out
+                  </span>
                 </>
               )}
             </SidebarMenuButton>

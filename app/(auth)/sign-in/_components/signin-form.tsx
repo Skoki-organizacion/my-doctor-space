@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { signInSchema, SignInSchemaType } from "@/lib/zod-schema";
-import { Loader2 } from "lucide-react";
+import { Loader2, LogInIcon } from "lucide-react";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -122,7 +122,14 @@ export default function SignInForm() {
                 </>
               ) : (
                 <>
-                  <span>Login</span>
+                  <span className="flex gap-3 items-center">
+                    <LogInIcon
+                      className="text-white group-data-[active=true]/menu-button:text-primary"
+                      size={22}
+                      aria-hidden="true"
+                    />{" "}
+                    Login
+                  </span>
                 </>
               )}
             </Button>
