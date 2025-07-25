@@ -6,7 +6,7 @@ import { SidebarInset } from "@/components/ui/sidebar";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
-import DoctorDashboardMainContent from "../_components/main-content";
+import DoctorDashboardMainContent from "./_components/main-content";
 
 type Params = Promise<{ ["id"]: string }>;
 

@@ -1,12 +1,12 @@
 "use client";
 
 import { stats } from "@/constants/stats";
-import { NavigationItem } from "./navigation-item";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import CalendarItem from "./calendar";
 import { GetStudyType } from "@/app/data/admin/get-study";
+import CalendarItem from "../../_components/calendar";
+import { NavigationItem } from "../../_components/navigation-item";
 
 type iAppProps =
   | {
