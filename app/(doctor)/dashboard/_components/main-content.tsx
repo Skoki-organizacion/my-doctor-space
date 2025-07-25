@@ -3,15 +3,24 @@
 import { stats } from "@/constants/stats";
 import { NavigationItem } from "./navigation-item";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
+
+type iAppProps =
+  | {
+      id: number;
+      checked: boolean;
+      title: string;
+      field: string;
+    }
+  | undefined;
 
 export default function DoctorDashboardMainContent() {
-  function getSelectedElement(item: {
-    id: number;
-    checked: boolean;
-    title: string;
-    field: string;
-  }) {
+  const [current, setCurrent] = useState<iAppProps>();
+
+  function getSelectedElement(item: iAppProps) {
     console.log(item, "ITEM");
+    setCurrent(item);
   }
 
   return (
@@ -28,10 +37,15 @@ export default function DoctorDashboardMainContent() {
           {stats.map((stat) => (
             <div
               key={stat.id}
-              className="bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 rounded-xl"
+              className={cn(
+                current?.id === stat.id &&
+                  "bg-gradient-to-r bg-transparent from-sidebar-accent to-sidebar-accent/40",
+                "bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 rounded-xl"
+              )}
             >
               <NavigationItem
                 key={stat.id}
+                current={current}
                 {...stat}
                 selectedItem={getSelectedElement}
               />
@@ -41,7 +55,9 @@ export default function DoctorDashboardMainContent() {
       </div>
 
       <div className="flex flex-col rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">
-        <h1>LEPIII</h1>
+        <div className="relative p-4 lg:p-5 group">
+          <h1 className="text-xl font-semibold">{current?.title}</h1>
+        </div>
       </div>
 
       <div className="flex flex-col rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">

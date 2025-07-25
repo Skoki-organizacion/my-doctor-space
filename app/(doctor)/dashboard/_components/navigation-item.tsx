@@ -2,16 +2,20 @@
 
 import { cn } from "@/lib/utils";
 
-interface NavigationItemProps {
+type NavigationItemProps = {
   id: number;
   title: string;
   checked: boolean;
   field: string;
   date: string | null;
-  selectedItem: (
-    item: Pick<NavigationItemProps, "id" | "title" | "checked" | "field">
-  ) => void;
-}
+  current: SelectedNavigationItemProps | undefined;
+  selectedItem: (item: SelectedNavigationItemProps) => void;
+};
+
+type SelectedNavigationItemProps = Pick<
+  NavigationItemProps,
+  "id" | "title" | "checked" | "field"
+>;
 
 export function NavigationItem({
   id,
