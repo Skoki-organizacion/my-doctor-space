@@ -22,9 +22,8 @@ export default function DashboardDoctorInfo({ data }: { data: GetDoctorType }) {
               Doctor
             </div>
             <div className="text-2xl font-semibold">{data?.name}</div>
-            <div className="text-sm text-muted-foreground/80 mb-2">
-              Created at:{" "}
-              <span className="text-muted-foreground/90">{finalDate}</span>
+            <div className="text-xs text-muted-foreground/80 mb-2 mt-1">
+              Created at: {finalDate}
             </div>
 
             <div className="text-base text-muted-foreground">
