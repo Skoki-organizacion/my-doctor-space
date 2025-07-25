@@ -1,12 +1,12 @@
 "server only";
 
 import { cache } from "react";
-import { requireAdmin } from "./require-admin";
 import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
+import { requireDoctor } from "../doctor/require-doctor";
 
 export async function getDoctor(id: string) {
-  await requireAdmin();
+  await requireDoctor();
 
   const data = cache(
     async () =>
@@ -23,9 +23,11 @@ export async function getDoctor(id: string) {
           updatedAt: true,
           doctor: {
             select: {
+              id: true,
               clinic: true,
               department: true,
               study: true,
+              userId: true,
             },
           },
         },
