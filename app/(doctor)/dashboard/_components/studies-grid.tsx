@@ -1,6 +1,7 @@
 import { GetDoctorType } from "@/app/data/admin/get-doctor";
 import { Badge } from "@/components/ui/badge";
 import { Book } from "lucide-react";
+import Link from "next/link";
 
 type DoctorStudies = NonNullable<GetDoctorType>["doctor"][0];
 
@@ -8,7 +9,8 @@ export default function StudiesGrid({ studies }: { studies: DoctorStudies[] }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       {studies.map((study, index) => (
-        <div
+        <Link
+          href={`/dashboard/${study.id}`}
           key={`${study}${index}`}
           className="relative p-4 lg:p-5 group rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar hover:bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 cursor-pointer"
         >
@@ -80,7 +82,7 @@ export default function StudiesGrid({ studies }: { studies: DoctorStudies[] }) {
               </div>
             </div>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );

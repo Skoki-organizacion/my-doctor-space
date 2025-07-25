@@ -1,14 +1,12 @@
 "server-only";
 
 import { cache } from "react";
-import { requireAdmin } from "./require-admin";
 import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
+import { requireDoctor } from "../doctor/require-doctor";
 
 export async function getStudy(id: string) {
-  await requireAdmin();
-
-  console.log(id, "ID");
+  await requireDoctor();
 
   const data = cache(
     async () =>
