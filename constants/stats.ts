@@ -40,7 +40,7 @@ export const stats = [
     id: 6,
     title: "Vorprüfung und Freigabe durch die Ärztliche Direktion",
     checked: false,
-    field: "vorprufung",
+    field: "freigabe",
     date: null,
   },
   {
