@@ -1,6 +1,4 @@
 import { GetDoctorType } from "@/app/data/admin/get-doctor";
-import { Badge } from "@/components/ui/badge";
-import { Book } from "lucide-react";
 import Link from "next/link";
 
 type DoctorStudies = NonNullable<GetDoctorType>["doctor"][0];
