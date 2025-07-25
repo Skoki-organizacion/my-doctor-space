@@ -36,7 +36,7 @@ export default async function DashboardStudyDetailsPage({
 
         {/* {JSON.stringify(studyDetails)} */}
 
-        <DoctorDashboardMainContent />
+        <DoctorDashboardMainContent studyDetails={studyDetails} />
       </div>
     </SidebarInset>
   );

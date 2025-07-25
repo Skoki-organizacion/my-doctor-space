@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import CalendarItem from "./calendar";
+import { GetStudyType } from "@/app/data/admin/get-study";
 
 type iAppProps =
   | {
@@ -16,11 +17,14 @@ type iAppProps =
     }
   | undefined;
 
-export default function DoctorDashboardMainContent() {
+export default function DoctorDashboardMainContent({
+  studyDetails,
+}: {
+  studyDetails: GetStudyType | null;
+}) {
   const [current, setCurrent] = useState<iAppProps>(stats[0]);
 
   function getSelectedElement(item: iAppProps) {
-    console.log(item, "ITEM");
     setCurrent(item);
   }
 
@@ -66,7 +70,7 @@ export default function DoctorDashboardMainContent() {
       </div>
 
       <div className="flex flex-col rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">
-        <h1>qwbeqweb</h1>
+        {JSON.stringify(studyDetails)}
       </div>
 
       <div className="flex flex-col rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar p-4 lg:p-5">
