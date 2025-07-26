@@ -1,8 +1,8 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useState, useTransition } from "react";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Loader2, Save, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -38,7 +38,8 @@ export default function CalendarItem({
   currentItem: iAppProps;
 }) {
   const id = useId();
-  const [date, setDate] = useState<Date | undefined>();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isPending, startTransition] = useTransition();
 
   const form = useForm<StudyDetailSchema>({
     resolver: zodResolver(studyDetailSchema),
@@ -63,7 +64,7 @@ export default function CalendarItem({
               name={"name" as any}
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <Popover>
+                  <Popover open={isOpen} onOpenChange={setIsOpen}>
                     <PopoverTrigger asChild>
                       <Button
                         id={id}
@@ -73,10 +74,12 @@ export default function CalendarItem({
                         <span
                           className={cn(
                             "truncate",
-                            !date && "text-muted-foreground"
+                            !field.value && "text-muted-foreground"
                           )}
                         >
-                          {date ? format(date, "PPP") : "Pick a date"}
+                          {field.value
+                            ? format(field.value, "PPP")
+                            : "Pick a date"}
                         </span>
                         <CalendarIcon
                           size={16}
@@ -86,10 +89,26 @@ export default function CalendarItem({
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
+                      <div className="flex justify-end p-2">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => setIsOpen(false)}
+                          className="h-7 w-7"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+
                       <Calendar
                         mode="single"
-                        selected={field.value as unknown as Date}
+                        selected={field.value}
                         onSelect={field.onChange}
+                        numberOfMonths={2}
+                        className="p-0"
+                        classNames={{
+                          table: "w-full border-collapse table-fixed",
+                        }}
                       />
                     </PopoverContent>
                   </Popover>
@@ -114,6 +133,29 @@ export default function CalendarItem({
               </FormItem>
             )}
           />
+
+          <Button
+            className="flex gap-2 w-full"
+            type="submit"
+            disabled={isPending}
+          >
+            {isPending ? (
+              <>
+                <Loader2 className="animate-spin ml-1" size={16} /> Logging
+                in...
+              </>
+            ) : (
+              <>
+                <span className="flex gap-3 items-center">
+                  <Save
+                    className="text-white group-data-[active=true]/menu-button:text-primary size-4"
+                    aria-hidden="true"
+                  />{" "}
+                  Save
+                </span>
+              </>
+            )}
+          </Button>
         </div>
       </form>
     </Form>
