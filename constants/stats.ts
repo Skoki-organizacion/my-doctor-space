@@ -4,6 +4,7 @@ export const stats = [
     title: "Erhalt der Studienanfrage",
     checked: true,
     field: "erhalt",
+    description: "erhalt_description",
     date: null,
   },
   {
@@ -11,6 +12,7 @@ export const stats = [
     title: "Meldung an die/den Studienbeauftragten (Ärztliche Direktion)",
     checked: false,
     field: "meldung",
+    description: "meldung_description",
     date: null,
   },
   {
@@ -18,6 +20,7 @@ export const stats = [
     title: "Vorprüfung der Machbarkeit und Ressourcenverfügbarkeit",
     checked: false,
     field: "vorprufung",
+    description: "vorprufung_description",
     date: null,
   },
   {
@@ -26,6 +29,7 @@ export const stats = [
       "Zur Kenntnisnahme an die ärztliche Abteilungsleitung (falls nicht identisch dem PI)",
     checked: false,
     field: "kenntnisnahme",
+    description: "kenntnisnahme_description",
     date: null,
   },
   {
@@ -34,6 +38,7 @@ export const stats = [
       "Detailprüfung der Studienunterlagen – Studienbeauftragte*r (Ärztliche Direktion)",
     checked: false,
     field: "detailprufung",
+    description: "detailprufung_description",
     date: null,
   },
   {
@@ -41,6 +46,7 @@ export const stats = [
     title: "Vorprüfung und Freigabe durch die Ärztliche Direktion",
     checked: false,
     field: "freigabe",
+    description: "freigabe_description",
     date: null,
   },
   {
@@ -49,6 +55,7 @@ export const stats = [
       "Bewertung der ethischen und datenschutzrechtlichen Anforderungen – Studienbeauftragte*r(Ärztliche Direktion)",
     checked: false,
     field: "bewertung",
+    description: "bewertung_description",
     date: null,
   },
   {
@@ -57,6 +64,7 @@ export const stats = [
       "Genehmigung durch die*den Datenschutzbeauftragte*n für Klinische Studien",
     checked: false,
     field: "genehmigung",
+    description: "genehmigung_description",
     date: null,
   },
   {
@@ -64,6 +72,7 @@ export const stats = [
     title: "Verhandlung der Vertragsbedingungen",
     checked: false,
     field: "verhandlung",
+    description: "verhandlung_description",
     date: null,
   },
   {
@@ -71,6 +80,7 @@ export const stats = [
     title: "Festlegung des Budgets und finanzieller Rahmenbedingungen",
     checked: false,
     field: "festlegung",
+    description: "festlegung_description",
     date: null,
   },
   {
@@ -78,6 +88,7 @@ export const stats = [
     title: "Abschluss der Verträge",
     checked: false,
     field: "abschluss",
+    description: "abschluss_description",
     date: null,
   },
   {
@@ -85,6 +96,7 @@ export const stats = [
     title: "Vorbereitung der Studie",
     checked: false,
     field: "vorbereitung",
+    description: "vorbereitung_description",
     date: null,
   },
   {
@@ -92,6 +104,7 @@ export const stats = [
     title: "Studieninitiierung",
     checked: false,
     field: "studien",
+    description: "studien_description",
     date: null,
   },
   {
@@ -99,6 +112,7 @@ export const stats = [
     title: "Durchführung des First Patient First Visit (FPFV)",
     checked: false,
     field: "durchfuhrung",
+    description: "durchfuhrung_description",
     date: null,
   },
   {
@@ -106,6 +120,7 @@ export const stats = [
     title: "Patientenanzahl im Screening 1. Monat",
     checked: false,
     field: "patienten_one",
+    description: "patienten_one_description",
     date: null,
   },
   {
@@ -113,6 +128,7 @@ export const stats = [
     title: "Stand der Randomisierung 1. Monat",
     checked: false,
     field: "stand_one",
+    description: "stand_one_description",
     date: null,
   },
   {
@@ -120,6 +136,7 @@ export const stats = [
     title: "Patientenanzahl im Screening 2. Monat",
     checked: false,
     field: "patienten_two",
+    description: "patienten_two_description",
     date: null,
   },
   {
@@ -127,6 +144,7 @@ export const stats = [
     title: "Stand der Randomisierung 2. Monat",
     checked: false,
     field: "stand_two",
+    description: "stand_two_description",
     date: null,
   },
   {
@@ -134,6 +152,7 @@ export const stats = [
     title: "Patientenanzahl im Screening 3. Monat",
     checked: false,
     field: "patienten_three",
+    description: "patienten_three_description",
     date: null,
   },
   {
@@ -141,6 +160,7 @@ export const stats = [
     title: "Stand der Randomisierung 3. Monat",
     checked: false,
     field: "stand_three",
+    description: "stand_three_description",
     date: null,
   },
   {
@@ -148,6 +168,7 @@ export const stats = [
     title: "Übernahme der vollständigen Studien-Checkliste",
     checked: false,
     field: "ubernahme",
+    description: "ubernahme_description",
     date: null,
   },
 ];

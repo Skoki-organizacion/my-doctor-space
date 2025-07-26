@@ -8,14 +8,12 @@ import { GetStudyType } from "@/app/data/admin/get-study";
 import CalendarItem from "../../_components/calendar";
 import { NavigationItem } from "../../_components/navigation-item";
 
-type iAppProps =
-  | {
-      id: number;
-      checked: boolean;
-      title: string;
-      field: string;
-    }
-  | undefined;
+type iAppProps = {
+  id: number;
+  checked: boolean;
+  title: string;
+  field: string;
+};
 
 export default function DoctorDashboardMainContent({
   studyDetails,
@@ -65,7 +63,7 @@ export default function DoctorDashboardMainContent({
             {current?.title}
           </h1>
 
-          <CalendarItem />
+          <CalendarItem currentItem={current} />
         </div>
       </div>
 
