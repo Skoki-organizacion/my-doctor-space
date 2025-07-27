@@ -29,7 +29,8 @@ export function NavigationItem({
   selectedItem,
   items,
 }: NavigationItemProps) {
-  const element = items.find((el) => el.name === field);
+  const element =
+    items.length > 0 ? items.find((el) => el.name === field) : undefined;
   const iconColor =
     element && element.checked
       ? " bg-emerald-500/10  text-emerald-400"
