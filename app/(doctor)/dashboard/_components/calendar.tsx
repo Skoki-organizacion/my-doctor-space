@@ -29,7 +29,18 @@ import { saveDoctorInfo } from "../[id]/actions";
 import { toast } from "sonner";
 import { usePathname } from "next/navigation";
 
-export default function CalendarItem() {
+type iAppProps = {
+  id: number;
+  checked: boolean;
+  title: string;
+  field: string;
+};
+
+export default function CalendarItem({
+  currentItem,
+}: {
+  currentItem: iAppProps;
+}) {
   const id = useId();
   const pathname = usePathname();
 
@@ -39,7 +50,8 @@ export default function CalendarItem() {
   const form = useForm<StudyDetailSchemaType>({
     resolver: zodResolver(studyDetailSchema),
     defaultValues: {
-      name: undefined,
+      name: currentItem.field,
+      date: undefined,
       description: "",
       doctorId: "",
       checked: true,
@@ -50,7 +62,7 @@ export default function CalendarItem() {
     const pathList = pathname.split("/");
     const doctorId = pathList[pathList.length - 1];
 
-    const finalValues = { ...values, doctorId };
+    const finalValues = { ...values, doctorId, name: currentItem.field };
 
     startTransition(async () => {
       const { data: result, error } = await tryCatch(
@@ -77,7 +89,7 @@ export default function CalendarItem() {
             <Label htmlFor={id}>Date picker</Label>
             <FormField
               control={form.control}
-              name="name"
+              name="date"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <Popover open={isOpen} onOpenChange={setIsOpen}>

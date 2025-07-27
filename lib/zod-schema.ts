@@ -34,7 +34,8 @@ export const confirmUserSchema = z.object({
 });
 
 export const studyDetailSchema = z.object({
-  name: z.date().min(1, { message: "Please select a proper date" }),
+  name: z.string().min(1, { message: "Name is required" }),
+  date: z.date().min(1, { message: "Please select a proper date" }),
   description: z.string().optional(),
   doctorId: z.string(),
   checked: z.boolean(),

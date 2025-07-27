@@ -28,6 +28,16 @@ export async function getStudy(id: string) {
               email: true,
             },
           },
+          items: {
+            select: {
+              id: true,
+              name: true,
+              description: true,
+              checked: true,
+              createdAt: true,
+              updatedAt: true,
+            },
+          },
         },
       })
   );

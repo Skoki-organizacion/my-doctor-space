@@ -1,5 +1,6 @@
 "use client";
 
+import { GetStudyType } from "@/app/data/admin/get-study";
 import { cn } from "@/lib/utils";
 
 type NavigationItemProps = {
@@ -10,6 +11,7 @@ type NavigationItemProps = {
   date: string | null;
   current: SelectedNavigationItemProps | undefined;
   selectedItem: (item: SelectedNavigationItemProps) => void;
+  items: SelectedItemsForStudyProps;
 };
 
 type SelectedNavigationItemProps = Pick<
@@ -17,16 +19,21 @@ type SelectedNavigationItemProps = Pick<
   "id" | "title" | "checked" | "field"
 >;
 
+type SelectedItemsForStudyProps = Pick<GetStudyType, "items">["items"];
+
 export function NavigationItem({
   id,
   title,
   field,
   checked,
   selectedItem,
+  items,
 }: NavigationItemProps) {
-  const iconColor = checked
-    ? " bg-emerald-500/10  text-emerald-400"
-    : "bg-background  text-sidebar";
+  const element = items.find((el) => el.name === field);
+  const iconColor =
+    element && element.checked
+      ? " bg-emerald-500/10  text-emerald-400"
+      : "bg-background  text-sidebar";
 
   return (
     <div

@@ -50,14 +50,16 @@ model DoctorInfo {
 
 model Item {
   id          String   @id @default(uuid())
-  name        DateTime
+  name        String
   description String?
+  date        DateTime @default(now())
+  checked     Boolean  @default(false)
 
   doctorId   String
   doctorInfo DoctorInfo @relation(fields: [doctorId], references: [id], onDelete: Cascade)
-  checked    Boolean    @default(false)
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Session {

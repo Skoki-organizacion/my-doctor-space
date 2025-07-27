@@ -20,6 +20,7 @@ export default function DoctorDashboardMainContent({
 }: {
   studyDetails: GetStudyType | null;
 }) {
+  const items = studyDetails?.items ?? [];
   const [current, setCurrent] = useState<iAppProps>(stats[0]);
 
   function getSelectedElement(item: iAppProps) {
@@ -37,9 +38,9 @@ export default function DoctorDashboardMainContent({
           className="w-full rounded-md"
           style={{ height: "calc(100vh - 400px)" }}
         >
-          {stats.map((stat) => (
+          {stats.map((stat, index) => (
             <div
-              key={stat.id}
+              key={stat.id + index}
               className={cn(
                 current?.id === stat.id &&
                   "bg-gradient-to-r bg-transparent from-sidebar-accent to-sidebar-accent/40",
@@ -51,6 +52,7 @@ export default function DoctorDashboardMainContent({
                 current={current}
                 {...stat}
                 selectedItem={getSelectedElement}
+                items={items}
               />
             </div>
           ))}
@@ -63,7 +65,7 @@ export default function DoctorDashboardMainContent({
             {current?.title}
           </h1>
 
-          <CalendarItem />
+          <CalendarItem currentItem={current} />
         </div>
       </div>
 

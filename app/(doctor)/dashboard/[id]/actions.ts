@@ -3,6 +3,7 @@
 import { ApiResponse } from "@/lib/api-response";
 import { prisma } from "@/lib/db";
 import { studyDetailSchema, StudyDetailSchemaType } from "@/lib/zod-schema";
+import { revalidatePath } from "next/cache";
 
 export async function saveDoctorInfo(
   values: StudyDetailSchemaType
@@ -20,9 +21,10 @@ export async function saveDoctorInfo(
     await prisma.item.create({
       data: {
         ...validation.data,
-        name: validation.data.name,
       },
     });
+
+    revalidatePath(`/dashboard/${validation.data.doctorId}`);
 
     return {
       status: "success",
