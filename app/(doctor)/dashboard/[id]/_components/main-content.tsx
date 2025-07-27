@@ -72,7 +72,7 @@ export default function DoctorDashboardMainContent({
       </div>
 
       <div className="flex flex-col rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">
-        <div className="relative p-4 lg:p-5 group">
+        <div className="relative p-4 lg:p-5 group h-full overflow-hidden">
           <h1 className="text-lg font-semibold mb-4 lg:mb-5">
             {current?.title}
           </h1>

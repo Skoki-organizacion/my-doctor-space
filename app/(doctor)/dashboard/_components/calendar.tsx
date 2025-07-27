@@ -87,8 +87,11 @@ export default function CalendarItem({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="flex flex-col gap-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col h-full"
+      >
+        <div className="flex flex-col gap-4 h-11/12">
           <div className="*:not-first:mt-2">
             <Label htmlFor={id}>Date picker</Label>
             <FormField
@@ -153,9 +156,9 @@ export default function CalendarItem({
             control={form.control}
             name="description"
             render={({ field }) => (
-              <FormItem className="w-full">
+              <FormItem className="w-full flex flex-col flex-grow">
                 <FormLabel>Description</FormLabel>
-                <FormControl>
+                <FormControl className="flex-grow">
                   <Textarea
                     className="bg-background h-full box-border"
                     {...field}
