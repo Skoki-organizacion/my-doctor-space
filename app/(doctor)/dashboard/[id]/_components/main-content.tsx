@@ -44,7 +44,8 @@ export default function DoctorDashboardMainContent({
           <Badge variant={"outline"} className="py-1 px-2">
             Completed:{" "}
             <span className="font-bold text-primary tracking-wide">
-              {items.length}/{stats.length}
+              <span className="text-primary">{items.length}</span> /{" "}
+              <span className="text-destructive">{stats.length}</span>
             </span>
           </Badge>
         </div>
