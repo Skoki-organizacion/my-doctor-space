@@ -106,7 +106,7 @@ export default function DoctorDashboardMainContent({
           </div>
 
           <div className="h-full">
-            <StudyChart />
+            <StudyChart items={items} />
           </div>
         </div>
       </div>

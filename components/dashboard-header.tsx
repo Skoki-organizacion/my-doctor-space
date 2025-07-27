@@ -13,7 +13,7 @@ export default function DashboardHeader() {
         />
       </div>
       <div className="flex gap-3 ml-auto">
-        <div className=" rounded-md bg-gradient-to-r bg-transparent from-primary/40 to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto px-4 py-2">
+        <div className="rounded-md bg-gradient-to-r bg-transparent from-primary/40 to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto px-4 py-2">
           <div className="group-data-[active=true]/menu-button:text-primary flex items-center justify-center gap-2">
             <GitPullRequestCreateArrow className="size-4" />{" "}
             <span className="text-sm">Version: 1.0 Beta</span>

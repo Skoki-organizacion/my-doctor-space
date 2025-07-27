@@ -2,7 +2,6 @@
 
 import { TrendingUp } from "lucide-react";
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts";
-
 import {
   Card,
   CardContent,
@@ -17,26 +16,48 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { GetStudyType } from "@/app/data/admin/get-study";
+import { dateFormat } from "@/utis/date-format";
 
-export const description = "A radar chart with dots";
+type iAppProps = {
+  items: SelectedItemsForStudyProps;
+};
 
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 273 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-];
+type SelectedItemsForStudyProps = Pick<GetStudyType, "items">["items"];
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "var(--sidebar-accent)",
+  total: {
+    label: "Total",
+    color: "var(--chart-1)",
   },
 } satisfies ChartConfig;
 
-export function StudyChart() {
+export function StudyChart({ items }: iAppProps) {
+  const monthCounts =
+    items.length > 0
+      ? items.reduce(
+          (
+            acc: Record<string, number>,
+            item: SelectedItemsForStudyProps[0]
+          ) => {
+            const date = new Date(item.date);
+            const month = date.toLocaleDateString("en-US", { month: "short" });
+
+            acc[month] = (acc[month] || 0) + 1;
+
+            return acc;
+          },
+          {}
+        )
+      : undefined;
+
+  const chartData = monthCounts
+    ? Object.keys(monthCounts).map((month) => ({
+        month: month,
+        total: monthCounts[month],
+      }))
+    : undefined;
+
   return (
     <Card className="border-none">
       <CardHeader className="items-center">
@@ -55,8 +76,8 @@ export function StudyChart() {
             <PolarAngleAxis dataKey="month" />
             <PolarGrid />
             <Radar
-              dataKey="desktop"
-              fill="var(--color-desktop)"
+              dataKey="total"
+              fill="var(--color-total)"
               fillOpacity={0.6}
               dot={{
                 r: 4,
