@@ -1,3 +1,5 @@
+import { cn } from "@/lib/utils";
+
 export default function AnswerChartBar({
   answerCount,
 }: {
@@ -41,7 +43,10 @@ export default function AnswerChartBar({
       ></div>
 
       <div
-        className="h-full bg-gradient-to-r from-foreground to-destructive"
+        className={cn(
+          remainingWidth === 0 && "rounded-tr rounded-br",
+          "h-full bg-gradient-to-r from-foreground to-destructive"
+        )}
         style={{ width: "15%" }}
       ></div>
 
