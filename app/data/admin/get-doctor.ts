@@ -29,6 +29,7 @@ export async function getDoctor(id: string) {
               study: true,
               userId: true,
               createdAt: true,
+              items: true,
             },
           },
         },

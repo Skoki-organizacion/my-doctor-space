@@ -1,12 +1,15 @@
 import { GetDoctorType } from "@/app/data/admin/get-doctor";
 import Link from "next/link";
+import AnswerChartBar from "./study-percentage";
 
-type DoctorStudies = NonNullable<GetDoctorType>["doctor"][0];
-
-export default function StudiesGrid({ studies }: { studies: DoctorStudies[] }) {
+export default function StudiesGrid({
+  doctorData,
+}: {
+  doctorData: GetDoctorType;
+}) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-      {studies.map((study, index) => (
+      {doctorData?.doctor.map((study, index) => (
         <Link
           href={`/dashboard/${study.id}`}
           key={`${study}${index}`}
@@ -61,22 +64,7 @@ export default function StudiesGrid({ studies }: { studies: DoctorStudies[] }) {
               </div>
 
               <div className="flex gap-1 h-5">
-                <div
-                  className="bg-chart-1 h-full"
-                  style={{ width: "22%" }}
-                ></div>
-                <div
-                  className="bg-linear-to-r from-chart-1 to-chart-2 h-full"
-                  style={{ width: "24%" }}
-                ></div>
-                <div
-                  className="bg-chart-5 h-full"
-                  style={{ width: "16%" }}
-                ></div>
-                <div
-                  className="bg-chart-3 h-full"
-                  style={{ width: "38%" }}
-                ></div>
+                <AnswerChartBar answerCount={study.items.length} />
               </div>
             </div>
           </div>
