@@ -91,7 +91,7 @@ export default function CalendarItem({
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col h-full"
       >
-        <div className="flex flex-col gap-4 h-11/12">
+        <div className="flex flex-col gap-4 h-10/12">
           <div className="*:not-first:mt-2">
             <Label htmlFor={id}>Date picker</Label>
             <FormField
