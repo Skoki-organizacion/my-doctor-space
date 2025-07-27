@@ -323,12 +323,10 @@ export default function ContactsTable() {
     },
   });
 
-  // Extract complex expressions into separate variables
   const statusColumn = table.getColumn("status");
   const statusFacetedValues = statusColumn?.getFacetedUniqueValues();
   const statusFilterValue = statusColumn?.getFilterValue();
 
-  // Update useMemo hooks with simplified dependencies
   const uniqueStatusValues = useMemo(() => {
     if (!statusColumn) return [];
     const values = Array.from(statusFacetedValues?.keys() ?? []);
@@ -534,7 +532,6 @@ export default function ContactsTable() {
                         )}
                         onClick={header.column.getToggleSortingHandler()}
                         onKeyDown={(e) => {
-                          // Enhanced keyboard handling for sorting
                           if (
                             header.column.getCanSort() &&
                             (e.key === "Enter" || e.key === " ")

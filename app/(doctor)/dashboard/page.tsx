@@ -2,7 +2,7 @@ import { SidebarInset } from "@/components/ui/sidebar";
 import DashboardHeader from "@/components/dashboard-header";
 import DashboardDoctorInfo from "@/components/dashboard-info";
 import { getDoctor } from "@/app/data/admin/get-doctor";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import StudiesGrid from "./_components/studies-grid";

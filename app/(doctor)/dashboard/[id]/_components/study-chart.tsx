@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart, TrendingUp } from "lucide-react";
+import { BarChart } from "lucide-react";
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts";
 import {
   Card,
@@ -17,7 +17,6 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { GetStudyType } from "@/app/data/admin/get-study";
-import { dateFormat } from "@/utis/date-format";
 
 type iAppProps = {
   items: SelectedItemsForStudyProps;
@@ -58,16 +57,12 @@ export function StudyChart({ items }: iAppProps) {
       }))
     : undefined;
 
-  let footerContent = null;
-
-  // 1. Find the most active month
   const mostActiveMonth =
     chartData &&
     chartData.reduce((max, current) =>
       current.total > max.total ? current : max
     );
 
-  // 2. Find the actual date range from the raw items
   const { minDate, maxDate } = items.reduce(
     (acc, item) => {
       const currentDate = new Date(item.date);
@@ -82,7 +77,6 @@ export function StudyChart({ items }: iAppProps) {
     { minDate: null as Date | null, maxDate: null as Date | null }
   );
 
-  // 3. Format the date range string
   const formatDate = (date: Date | null) =>
     date
       ? date.toLocaleDateString("en-US", {
