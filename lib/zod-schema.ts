@@ -36,9 +36,11 @@ export const confirmUserSchema = z.object({
 export const studyDetailSchema = z.object({
   name: z.date().min(1, { message: "Please select a proper date" }),
   description: z.string().optional(),
+  doctorId: z.string(),
+  checked: z.boolean(),
 });
 
 export type SignInSchemaType = z.infer<typeof signInSchema>;
 export type SignUpSchemaType = z.infer<typeof signUpSchema>;
 export type ConfirmUserSchemaType = z.infer<typeof confirmUserSchema>;
-export type StudyDetailSchema = z.infer<typeof studyDetailSchema>;
+export type StudyDetailSchemaType = z.infer<typeof studyDetailSchema>;

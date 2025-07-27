@@ -63,7 +63,7 @@ export default function DoctorDashboardMainContent({
             {current?.title}
           </h1>
 
-          <CalendarItem currentItem={current} />
+          <CalendarItem />
         </div>
       </div>
 

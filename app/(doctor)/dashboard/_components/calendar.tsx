@@ -22,35 +22,51 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { studyDetailSchema, StudyDetailSchema } from "@/lib/zod-schema";
+import { studyDetailSchema, StudyDetailSchemaType } from "@/lib/zod-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { tryCatch } from "@/hooks/try-catch";
+import { saveDoctorInfo } from "../[id]/actions";
+import { toast } from "sonner";
+import { usePathname } from "next/navigation";
 
-type iAppProps = {
-  id: number;
-  checked: boolean;
-  title: string;
-  field: string;
-};
-
-export default function CalendarItem({
-  currentItem,
-}: {
-  currentItem: iAppProps;
-}) {
+export default function CalendarItem() {
   const id = useId();
+  const pathname = usePathname();
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<StudyDetailSchema>({
+  const form = useForm<StudyDetailSchemaType>({
     resolver: zodResolver(studyDetailSchema),
     defaultValues: {
       name: undefined,
       description: "",
+      doctorId: "",
+      checked: true,
     },
   });
 
-  function onSubmit() {
-    console.log(form.getValues(), "ovde je forma");
+  function onSubmit(values: StudyDetailSchemaType) {
+    const pathList = pathname.split("/");
+    const doctorId = pathList[pathList.length - 1];
+
+    const finalValues = { ...values, doctorId };
+
+    startTransition(async () => {
+      const { data: result, error } = await tryCatch(
+        saveDoctorInfo(finalValues)
+      );
+
+      if (error) {
+        toast.error("An unexpected error occured");
+      }
+
+      if (result?.status === "success") {
+        toast.success(result.message);
+      } else if (result?.status === "error") {
+        toast.error(result.message);
+      }
+    });
   }
 
   return (
@@ -61,7 +77,7 @@ export default function CalendarItem({
             <Label htmlFor={id}>Date picker</Label>
             <FormField
               control={form.control}
-              name={"name" as any}
+              name="name"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <Popover open={isOpen} onOpenChange={setIsOpen}>
