@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { GetStudyType } from "@/app/data/admin/get-study";
 import CalendarItem from "../../_components/calendar";
 import { NavigationItem } from "../../_components/navigation-item";
+import { Badge } from "@/components/ui/badge";
 
 type iAppProps = {
   id: number;
@@ -35,13 +36,19 @@ export default function DoctorDashboardMainContent({
   return (
     <div className="grid grid-cols-1 min-[1200px]:grid-cols-3 gap-6">
       <div className="flex flex-col rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">
-        <div className="relative p-4 lg:p-5 group">
+        <div className="relative p-4 lg:p-5 group flex items-center justify-between">
           <h1 className="text-lg font-semibold">Navigation</h1>
+          <Badge variant={"outline"} className="py-1 px-2">
+            Completed:{" "}
+            <span className="font-bold text-primary tracking-wide">
+              {items.length}/{stats.length}
+            </span>
+          </Badge>
         </div>
 
         <ScrollArea
           className="w-full rounded-md"
-          style={{ height: "calc(100vh - 400px)" }}
+          style={{ height: "calc(100vh - 300px)" }}
         >
           {stats.map((stat, index) => (
             <div
@@ -79,7 +86,7 @@ export default function DoctorDashboardMainContent({
       </div>
 
       <div className="flex flex-col rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">
-        {JSON.stringify(studyDetails)}
+        <h1>wqbeqwbe</h1>
       </div>
     </div>
   );
