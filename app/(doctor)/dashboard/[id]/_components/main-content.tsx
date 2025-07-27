@@ -8,6 +8,9 @@ import { GetStudyType } from "@/app/data/admin/get-study";
 import CalendarItem from "../../_components/calendar";
 import { NavigationItem } from "../../_components/navigation-item";
 import { Badge } from "@/components/ui/badge";
+import StudyBasedInfo from "./study-based-info";
+import { dateFormat } from "@/utis/date-format";
+import { StudyChart } from "./study-chart";
 
 type iAppProps = {
   id: number;
@@ -73,7 +76,7 @@ export default function DoctorDashboardMainContent({
 
       <div className="flex flex-col rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">
         <div className="relative p-4 lg:p-5 group h-full overflow-hidden">
-          <h1 className="text-lg font-semibold mb-4 lg:mb-5">
+          <h1 className="text-lg font-semibold mb-4 lg:mb-5 truncate">
             {current?.title}
           </h1>
 
@@ -86,7 +89,26 @@ export default function DoctorDashboardMainContent({
       </div>
 
       <div className="flex flex-col rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">
-        <h1>wqbeqwbe</h1>
+        <div className="relative p-4 lg:p-5 group flex flex-col gap-4 h-full">
+          <h1 className="text-lg font-semibold">Basic Information</h1>
+
+          <div className="flex flex-col gap-3">
+            <StudyBasedInfo title="Clinic" info={studyDetails?.clinic} />
+            <StudyBasedInfo
+              title="Department"
+              info={studyDetails?.department}
+            />
+            <StudyBasedInfo title="Study" info={studyDetails?.study} />
+            <StudyBasedInfo
+              title="Created at"
+              info={dateFormat(studyDetails?.createdAt as Date)}
+            />
+          </div>
+
+          <div className="h-full">
+            <StudyChart />
+          </div>
+        </div>
       </div>
     </div>
   );
