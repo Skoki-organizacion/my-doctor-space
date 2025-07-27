@@ -30,7 +30,7 @@ export default function AnswerChartBar({
     >
       {completedWidth > 0 && (
         <div
-          className="h-full bg-primary"
+          className="h-full bg-primary rounded-tl rounded-bl"
           style={{ width: `${completedWidth}%` }}
         ></div>
       )}
@@ -47,7 +47,7 @@ export default function AnswerChartBar({
 
       {remainingWidth > 0 && (
         <div
-          className="h-full bg-destructive"
+          className="h-full bg-destructive rounded-tr rounded-br"
           style={{ width: `${remainingWidth}%` }}
         ></div>
       )}

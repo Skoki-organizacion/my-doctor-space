@@ -40,11 +40,6 @@ const data = {
           url: "/dashboard",
           icon: RiScanLine,
         },
-        {
-          title: "Insights",
-          url: "/insights",
-          icon: RiBardLine,
-        },
       ],
     },
     {
@@ -53,12 +48,12 @@ const data = {
       items: [
         {
           title: "Settings",
-          url: "#",
+          url: "/settings",
           icon: RiSettings3Line,
         },
         {
-          title: "Help Center",
-          url: "#",
+          title: "Privacy Center",
+          url: "/privacy",
           icon: RiLeafLine,
         },
       ],
