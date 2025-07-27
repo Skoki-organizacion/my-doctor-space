@@ -32,6 +32,8 @@ export async function getStudy(id: string) {
             select: {
               id: true,
               name: true,
+              doctorId: true,
+              date: true,
               description: true,
               checked: true,
               createdAt: true,

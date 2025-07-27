@@ -27,6 +27,11 @@ export default function DoctorDashboardMainContent({
     setCurrent(item);
   }
 
+  const selectedElement =
+    items.length > 0
+      ? items.find((el) => el.name === current.field)
+      : undefined;
+
   return (
     <div className="grid grid-cols-1 min-[1200px]:grid-cols-3 gap-6">
       <div className="flex flex-col rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">
@@ -65,7 +70,11 @@ export default function DoctorDashboardMainContent({
             {current?.title}
           </h1>
 
-          <CalendarItem currentItem={current} />
+          <CalendarItem
+            key={current.field}
+            currentItem={current}
+            item={selectedElement}
+          />
         </div>
       </div>
 

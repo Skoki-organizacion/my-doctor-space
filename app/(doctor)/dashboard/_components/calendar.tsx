@@ -25,9 +25,10 @@ import { useForm } from "react-hook-form";
 import { studyDetailSchema, StudyDetailSchemaType } from "@/lib/zod-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { tryCatch } from "@/hooks/try-catch";
-import { saveDoctorInfo } from "../[id]/actions";
+import { saveDoctorInfo, updateDoctorInfo } from "../[id]/actions";
 import { toast } from "sonner";
 import { usePathname } from "next/navigation";
+import { GetStudyType } from "@/app/data/admin/get-study";
 
 type iAppProps = {
   id: number;
@@ -37,8 +38,10 @@ type iAppProps = {
 };
 
 export default function CalendarItem({
+  item,
   currentItem,
 }: {
+  item: Pick<GetStudyType, "items">["items"][0] | undefined;
   currentItem: iAppProps;
 }) {
   const id = useId();
@@ -46,15 +49,16 @@ export default function CalendarItem({
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
+  const selectedItem = item?.name === currentItem.field;
 
   const form = useForm<StudyDetailSchemaType>({
     resolver: zodResolver(studyDetailSchema),
     defaultValues: {
       name: currentItem.field,
-      date: undefined,
-      description: "",
-      doctorId: "",
-      checked: true,
+      date: selectedItem && item?.date ? item.date : undefined,
+      description: selectedItem && item?.description ? item.description : "",
+      doctorId: selectedItem && item?.doctorId ? item.doctorId : "",
+      checked: selectedItem && item?.checked ? item.checked : true,
     },
   });
 
@@ -65,9 +69,9 @@ export default function CalendarItem({
     const finalValues = { ...values, doctorId, name: currentItem.field };
 
     startTransition(async () => {
-      const { data: result, error } = await tryCatch(
-        saveDoctorInfo(finalValues)
-      );
+      const { data: result, error } = selectedItem
+        ? await tryCatch(updateDoctorInfo(item.id, finalValues))
+        : await tryCatch(saveDoctorInfo(finalValues));
 
       if (error) {
         toast.error("An unexpected error occured");
