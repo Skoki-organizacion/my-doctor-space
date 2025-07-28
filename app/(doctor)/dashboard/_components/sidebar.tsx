@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/sidebar";
 import { authClient } from "@/lib/auth-client";
 import {
-  RiBardLine,
   RiLeafLine,
   RiLogoutBoxLine,
   RiScanLine,

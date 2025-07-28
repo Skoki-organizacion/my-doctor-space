@@ -1,11 +1,9 @@
 import { SidebarInset } from "@/components/ui/sidebar";
-import ContactsTable from "@/app/(admin)/admin/dashboard/_components/contacts-table";
 import AdminDashboardTitle from "./_components/admin-title";
 
 import AdminStatsGrid from "./_components/admin-stats-grid";
 import DashboardHeader from "../../../../components/dashboard-header";
 import { getAllDoctors } from "@/app/data/admin/get-doctors";
-import { getLatestUser } from "@/app/data/admin/get-latest-user";
 
 export default async function DoctorDashboardPage() {
   const doctors = await getAllDoctors();

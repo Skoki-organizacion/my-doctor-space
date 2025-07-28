@@ -2,8 +2,6 @@ import { getDoctor } from "@/app/data/admin/get-doctor";
 import DashboardHeader from "@/components/dashboard-header";
 import { SidebarInset } from "@/components/ui/sidebar";
 import DashboardDoctorInfo from "@/components/dashboard-info";
-import DoctorDashboardMainContent from "@/app/(doctor)/dashboard/[id]/_components/main-content";
-import { getStudy } from "@/app/data/admin/get-study";
 import StudiesGrid from "@/app/(doctor)/dashboard/_components/studies-grid";
 
 type Params = Promise<{ ["id"]: string }>;
