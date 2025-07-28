@@ -38,7 +38,10 @@ export default function AnswerChartBar({
       )}
 
       <div
-        className="h-full bg-gradient-to-r from-primary to-foreground"
+        className={cn(
+          completedWidth === 0 && "rounded-tl rounded-bl",
+          "h-full bg-gradient-to-r from-primary to-foreground"
+        )}
         style={{ width: "15%" }}
       ></div>
 
