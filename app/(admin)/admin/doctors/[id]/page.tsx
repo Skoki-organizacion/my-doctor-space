@@ -22,10 +22,7 @@ export default async function DoctorDetailsPage({
         <DashboardHeader />
         <DashboardDoctorInfo data={data} />
 
-        <StudiesGrid
-          doctorData={data}
-          gridClass="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
-        />
+        <StudiesGrid doctorData={data} />
       </div>
     </SidebarInset>
   );
