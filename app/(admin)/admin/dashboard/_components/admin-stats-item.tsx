@@ -1,10 +1,12 @@
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 type iAppProps = {
   icon: React.ComponentType<{ className?: string }>;
   link: string;
   title: string;
-  data: number;
+  data: number | string | null;
+  trun?: boolean;
 };
 
 export default function AdminStatsItem({
@@ -12,6 +14,7 @@ export default function AdminStatsItem({
   link,
   title,
   data,
+  trun,
 }: iAppProps) {
   return (
     <div className="relative p-4 lg:p-5 group before:absolute before:inset-y-8 before:right-0 before:w-px before:bg-gradient-to-b before:from-input/30 before:via-input before:to-input/30 hover:bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 transition rounded-xl">
@@ -26,7 +29,14 @@ export default function AdminStatsItem({
           >
             {title}
           </Link>
-          <div className="text-2xl font-semibold mb-2">Total: {data}</div>
+          <div
+            className={cn(
+              trun ? "w-23/24 truncate" : "w-full",
+              "text-2xl font-semibold mb-2"
+            )}
+          >
+            {data}
+          </div>
           <div className="text-xs text-muted-foreground/60">vs last week</div>
         </div>
       </div>
