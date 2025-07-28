@@ -24,7 +24,10 @@ export default async function DoctorDashboardPage() {
       <div className="flex flex-1 flex-col gap-4 lg:gap-6 py-4 lg:py-6">
         <DashboardDoctorInfo data={data} />
 
-        <StudiesGrid doctorData={data} />
+        <StudiesGrid
+          doctorData={data}
+          gridClass="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
+        />
       </div>
     </SidebarInset>
   );

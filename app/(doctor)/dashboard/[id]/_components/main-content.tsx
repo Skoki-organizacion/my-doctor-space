@@ -102,7 +102,9 @@ export default function DoctorDashboardMainContent({
             <StudyBasedInfo title="Study" info={studyDetails?.study} />
             <StudyBasedInfo
               title="Created at"
-              info={dateFormat(studyDetails?.createdAt as Date)}
+              info={
+                studyDetails ? dateFormat(studyDetails?.createdAt as Date) : ""
+              }
             />
           </div>
 

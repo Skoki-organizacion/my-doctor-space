@@ -5,11 +5,13 @@ import { Badge } from "@/components/ui/badge";
 
 export default function StudiesGrid({
   doctorData,
+  gridClass,
 }: {
   doctorData: GetDoctorType;
+  gridClass: string;
 }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    <div className={gridClass}>
       {doctorData?.doctor.map((study, index) => (
         <Link
           href={`/dashboard/${study.id}`}
