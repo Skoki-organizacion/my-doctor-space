@@ -27,7 +27,6 @@ export default async function AdminStatsGrid() {
         link={`/admin/doctors/${latestUser && latestUser.id}`}
         title={"Latest User"}
         data={latestUser && latestUser.name}
-        trun={true}
       />
 
       <AdminStatsItem

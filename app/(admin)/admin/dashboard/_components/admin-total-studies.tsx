@@ -251,8 +251,8 @@ export function TotalStudies({
               content={
                 <CustomTooltipContent
                   colorMap={{
-                    actual: "var(--chart-1)",
-                    desired: "var(--chart-3)",
+                    actual: "var(--primary)",
+                    desired: "var(--destructive)",
                   }}
                   labelMap={{
                     actual: "Actual",
