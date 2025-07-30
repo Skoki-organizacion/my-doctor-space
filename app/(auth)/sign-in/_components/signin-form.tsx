@@ -28,6 +28,7 @@ import {
 import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function SignInForm() {
   const router = useRouter();
@@ -67,7 +68,10 @@ export default function SignInForm() {
     <Card>
       <CardHeader>
         <CardTitle>
-          <div className="flex items-center gap-2 w-full justify-center mb-6">
+          <Link
+            href={"/"}
+            className="flex items-center gap-2 w-full justify-center mb-6"
+          >
             <Image
               src={"/logo.png"}
               alt={"Doctor space logo"}
@@ -75,7 +79,7 @@ export default function SignInForm() {
               height={57}
               priority
             />
-          </div>
+          </Link>
         </CardTitle>
 
         <CardDescription>
