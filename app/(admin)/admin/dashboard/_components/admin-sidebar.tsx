@@ -52,12 +52,12 @@ const data = {
       items: [
         {
           title: "Settings",
-          url: "#",
+          url: "/terms",
           icon: RiSettings3Line,
         },
         {
           title: "Help Center",
-          url: "#",
+          url: "/privacy",
           icon: RiLeafLine,
         },
       ],
