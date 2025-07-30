@@ -43,20 +43,6 @@ export default function SignUpForm() {
 
   function onSubmit({ name, email, password }: SignUpSchemaType) {
     startTransition(async () => {
-      // await authClient.signUp.email({
-      //   name,
-      //   email,
-      //   password,
-      //   fetchOptions: {
-      //     onSuccess: () => {
-      //       toast.success("New user is successfully registered");
-      //     },
-      //     onError: (error) => {
-      //       toast.error(error.error.message ?? error.error.statusText);
-      //     },
-      //   },
-      // });
-
       await authClient.admin.createUser({
         name,
         email,

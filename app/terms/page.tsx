@@ -73,7 +73,7 @@ export default function TermsOfUsePage() {
               <section className="mb-8">
                 <h2 className="text-xl font-semibold mb-4">3. Disclaimer</h2>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  The materials on our website are provided on an 'as is' basis.
+                  The materials on our website are provided on an as is basis.
                   We make no warranties, expressed or implied, and hereby
                   disclaim and negate all other warranties including without
                   limitation, implied warranties or conditions of
