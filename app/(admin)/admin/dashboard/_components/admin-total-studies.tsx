@@ -1,6 +1,5 @@
 "use client";
 
-import { useId } from "react";
 import {
   CartesianGrid,
   Line,
@@ -81,8 +80,6 @@ export function TotalStudies({
   title: string;
   doctors: GetAllDoctorsType[];
 }) {
-  const id = useId();
-
   function transformToChartData1() {
     const currentYear = new Date().getFullYear();
     const months = [

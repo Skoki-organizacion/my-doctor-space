@@ -1,13 +1,15 @@
 import { SidebarInset } from "@/components/ui/sidebar";
 import AdminDashboardTitle from "./_components/admin-title";
-
 import AdminStatsGrid from "./_components/admin-stats-grid";
 import DashboardHeader from "../../../../components/dashboard-header";
 import { getAllDoctors } from "@/app/data/admin/get-doctors";
 import { TotalStudies } from "./_components/admin-total-studies";
+import BasicInformation from "@/app/(doctor)/dashboard/[id]/_components/basic-information";
+import { getRecentlyUpdated } from "@/app/data/admin/get-recent-updated";
 
 export default async function DoctorDashboardPage() {
   const doctors = await getAllDoctors();
+  const studyDetails = await getRecentlyUpdated();
 
   return (
     <SidebarInset className="overflow-hidden px-4 md:px-6 lg:px-8">
@@ -31,7 +33,7 @@ export default async function DoctorDashboardPage() {
           </div>
 
           <div className="flex flex-col rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">
-            <h1>qwbeqweb</h1>
+            <BasicInformation studyDetails={studyDetails} />
           </div>
         </div>
       </div>

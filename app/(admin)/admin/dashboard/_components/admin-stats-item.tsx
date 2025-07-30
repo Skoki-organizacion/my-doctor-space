@@ -6,7 +6,6 @@ type iAppProps = {
   link: string;
   title: string;
   data: number | string | null;
-  trun?: boolean;
 };
 
 export default function AdminStatsItem({
@@ -14,7 +13,6 @@ export default function AdminStatsItem({
   link,
   title,
   data,
-  trun,
 }: iAppProps) {
   return (
     <div className="relative p-4 lg:p-5 group before:absolute before:inset-y-8 before:right-0 before:w-px before:bg-gradient-to-b before:from-input/30 before:via-input before:to-input/30 hover:bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 transition rounded-xl">

@@ -30,8 +30,7 @@ export async function saveDoctorInfo(
       status: "success",
       message: "Item is successfully saved",
     };
-  } catch (error) {
-    console.log(error, "ERROR");
+  } catch {
     return {
       status: "error",
       message: "Could not save item to the doctor info",
