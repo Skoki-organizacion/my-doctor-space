@@ -19,29 +19,14 @@ import {
 import { CustomTooltipContent } from "@/components/ui/charts-extra";
 import { GetAllDoctorsType } from "@/app/data/admin/get-doctors";
 
-const chartData = [
-  { month: "Jan 2025", actual: 5000, projected: 2000 },
-  { month: "Feb 2025", actual: 10000, projected: 8000 },
-  { month: "Mar 2025", actual: 15000, projected: 22000 },
-  { month: "Apr 2025", actual: 22000, projected: 15000 },
-  { month: "May 2025", actual: 20000, projected: 25000 },
-  { month: "Jun 2025", actual: 35000, projected: 45000 },
-  { month: "Jul 2025", actual: 30000, projected: 25000 },
-  { month: "Aug 2025", actual: 60000, projected: 70000 },
-  { month: "Sep 2025", actual: 65000, projected: 75000 },
-  { month: "Oct 2025", actual: 60000, projected: 80000 },
-  { month: "Nov 2025", actual: 70000, projected: 65000 },
-  { month: "Dec 2025", actual: 78000, projected: 75000 },
-];
-
 const chartConfig = {
   actual: {
     label: "Actual",
     color: "var(--primary)",
   },
-  projected: {
-    label: "Projected",
-    color: "var(--secondary)",
+  desired: {
+    label: "Desired",
+    color: "var(--destructive)",
   },
 } satisfies ChartConfig;
 
@@ -87,27 +72,122 @@ function CustomCursor(props: CustomCursorProps) {
   );
 }
 
-export function TotalStudies({ doctors }: { doctors: GetAllDoctorsType[] }) {
+export function TotalStudies({
+  completed,
+  title,
+  doctors,
+}: {
+  completed: boolean;
+  title: string;
+  doctors: GetAllDoctorsType[];
+}) {
   const id = useId();
-  const completedStudy = doctors
-    .map((doctor) => doctor.doctor.find((doc) => doc.items.length === 21))
-    .filter((item) => item);
 
-  console.log(doctors, completedStudy);
+  function transformToChartData1() {
+    const currentYear = new Date().getFullYear();
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    const chartData = months.map((month) => ({
+      month: `${month} ${currentYear}`,
+      actual: 0,
+      desired: 0,
+    }));
+
+    doctors.forEach((userData) => {
+      userData.doctor.forEach((doctor) => {
+        doctor.items.forEach((item) => {
+          const itemDate = new Date(item.date);
+
+          if (itemDate.getFullYear() === currentYear) {
+            const monthIndex = itemDate.getMonth();
+            const today = new Date();
+
+            if (itemDate <= today) {
+              chartData[monthIndex].actual++;
+            } else {
+              chartData[monthIndex].desired++;
+            }
+          }
+        });
+      });
+    });
+
+    return chartData;
+  }
+
+  function transformToChartData2() {
+    const currentYear = new Date().getFullYear();
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    const chartData = months.map((month) => ({
+      month: `${month} ${currentYear}`,
+      actual: 0,
+      desired: 0,
+    }));
+
+    doctors.forEach((doc) => {
+      doc.doctor.forEach((doctor) => {
+        if (doctor.items.length === 21) {
+          doctor.items.forEach((item) => {
+            const itemDate = new Date(item.date);
+
+            if (itemDate.getFullYear() === currentYear) {
+              const monthIndex = itemDate.getMonth();
+              const today = new Date();
+
+              if (itemDate <= today) {
+                chartData[monthIndex].actual++;
+              } else {
+                chartData[monthIndex].desired++;
+              }
+            }
+          });
+        }
+      });
+    });
+
+    return chartData;
+  }
 
   return (
     <Card className="gap-4 border-none bg-gradient-to-br from-sidebar/60 to-sidebar">
       <CardHeader>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="space-y-0.5">
-            <CardTitle>Active Subscribers</CardTitle>
+            <CardTitle>{title}</CardTitle>
             <div className="flex items-start gap-2"></div>
           </div>
           <div className="flex flex-wrap items-center gap-4">
             <div className="flex items-center gap-2">
               <div
                 aria-hidden="true"
-                className="size-1.5 shrink-0 rounded-xs bg-primary"
+                className="size-1.5 shrink-0 rounded-xs bg-primary border-none"
               ></div>
               <div className="text-[13px]/3 text-muted-foreground/50">
                 Actual
@@ -116,10 +196,10 @@ export function TotalStudies({ doctors }: { doctors: GetAllDoctorsType[] }) {
             <div className="flex items-center gap-2">
               <div
                 aria-hidden="true"
-                className="size-1.5 shrink-0 rounded-xs bg-secondary"
+                className="size-1.5 shrink-0 rounded-xs bg-destructive border-none"
               ></div>
               <div className="text-[13px]/3 text-muted-foreground/50">
-                Projected
+                Desired
               </div>
             </div>
           </div>
@@ -132,11 +212,11 @@ export function TotalStudies({ doctors }: { doctors: GetAllDoctorsType[] }) {
         >
           <LineChart
             accessibilityLayer
-            data={chartData}
+            data={completed ? transformToChartData2() : transformToChartData1()}
             margin={{ left: -12, right: 12, top: 12 }}
           >
             <defs>
-              <linearGradient id={`${id}-gradient`} x1="0" y1="0" x2="1" y2="0">
+              <linearGradient id={`{id}-gradient`} x1="0" y1="0" x2="1" y2="0">
                 <stop offset="0%" stopColor="var(--chart-2)" />
                 <stop offset="100%" stopColor="var(--chart-1)" />
               </linearGradient>
@@ -157,15 +237,15 @@ export function TotalStudies({ doctors }: { doctors: GetAllDoctorsType[] }) {
               axisLine={false}
               tickLine={false}
               tickFormatter={(value) => {
-                if (value === 0) return "$0";
-                return `${value / 1000}k`;
+                if (value === 0) return "0";
+                return `${value}`;
               }}
               interval="preserveStartEnd"
             />
             <Line
               type="linear"
-              dataKey="projected"
-              stroke="var(--color-projected)"
+              dataKey="desired"
+              stroke="var(--color-desired)"
               strokeWidth={2}
               dot={false}
               activeDot={false}
@@ -175,14 +255,14 @@ export function TotalStudies({ doctors }: { doctors: GetAllDoctorsType[] }) {
                 <CustomTooltipContent
                   colorMap={{
                     actual: "var(--chart-1)",
-                    projected: "var(--chart-3)",
+                    desired: "var(--chart-3)",
                   }}
                   labelMap={{
                     actual: "Actual",
-                    projected: "Projected",
+                    desired: "Desired",
                   }}
-                  dataKeys={["actual", "projected"]}
-                  valueFormatter={(value) => `$${value.toLocaleString()}`}
+                  dataKeys={["actual", "desired"]}
+                  valueFormatter={(value) => `${value.toLocaleString()}`}
                 />
               }
               cursor={<CustomCursor fill="var(--primary)" />}
@@ -190,7 +270,7 @@ export function TotalStudies({ doctors }: { doctors: GetAllDoctorsType[] }) {
             <Line
               type="linear"
               dataKey="actual"
-              stroke={`url(#${id}-gradient)`}
+              stroke={`url(#{id}-gradient)`}
               strokeWidth={2}
               dot={false}
               activeDot={{

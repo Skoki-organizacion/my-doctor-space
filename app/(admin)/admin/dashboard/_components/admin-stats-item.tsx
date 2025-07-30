@@ -29,14 +29,7 @@ export default function AdminStatsItem({
           >
             {title}
           </Link>
-          <div
-            className={cn(
-              trun ? "w-23/24 truncate" : "w-full",
-              "text-2xl font-semibold mb-2"
-            )}
-          >
-            {data}
-          </div>
+          <div className={cn("text-2xl font-semibold mb-2 w-full")}>{data}</div>
           <div className="text-xs text-muted-foreground/60">vs last week</div>
         </div>
       </div>

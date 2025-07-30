@@ -18,8 +18,16 @@ export default async function DoctorDashboardPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 min-h-[100vh] flex-1 md:min-h-min gap-6 mb-6">
           <div className="flex flex-col rounded-xl gap-6">
-            <TotalStudies doctors={doctors} />{" "}
-            <TotalStudies doctors={doctors} />
+            <TotalStudies
+              completed={false}
+              title="In progress"
+              doctors={doctors}
+            />
+            <TotalStudies
+              completed={true}
+              title="Completed"
+              doctors={doctors}
+            />
           </div>
 
           <div className="flex flex-col rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">
