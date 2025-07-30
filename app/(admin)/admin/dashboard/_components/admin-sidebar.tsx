@@ -15,13 +15,8 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { authClient } from "@/lib/auth-client";
-import {
-  RiBardLine,
-  RiLeafLine,
-  RiLogoutBoxLine,
-  RiSettings3Line,
-} from "@remixicon/react";
-import { LayoutDashboard, Loader2, Users } from "lucide-react";
+import { RiLeafLine, RiLogoutBoxLine, RiSettings3Line } from "@remixicon/react";
+import { LayoutDashboard, Library, Loader2, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -47,7 +42,7 @@ const data = {
         {
           title: "Studies",
           url: "/admin/studies",
-          icon: RiBardLine,
+          icon: Library,
         },
       ],
     },
