@@ -26,6 +26,16 @@ export async function getAllDoctors() {
               clinic: true,
               department: true,
               study: true,
+              createdAt: true,
+              updatedAt: true,
+              items: {
+                select: {
+                  id: true,
+                  name: true,
+                  description: true,
+                  date: true,
+                },
+              },
             },
           },
         },
