@@ -14,7 +14,7 @@ model User {
   name  String
   email String
   image String?
-  role  String?
+  role  String? 
 
   doctor DoctorInfo[]
 

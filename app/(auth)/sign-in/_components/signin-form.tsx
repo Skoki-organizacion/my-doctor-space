@@ -27,8 +27,10 @@ import {
 } from "@/components/ui/form";
 import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function SignInForm() {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<SignInSchemaType>({
@@ -44,8 +46,15 @@ export default function SignInForm() {
       await authClient.signIn.email({
         email,
         password,
-        callbackURL: "/dashboard",
         fetchOptions: {
+          onSuccess: (message) => {
+            if (message.data.user.email === "milosstojsavljevic93@gmail.com") {
+              router.push("/admin/dashboard");
+            } else {
+              router.push("/dashboard");
+            }
+            toast.success("Welcome back");
+          },
           onError: (error) => {
             toast.error(error.error.message ?? error.error.statusText);
           },
