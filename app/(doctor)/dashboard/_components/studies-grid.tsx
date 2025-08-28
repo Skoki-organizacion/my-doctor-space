@@ -12,7 +12,7 @@ export default function StudiesGrid({
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       {doctorData?.doctor.map((study, index) => (
         <Link
-          href={`/dashboard/${study.id}`}
+          href={`/admin/studies/${study.id}`}
           key={`${study}${index}`}
           className="relative p-4 lg:p-5 group rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar hover:bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 cursor-pointer"
         >
