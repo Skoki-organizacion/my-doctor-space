@@ -43,17 +43,18 @@ export default function SignInForm() {
   });
 
   function onSubmit({ email, password }: SignInSchemaType) {
+    const targetRoute =
+      email === "milosstojsavljevic93@gmail.com"
+        ? "/admin/dashboard"
+        : "/dashboard";
+
     startTransition(async () => {
       await authClient.signIn.email({
         email,
         password,
         fetchOptions: {
-          onSuccess: (message) => {
-            if (message.data.user.email === "milosstojsavljevic93@gmail.com") {
-              router.push("/admin/dashboard");
-            } else {
-              router.push("/dashboard");
-            }
+          onSuccess: (_) => {
+            router.push(targetRoute);
             toast.success("Welcome back");
           },
           onError: (error) => {

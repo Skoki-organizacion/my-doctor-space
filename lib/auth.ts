@@ -9,6 +9,9 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+
+    maxAttempts: 5,
+    lockoutDuration: 15 * 60 * 1000,
   },
   user: {
     additionalFields: {
@@ -17,6 +20,13 @@ export const auth = betterAuth({
         defaultValue: "user",
       },
     },
+    session: {
+      validateOnRequest: false,
+    },
   },
   plugins: [admin()],
+  session: {
+    expiresIn: 60 * 60 * 24 * 7,
+    updateAge: 60 * 60 * 24,
+  },
 });
