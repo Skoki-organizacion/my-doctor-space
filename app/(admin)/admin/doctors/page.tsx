@@ -2,7 +2,10 @@ import DashboardHeader from "@/components/dashboard-header";
 import { SidebarInset } from "@/components/ui/sidebar";
 import { Suspense } from "react";
 import DoctorsSkeletonLayout from "./_components/skeleton/doctors-skeleton-layout";
-import { getAllDoctors, GetAllDoctorsType } from "@/app/data/admin/get-doctors";
+import {
+  getAdminData,
+  AdminDataType,
+} from "@/app/data/admin/admin-data-service";
 import DoctorsTable from "./_components/doctor-table";
 import AdminStatsGrid from "../dashboard/_components/admin-stats-grid";
 import AdminDashboardTitle from "../dashboard/_components/admin-title";
@@ -19,33 +22,14 @@ export default function DoctorsPage() {
 }
 
 async function RenderDoctors() {
-  const doctors = await getDoctorsData();
+  // ✅ Reuse the same data service - eliminates duplicate API calls
+  const adminData = await getAdminData();
 
   return (
     <div className="flex flex-1 flex-col gap-4 lg:gap-6">
-      <RenderAdminTitle doctors={doctors} />
-      <RenderAdminStatsGrid />
-      <RenderDoctorsTable doctors={doctors} />
+      <AdminDashboardTitle adminData={adminData} />
+      <AdminStatsGrid adminData={adminData} />
+      <DoctorsTable doctors={adminData.doctors} />
     </div>
   );
-}
-
-async function RenderAdminTitle({ doctors }: { doctors: GetAllDoctorsType[] }) {
-  return <AdminDashboardTitle doctors={doctors} />;
-}
-
-async function RenderAdminStatsGrid() {
-  return <AdminStatsGrid />;
-}
-
-async function RenderDoctorsTable({
-  doctors,
-}: {
-  doctors: GetAllDoctorsType[];
-}) {
-  return <DoctorsTable doctors={doctors} />;
-}
-
-async function getDoctorsData() {
-  return await getAllDoctors();
 }

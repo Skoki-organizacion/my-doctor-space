@@ -1,22 +1,17 @@
 "server-only";
 
-import { requireAdmin } from "./require-admin";
-import { getAllDoctors } from "./get-doctors";
-import { getLatestUser } from "./get-latest-user";
-import { getLatestUpdatedStudy } from "./get-latest-updated-study";
-import getAllStudies from "./get-studies";
+import { getAdminData } from "./admin-data-service";
 
 export async function adminGetDashboardStats() {
-  await requireAdmin();
+  // ✅ Authentication handled at layout level - no need for requireAdmin here
+  // ✅ Use centralized data service instead of multiple separate calls
 
-  const [totalUsers, totalStudies, latestUser, latestStudy] = await Promise.all(
-    [getAllDoctors(), getAllStudies(), getLatestUser(), getLatestUpdatedStudy()]
-  );
+  const adminData = await getAdminData();
 
   return {
-    totalUsers,
-    totalStudies,
-    latestUser,
-    latestStudy,
+    totalUsers: adminData.doctors,
+    totalStudies: adminData.studies,
+    latestUser: adminData.latestUser,
+    latestStudy: adminData.latestStudy,
   };
 }

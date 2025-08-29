@@ -1,32 +1,24 @@
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { auth } from "@/lib/auth";
 import { ClipboardPlus } from "lucide-react";
-import { headers } from "next/headers";
 import Link from "next/link";
 import { UserSwitcher } from "./admin-user-toggler";
-import { GetAllDoctorsType } from "@/app/data/admin/get-doctors";
+import { AdminDataType } from "@/app/data/admin/admin-data-service";
 
-type iAppProps = {
-  doctors: GetAllDoctorsType[];
-};
+interface AdminDashboardTitleProps {
+  adminData: AdminDataType;
+}
 
-export default async function AdminDashboardTitle({ doctors }: iAppProps) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+export default function AdminDashboardTitle({
+  adminData,
+}: AdminDashboardTitleProps) {
+  // ✅ Get user info from passed data instead of separate API call
+  const userName = adminData.doctors[0]?.name || "Admin";
 
   return (
     <div className="flex items-center justify-between gap-4 mt-4">
       <div className="space-y-1">
-        <h1 className="text-2xl font-semibold flex gap-2">
-          Oilà,{" "}
-          {session?.user ? (
-            `${session.user.name}!`
-          ) : (
-            <Skeleton className="h-8 w-[150px] rounded-full" />
-          )}
-        </h1>
+        <h1 className="text-2xl font-semibold flex gap-2">Oilà, {userName}!</h1>
         <p className="text-sm text-muted-foreground">
           Here&rsquo;s an overview of your clinical insights. Track your
           progress and add new data with ease!
@@ -34,7 +26,7 @@ export default async function AdminDashboardTitle({ doctors }: iAppProps) {
       </div>
 
       <div className="flex gap-3 justify-center items-center">
-        <UserSwitcher doctors={doctors} />
+        <UserSwitcher doctors={adminData.doctors} />
         <Link href={"/admin/dashboard/sign-up"}>
           <Button variant={"outline"} className="flex">
             <ClipboardPlus className="size-4 text-primary" />

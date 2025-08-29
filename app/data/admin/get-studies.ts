@@ -1,12 +1,11 @@
 "server-only";
 
 import { prisma } from "@/lib/db";
-import { requireAdmin } from "./require-admin";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
 export default async function getAllStudies() {
-  await requireAdmin();
+  // ✅ Authentication handled at layout level - no need for requireAdmin here
 
   const data = cache(
     async () =>

@@ -12,7 +12,7 @@ datasource db {
 model User {
   id     String       @id @default(uuid())
   name   String
-  email  String
+  email  String       @unique
   image  String?
   role   String?
   doctor DoctorInfo[]
@@ -29,10 +29,13 @@ model User {
   banReason  String?
   banExpires DateTime?
 
-  @@unique([email])
-  @@map("user")
+  // ✅ Faster email lookups
+  // ✅ Faster role-based queries
+  // ✅ Faster ordering by creation date
   @@index([email])
   @@index([role])
+  @@index([createdAt])
+  @@map("user")
 }
 
 model DoctorInfo {
@@ -47,6 +50,11 @@ model DoctorInfo {
   updatedAt DateTime @updatedAt
 
   items Item[]
+
+  // ✅ Faster user lookups
+  // ✅ Faster ordering
+  @@index([userId])
+  @@index([createdAt])
 }
 
 model Item {
@@ -61,6 +69,11 @@ model Item {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // ✅ Faster doctor lookups
+  // ✅ Faster date-based queries
+  @@index([doctorId])
+  @@index([date])
 }
 
 model Session {
