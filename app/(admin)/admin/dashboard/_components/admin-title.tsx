@@ -17,7 +17,7 @@ export default async function AdminDashboardTitle({ doctors }: iAppProps) {
   });
 
   return (
-    <div className="flex items-center justify-between gap-4">
+    <div className="flex items-center justify-between gap-4 mt-4">
       <div className="space-y-1">
         <h1 className="text-2xl font-semibold flex gap-2">
           Oilà,{" "}
