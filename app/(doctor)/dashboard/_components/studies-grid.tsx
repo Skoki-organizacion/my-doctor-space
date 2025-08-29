@@ -2,18 +2,24 @@ import { GetDoctorType } from "@/app/data/admin/get-doctor";
 import Link from "next/link";
 import AnswerChartBar from "./study-percentage";
 import { Badge } from "@/components/ui/badge";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
-export default function StudiesGrid({
+export default async function StudiesGrid({
   doctorData,
 }: {
   doctorData: GetDoctorType;
 }) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       {doctorData?.doctor.map((study, index) => (
         <Link
           href={
-            doctorData.email === "milosstojsavljevic93@gmail.com"
+            session?.user.email === "milosstojsavljevic93@gmail.com"
               ? `/admin/studies/${study.id}`
               : `/dashboard/${study.id}`
           }
