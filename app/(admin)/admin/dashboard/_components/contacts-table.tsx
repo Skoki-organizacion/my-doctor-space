@@ -362,11 +362,8 @@ export default function ContactsTable() {
 
   return (
     <div className="space-y-4">
-      {/* Actions */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        {/* Left side */}
         <div className="flex items-center gap-3">
-          {/* Filter by name */}
           <div className="relative">
             <Input
               id={`${id}-input`}
@@ -404,9 +401,8 @@ export default function ContactsTable() {
             )}
           </div>
         </div>
-        {/* Right side */}
+
         <div className="flex items-center gap-3">
-          {/* Delete button */}
           {table.getSelectedRowModel().rows.length > 0 && (
             <AlertDialog>
               <AlertDialogTrigger asChild>
@@ -453,7 +449,7 @@ export default function ContactsTable() {
               </AlertDialogContent>
             </AlertDialog>
           )}
-          {/* Filter by status */}
+
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline">
@@ -500,7 +496,7 @@ export default function ContactsTable() {
               </div>
             </PopoverContent>
           </Popover>
-          {/* New filter button */}
+
           <Button variant="outline">
             <RiBardLine
               className="size-5 -ms-1.5 text-muted-foreground/60"
@@ -512,7 +508,6 @@ export default function ContactsTable() {
         </div>
       </div>
 
-      {/* Table */}
       <Table className="table-fixed border-separate border-spacing-0 [&_tr:not(:last-child)_td]:border-b">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -608,7 +603,6 @@ export default function ContactsTable() {
         <tbody aria-hidden="true" className="table-row h-1"></tbody>
       </Table>
 
-      {/* Pagination */}
       {table.getRowModel().rows.length > 0 && (
         <div className="flex items-center justify-between gap-3">
           <p

@@ -27,7 +27,6 @@ export function Hero() {
 
           <div className="relative max-w-4xl mx-auto">
             <div className="aspect-video bg-muted rounded-lg border shadow-2xl">
-              {/* Placeholder for hero image/video */}
               <div className="w-full h-full flex items-center justify-center text-muted-foreground">
                 Hero Image/Video
               </div>
