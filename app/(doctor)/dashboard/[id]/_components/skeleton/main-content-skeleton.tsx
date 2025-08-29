@@ -3,7 +3,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function MainContentSkeleton() {
   return (
     <div className="grid grid-cols-1 min-[1200px]:grid-cols-3 gap-6">
-      {/* Navigation column skeleton */}
       <div className="flex flex-col rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">
         <div className="relative p-4 lg:p-5 group flex items-center justify-between">
           <Skeleton className="h-6 w-24 rounded-md" />
@@ -20,7 +19,6 @@ export default function MainContentSkeleton() {
         </div>
       </div>
 
-      {/* Calendar column skeleton */}
       <div className="flex flex-col rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">
         <div className="relative p-4 lg:p-5 group h-full overflow-hidden">
           <Skeleton className="h-6 w-32 rounded-md mb-4" />
@@ -28,7 +26,6 @@ export default function MainContentSkeleton() {
         </div>
       </div>
 
-      {/* Basic information column skeleton */}
       <div className="flex flex-col rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">
         <div className="relative p-4 lg:p-5 group flex flex-col gap-4 h-full">
           <Skeleton className="h-6 w-32 rounded-md" />
