@@ -10,12 +10,11 @@ datasource db {
 }
 
 model User {
-  id    String  @id @default(uuid())
-  name  String
-  email String
-  image String?
-  role  String? 
-
+  id     String       @id @default(uuid())
+  name   String
+  email  String
+  image  String?
+  role   String?
   doctor DoctorInfo[]
 
   createdAt DateTime @default(now())
@@ -32,6 +31,8 @@ model User {
 
   @@unique([email])
   @@map("user")
+  @@index([email])
+  @@index([role])
 }
 
 model DoctorInfo {
@@ -78,6 +79,9 @@ model Session {
 
   @@unique([token])
   @@map("session")
+  @@index([token])
+  @@index([userId])
+  @@index([expiresAt])
 }
 
 model Account {
