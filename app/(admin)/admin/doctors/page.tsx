@@ -22,7 +22,6 @@ export default function DoctorsPage() {
 }
 
 async function RenderDoctors() {
-  // ✅ Reuse the same data service - eliminates duplicate API calls
   const adminData = await getAdminData();
 
   return (

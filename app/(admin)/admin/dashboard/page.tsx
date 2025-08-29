@@ -23,7 +23,6 @@ export default function AdminDashboardPage() {
 }
 
 async function RenderDashboard() {
-  // ✅ Single data fetch for entire dashboard - eliminates multiple API calls
   const adminData = await getAdminData();
 
   return (

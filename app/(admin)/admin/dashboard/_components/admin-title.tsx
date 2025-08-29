@@ -12,7 +12,6 @@ interface AdminDashboardTitleProps {
 export default function AdminDashboardTitle({
   adminData,
 }: AdminDashboardTitleProps) {
-  // ✅ Get user info from passed data instead of separate API call
   const userName = adminData.doctors[0]?.name || "Admin";
 
   return (

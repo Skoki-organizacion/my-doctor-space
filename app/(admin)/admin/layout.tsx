@@ -8,7 +8,6 @@ export default async function AdminLayout({
 }: {
   children: ReactNode;
 }) {
-  // ✅ Authenticate once at layout level - eliminates redundant auth calls
   await requireAdmin();
 
   return (

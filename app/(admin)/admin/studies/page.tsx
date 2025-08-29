@@ -22,7 +22,6 @@ export default function StudiesPage() {
 }
 
 async function RenderStudies() {
-  // ✅ Reuse the same data service - eliminates duplicate API calls
   const adminData = await getAdminData();
 
   return (

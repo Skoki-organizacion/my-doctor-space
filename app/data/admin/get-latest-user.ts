@@ -5,8 +5,6 @@ import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 
 export async function getLatestUser() {
-  // ✅ Authentication handled at layout level - no need for requireAdmin here
-
   const data = cache(
     async () =>
       await prisma.user.findFirst({

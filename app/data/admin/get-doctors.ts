@@ -5,8 +5,6 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 
 export async function getAllDoctors() {
-  // ✅ Authentication handled at layout level - no need for requireAdmin here
-
   const data = cache(
     async () =>
       await prisma.user.findMany({
