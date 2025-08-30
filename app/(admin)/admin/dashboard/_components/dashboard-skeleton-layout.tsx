@@ -1,7 +1,7 @@
-import AdminTitleSkeleton from "./admin-title-skeleton";
-import AdminStatsGridSkeleton from "./admin-stats-grid-skeleton";
-import AdminTotalStudiesSkeleton from "./admin-total-studies-skeleton";
-import BasicInformationSkeleton from "./basic-information-skeleton";
+import AdminTitleSkeleton from "./skeleton/admin-title-skeleton";
+import AdminStatsGridSkeleton from "./skeleton/admin-stats-grid-skeleton";
+import AdminTotalStudiesSkeleton from "./skeleton/admin-total-studies-skeleton";
+import BasicInformationSkeleton from "./skeleton/basic-information-skeleton";
 
 export default function DashboardSkeletonLayout() {
   return (

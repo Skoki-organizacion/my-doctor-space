@@ -3,20 +3,26 @@ import { ClipboardPlus } from "lucide-react";
 import Link from "next/link";
 import { UserSwitcher } from "./admin-user-toggler";
 import { AdminDataType } from "@/app/data/admin/admin-data-service";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 interface AdminDashboardTitleProps {
   adminData: AdminDataType;
 }
 
-export default function AdminDashboardTitle({
+export default async function AdminDashboardTitle({
   adminData,
 }: AdminDashboardTitleProps) {
-  const userName = adminData.doctors[0]?.name || "Admin";
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
   return (
     <div className="flex items-center justify-between gap-4 mt-4">
       <div className="space-y-1">
-        <h1 className="text-2xl font-semibold flex gap-2">Oilà, {userName}!</h1>
+        <h1 className="text-2xl font-semibold flex gap-2">
+          Oilà, {session?.user.name}!
+        </h1>
         <p className="text-sm text-muted-foreground">
           Here&rsquo;s an overview of your clinical insights. Track your
           progress and add new data with ease!

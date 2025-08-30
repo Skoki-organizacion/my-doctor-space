@@ -1,5 +1,5 @@
-import AdminTitleSkeleton from "../../../dashboard/_components/admin-title-skeleton";
-import AdminStatsGridSkeleton from "../../../dashboard/_components/admin-stats-grid-skeleton";
+import AdminTitleSkeleton from "../../../dashboard/_components/skeleton/admin-title-skeleton";
+import AdminStatsGridSkeleton from "../../../dashboard/_components/skeleton/admin-stats-grid-skeleton";
 import DoctorTableSkeleton from "./doctor-table-skeleton";
 
 export default function DoctorsSkeletonLayout() {

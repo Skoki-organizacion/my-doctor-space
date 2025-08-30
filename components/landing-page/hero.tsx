@@ -1,8 +1,14 @@
 import { Button } from "@/components/ui/button";
+import { auth } from "@/lib/auth";
 import { ArrowRight } from "lucide-react";
+import { headers } from "next/headers";
 import Link from "next/link";
 
-export function Hero() {
+export async function Hero() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
   return (
     <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background to-muted/20">
       <div className="container mx-auto text-center">
@@ -18,7 +24,15 @@ export function Hero() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-            <Link href={"/sign-in"}>
+            <Link
+              href={
+                session
+                  ? session?.user.email === "milosstojsavljevic93@gmail.com"
+                    ? "/admin/dashboard"
+                    : "/dashboard"
+                  : "/sign-in"
+              }
+            >
               <Button size="lg" className="w-full sm:w-auto">
                 Get Started <ArrowRight className="ml-2 h-4 w-4" />
               </Button>

@@ -10,6 +10,8 @@ import AdminStatsGrid from "./_components/admin-stats-grid";
 import { TotalStudies } from "./_components/admin-total-studies";
 import BasicInformation from "@/app/(doctor)/dashboard/[id]/_components/basic-information";
 import AdminDashboardTitle from "./_components/admin-title";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 export default function AdminDashboardPage() {
   return (
