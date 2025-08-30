@@ -89,7 +89,7 @@ export function DoctorDashboardSidebar({
   return (
     <Sidebar {...props}>
       <SidebarHeader className="flex justify-center items-center">
-        <Link href={"/admin/dashboard"}>
+        <Link href={"/"}>
           <Image
             src={"/logo.png"}
             alt={"Doctor space logo"}
