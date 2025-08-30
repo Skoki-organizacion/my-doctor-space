@@ -4,6 +4,13 @@ import { ArrowRight } from "lucide-react";
 import { headers } from "next/headers";
 import Link from "next/link";
 
+import { Playfair_Display } from "next/font/google";
+
+const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
 export async function Hero() {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -21,10 +28,12 @@ export async function Hero() {
         <source src="/hero.mp4" type="video/mp4" />
       </video>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-background to-background/0" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background to-background/25" />
 
       <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+        <h1
+          className={`${playfairDisplay.className} text-4xl sm:text-5xl lg:text-8xl font-bold text-white mb-6 leading-tight`}
+        >
           Where Quality Meets
           <span className="text-primary"> Care</span>.
         </h1>
