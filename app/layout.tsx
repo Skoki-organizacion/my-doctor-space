@@ -17,9 +17,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark scheme-only-dark">
       <body className={`${fontSans.variable} font-sans antialiased`}>
-        <NextTopLoader color="#b05976" />
-        {children}
+        <NextTopLoader color="#b05976" showSpinner={false} />
 
+        {children}
         <Toaster closeButton />
       </body>
     </html>
