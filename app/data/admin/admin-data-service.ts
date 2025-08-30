@@ -2,8 +2,11 @@
 
 import { prisma } from "@/lib/db";
 import { cache } from "react";
+import { requireAdmin } from "./require-admin";
 
 export const getAdminData = cache(async () => {
+  await requireAdmin();
+
   const [doctors, studies, latestUser, latestStudy] = await prisma.$transaction(
     [
       prisma.user.findMany({
