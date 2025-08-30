@@ -176,8 +176,7 @@ export default function CalendarItem({
           >
             {isPending ? (
               <>
-                <Loader2 className="animate-spin ml-1" size={16} /> Logging
-                in...
+                <Loader2 className="animate-spin ml-1" size={16} /> Saving...
               </>
             ) : (
               <>
