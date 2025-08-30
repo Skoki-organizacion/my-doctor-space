@@ -53,7 +53,7 @@ export default function SignInForm() {
         email,
         password,
         fetchOptions: {
-          onSuccess: (_) => {
+          onSuccess: () => {
             router.push(targetRoute);
             toast.success("Welcome back");
           },

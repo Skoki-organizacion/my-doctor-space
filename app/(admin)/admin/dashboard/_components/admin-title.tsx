@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { ClipboardPlus } from "lucide-react";
 import Link from "next/link";
 import { UserSwitcher } from "./admin-user-toggler";

@@ -2,10 +2,7 @@ import DashboardHeader from "@/components/dashboard-header";
 import { SidebarInset } from "@/components/ui/sidebar";
 import { Suspense } from "react";
 import StudiesSkeletonLayout from "./_components/skeleton/studies-skeleton-layout";
-import {
-  getAdminData,
-  AdminDataType,
-} from "@/app/data/admin/admin-data-service";
+import { getAdminData } from "@/app/data/admin/admin-data-service";
 import AdminStatsGrid from "../dashboard/_components/admin-stats-grid";
 import AdminDashboardTitle from "../dashboard/_components/admin-title";
 import StudiusTable from "./_components/studies-table";

@@ -2,10 +2,7 @@ import DashboardHeader from "@/components/dashboard-header";
 import { SidebarInset } from "@/components/ui/sidebar";
 import { Suspense } from "react";
 import DoctorsSkeletonLayout from "./_components/skeleton/doctors-skeleton-layout";
-import {
-  getAdminData,
-  AdminDataType,
-} from "@/app/data/admin/admin-data-service";
+import { getAdminData } from "@/app/data/admin/admin-data-service";
 import DoctorsTable from "./_components/doctor-table";
 import AdminStatsGrid from "../dashboard/_components/admin-stats-grid";
 import AdminDashboardTitle from "../dashboard/_components/admin-title";
