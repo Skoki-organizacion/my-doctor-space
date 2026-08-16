@@ -8,12 +8,12 @@ datasource db {
 }
 
 model User {
-  id     String       @id @default(uuid())
+  id     String        @id @default(uuid())
   name   String
-  email  String       @unique
+  email  String        @unique
   image  String?
   role   String?
-  doctor DoctorInfo[]
+  doctor doctor_info[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -33,7 +33,7 @@ model User {
   @@map("user")
 }
 
-model DoctorInfo {
+model doctor_info {
   id         String @id @default(uuid())
   clinic     String
   department String
@@ -44,13 +44,13 @@ model DoctorInfo {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  items Item[]
+  items item[]
 
   @@index([userId])
   @@index([createdAt])
 }
 
-model Item {
+model item {
   id          String   @id @default(uuid())
   name        String
   description String?
@@ -58,7 +58,7 @@ model Item {
   checked     Boolean  @default(false)
 
   doctorInfoId String
-  doctorInfo   DoctorInfo @relation(fields: [doctorInfoId], references: [id], onDelete: Cascade)
+  doctorInfo   doctor_info @relation(fields: [doctorInfoId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

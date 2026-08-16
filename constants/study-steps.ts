@@ -1,7 +1,3 @@
-/**
- * The fixed clinical study workflow. Order is the order doctors work through,
- * and `field` is the value persisted as `Item.name`.
- */
 export const studySteps = [
   { id: 1, field: "erhalt", title: "Erhalt der Studienanfrage" },
   {
