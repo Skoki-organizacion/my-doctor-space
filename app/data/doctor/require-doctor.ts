@@ -1,21 +1,26 @@
-"server-only";
+import "server-only";
 
 import { auth } from "@/lib/auth";
+import { isRole } from "@/lib/roles";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { cache } from "react";
 
+/**
+ * Admins are allowed through as well, since they review the same study pages
+ * doctors fill in.
+ */
 export const requireDoctor = cache(async () => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
   if (!session) {
-    return redirect("/sign-in");
+    redirect("/sign-in");
   }
 
-  if (session.user.role !== "admin" && session.user.role !== "user") {
-    return redirect("/not-admin");
+  if (!isRole(session.user.role)) {
+    redirect("/not-admin");
   }
 
   return session;

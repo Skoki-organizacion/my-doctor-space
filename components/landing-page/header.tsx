@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { headers } from "next/headers";
 import { ArrowRight, LogIn } from "lucide-react";
+import { dashboardPathForRole } from "@/lib/roles";
 
 export async function Header() {
   const session = await auth.api.getSession({
@@ -29,11 +30,7 @@ export async function Header() {
           <div className="hidden md:flex items-center space-x-4">
             <Link
               href={
-                session
-                  ? session?.user.email === "milosstojsavljevic93@gmail.com"
-                    ? "/admin/dashboard"
-                    : "/dashboard"
-                  : "/sign-in"
+                session ? dashboardPathForRole(session.user.role) : "/sign-in"
               }
             >
               <Button>

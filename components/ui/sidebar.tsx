@@ -571,9 +571,16 @@ function SidebarMenuSkeleton({
 }: React.ComponentProps<"div"> & {
   showIcon?: boolean;
 }) {
+  const id = React.useId();
+  // Skeleton widths are varied per instance, but derived from the render-stable
+  // id rather than Math.random() so server and client markup agree.
   const width = React.useMemo(() => {
-    return `${Math.floor(Math.random() * 40) + 50}%`;
-  }, []);
+    let hash = 0;
+    for (let index = 0; index < id.length; index++) {
+      hash = (hash * 31 + id.charCodeAt(index)) | 0;
+    }
+    return `${(Math.abs(hash) % 40) + 50}%`;
+  }, [id]);
 
   return (
     <div

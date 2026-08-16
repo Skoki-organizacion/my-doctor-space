@@ -1,54 +1,54 @@
-"server-only";
+import "server-only";
 
-import { cache } from "react";
 import { prisma } from "@/lib/db";
+import { isAdmin } from "@/lib/roles";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 import { requireDoctor } from "../doctor/require-doctor";
 
-export async function getStudy(id: string) {
-  await requireDoctor();
+export const getStudy = cache(async (id: string) => {
+  const session = await requireDoctor();
 
-  const data = cache(
-    async () =>
-      await prisma.doctorInfo.findFirst({
-        where: {
-          id,
-        },
+  // Scoping the query by owner means a guessed id reads as "not found" rather
+  // than leaking another doctor's study.
+  const study = await prisma.doctorInfo.findFirst({
+    where: isAdmin(session.user.role)
+      ? { id }
+      : { id, userId: session.user.id },
+    select: {
+      id: true,
+      clinic: true,
+      department: true,
+      study: true,
+      createdAt: true,
+      updatedAt: true,
+      user: {
         select: {
           id: true,
-          clinic: true,
-          department: true,
-          study: true,
+          name: true,
+          email: true,
+        },
+      },
+      items: {
+        select: {
+          id: true,
+          name: true,
+          doctorId: true,
+          date: true,
+          description: true,
+          checked: true,
           createdAt: true,
           updatedAt: true,
-          user: {
-            select: {
-              id: true,
-              name: true,
-              email: true,
-            },
-          },
-          items: {
-            select: {
-              id: true,
-              name: true,
-              doctorId: true,
-              date: true,
-              description: true,
-              checked: true,
-              createdAt: true,
-              updatedAt: true,
-            },
-          },
         },
-      })
-  );
+      },
+    },
+  });
 
-  if (!data) {
-    return notFound();
+  if (!study) {
+    notFound();
   }
 
-  return await data();
-}
+  return study;
+});
 
-export type GetStudyType = NonNullable<Awaited<ReturnType<typeof getStudy>>>;
+export type GetStudyType = Awaited<ReturnType<typeof getStudy>>;

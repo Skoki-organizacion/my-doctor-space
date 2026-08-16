@@ -1,22 +1,25 @@
 import z from "zod";
 
+// Keep in sync with `emailAndPassword.minPasswordLength` in lib/auth.ts.
+const MIN_PASSWORD_LENGTH = 8;
+
 export const signInSchema = z.object({
   email: z.email("Invalid email address"),
-  password: z
-    .string()
-    .min(3, { message: "Password must be at least 3 charachers long" }),
+  password: z.string().min(MIN_PASSWORD_LENGTH, {
+    message: `Password must be at least ${MIN_PASSWORD_LENGTH} characters long`,
+  }),
 });
 
 export const signUpSchema = z
   .object({
     name: z
       .string()
-      .min(3, { message: "Name must be at least 3 charachers long" }),
+      .min(3, { message: "Name must be at least 3 characters long" }),
     email: z.email("Invalid email address"),
     image: z.string().nullable(),
-    password: z
-      .string()
-      .min(3, { message: "Password must be at least 3 charachers long" }),
+    password: z.string().min(MIN_PASSWORD_LENGTH, {
+      message: `Password must be at least ${MIN_PASSWORD_LENGTH} characters long`,
+    }),
     password_confirm: z.string("Please confirm password"),
   })
   .refine((data) => data.password === data.password_confirm, {
@@ -30,7 +33,7 @@ export const confirmUserSchema = z.object({
   department: z.string().min(1, "Please select a department"),
   study: z
     .string("Please provide valid study")
-    .min(3, { message: "Study must be at least 3 charachers long" }),
+    .min(3, { message: "Study must be at least 3 characters long" }),
 });
 
 export const studyDetailSchema = z.object({

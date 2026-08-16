@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { auth } from "@/lib/auth";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useRef } from "react";
 import Link from "next/link";

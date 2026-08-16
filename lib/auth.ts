@@ -1,7 +1,8 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { prisma } from "./db";
 import { admin } from "better-auth/plugins/admin";
+import { prisma } from "./db";
+import { ADMIN_ROLE, DEFAULT_ROLE } from "./roles";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -9,22 +10,19 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
-
-    maxAttempts: 5,
-    lockoutDuration: 15 * 60 * 1000,
+    minPasswordLength: 8,
   },
-  user: {
-    additionalFields: {
-      role: {
-        type: "string",
-        defaultValue: "user",
-      },
-    },
-    session: {
-      validateOnRequest: false,
+  rateLimit: {
+    enabled: true,
+    window: 60,
+    max: 100,
+    customRules: {
+      "/sign-in/email": { window: 15 * 60, max: 5 },
     },
   },
-  plugins: [admin()],
+  // `role` is owned by the admin plugin, so it must not be redeclared as a
+  // user additional field.
+  plugins: [admin({ defaultRole: DEFAULT_ROLE, adminRoles: [ADMIN_ROLE] })],
   session: {
     expiresIn: 60 * 60 * 24 * 7,
     updateAge: 60 * 60 * 24,

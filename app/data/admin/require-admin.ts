@@ -1,6 +1,7 @@
-"server-only";
+import "server-only";
 
 import { auth } from "@/lib/auth";
+import { isAdmin } from "@/lib/roles";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { cache } from "react";
@@ -11,11 +12,11 @@ export const requireAdmin = cache(async () => {
   });
 
   if (!session) {
-    return redirect("/sign-in");
+    redirect("/sign-in");
   }
 
-  if (session.user.role !== "admin") {
-    return redirect("/not-admin");
+  if (!isAdmin(session.user.role)) {
+    redirect("/not-admin");
   }
 
   return session;

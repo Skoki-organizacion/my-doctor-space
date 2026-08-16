@@ -4,6 +4,7 @@ import AnswerChartBar from "./study-percentage";
 import { Badge } from "@/components/ui/badge";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { isAdmin } from "@/lib/roles";
 
 export default async function StudiesGrid({
   doctorData,
@@ -13,18 +14,19 @@ export default async function StudiesGrid({
   const session = await auth.api.getSession({
     headers: await headers(),
   });
+  const viewerIsAdmin = isAdmin(session?.user.role);
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-      {doctorData?.doctor.map((study, index) => (
+      {doctorData?.doctor.map((study) => (
         <Link
           href={
-            session?.user.email === "milosstojsavljevic93@gmail.com"
+            viewerIsAdmin
               ? `/admin/studies/${study.id}`
               : `/dashboard/${study.id}`
           }
-          key={`${study}${index}`}
-          className="relative p-4 lg:p-5 group rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar hover:bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 cursor-pointer"
+          key={study.id}
+          className="relative p-4 lg:p-5 group rounded-xl bg-linear-to-br from-sidebar/60 to-sidebar hover:bg-linear-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 cursor-pointer"
         >
           <div className="relative flex items-start gap-4">
             <div className="flex flex-col w-full">

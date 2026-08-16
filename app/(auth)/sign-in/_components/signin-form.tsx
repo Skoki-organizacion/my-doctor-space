@@ -29,6 +29,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import { dashboardPathForRole } from "@/lib/roles";
 
 export default function SignInForm() {
   const router = useRouter();
@@ -43,19 +44,14 @@ export default function SignInForm() {
   });
 
   function onSubmit({ email, password }: SignInSchemaType) {
-    const targetRoute =
-      email === "milosstojsavljevic93@gmail.com"
-        ? "/admin/dashboard"
-        : "/dashboard";
-
     startTransition(async () => {
       await authClient.signIn.email({
         email,
         password,
         fetchOptions: {
-          onSuccess: () => {
-            router.push(targetRoute);
+          onSuccess: (context) => {
             toast.success("Welcome back");
+            router.push(dashboardPathForRole(context.data?.user?.role));
           },
           onError: (error) => {
             toast.error(error.error.message ?? error.error.statusText);

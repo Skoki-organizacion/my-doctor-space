@@ -1,5 +1,5 @@
 import { SidebarInset } from "@/components/ui/sidebar";
-import DashboardHeader from "../../../../components/dashboard-header";
+import DashboardHeader from "@/components/dashboard-header";
 import { Suspense } from "react";
 import DashboardSkeletonLayout from "./_components/dashboard-skeleton-layout";
 import {
@@ -10,8 +10,6 @@ import AdminStatsGrid from "./_components/admin-stats-grid";
 import { TotalStudies } from "./_components/admin-total-studies";
 import BasicInformation from "@/app/(doctor)/dashboard/[id]/_components/basic-information";
 import AdminDashboardTitle from "./_components/admin-title";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
 
 export default function AdminDashboardPage() {
   return (
@@ -42,7 +40,7 @@ async function RenderDashboardContent({
   adminData: AdminDataType;
 }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 min-h-[100vh] flex-1 md:min-h-min gap-6 mb-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 min-h-screen flex-1 md:min-h-min gap-6 mb-6">
       <div className="flex flex-col rounded-xl gap-6">
         <TotalStudies
           completed={false}
@@ -56,7 +54,7 @@ async function RenderDashboardContent({
         />
       </div>
 
-      <div className="flex flex-col rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">
+      <div className="flex flex-col rounded-xl bg-linear-to-br from-sidebar/60 to-sidebar">
         <BasicInformation studyDetails={adminData.latestStudy} />
       </div>
     </div>

@@ -8,6 +8,8 @@ export default async function AdminLayout({
 }: {
   children: ReactNode;
 }) {
+  await requireAdmin();
+
   return (
     <SidebarProvider>
       <AdminDashboardSidebar />

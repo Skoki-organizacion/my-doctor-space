@@ -1,18 +1,14 @@
 "use client";
 
-import { useId, useState, useTransition } from "react";
-import { format } from "date-fns";
-import { CalendarIcon, Loader2, Save, X } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Label } from "@/components/ui/label";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Textarea } from "@/components/ui/textarea";
+import {useId, useState, useTransition} from "react";
+import {format} from "date-fns";
+import {CalendarIcon, Loader2, Save, X} from "lucide-react";
+import {cn} from "@/lib/utils";
+import {Button} from "@/components/ui/button";
+import {Calendar} from "@/components/ui/calendar";
+import {Label} from "@/components/ui/label";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {Textarea} from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
@@ -21,14 +17,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import { studyDetailSchema, StudyDetailSchemaType } from "@/lib/zod-schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { tryCatch } from "@/hooks/try-catch";
-import { saveDoctorInfo, updateDoctorInfo } from "../[id]/actions";
-import { toast } from "sonner";
-import { usePathname } from "next/navigation";
-import { GetStudyType } from "@/app/data/admin/get-study";
+import {useForm} from "react-hook-form";
+import {studyDetailSchema, StudyDetailSchemaType} from "@/lib/zod-schema";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {tryCatch} from "@/hooks/try-catch";
+import {saveDoctorInfo, updateDoctorInfo} from "../[id]/actions";
+import {toast} from "sonner";
+import {usePathname} from "next/navigation";
+import {GetStudyType} from "@/app/data/admin/get-study";
 
 type iAppProps = {
   id: number;
@@ -66,10 +62,10 @@ export default function CalendarItem({
     const pathList = pathname.split("/");
     const doctorId = pathList[pathList.length - 1];
 
-    const finalValues = { ...values, doctorId, name: currentItem.field };
+    const finalValues = {...values, doctorId, name: currentItem.field};
 
     startTransition(async () => {
-      const { data: result, error } = selectedItem
+      const {data: result, error} = selectedItem
         ? await tryCatch(updateDoctorInfo(item.id, finalValues))
         : await tryCatch(saveDoctorInfo(finalValues));
 
@@ -97,7 +93,7 @@ export default function CalendarItem({
             <FormField
               control={form.control}
               name="date"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem className="w-full">
                   <Popover open={isOpen} onOpenChange={setIsOpen}>
                     <PopoverTrigger asChild>
@@ -109,7 +105,7 @@ export default function CalendarItem({
                         <span
                           className={cn(
                             "truncate",
-                            !field.value && "text-muted-foreground"
+                            !field.value && "text-muted-foreground",
                           )}
                         >
                           {field.value
@@ -155,7 +151,7 @@ export default function CalendarItem({
           <FormField
             control={form.control}
             name="description"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem className="w-full flex flex-col flex-grow">
                 <FormLabel>Description</FormLabel>
                 <FormControl className="flex-grow">
