@@ -1,4 +1,4 @@
-"server-only";
+import "server-only";
 
 import { prisma } from "@/lib/db";
 import { cache } from "react";
@@ -95,7 +95,7 @@ export const getAdminData = cache(async () => {
             select: {
               id: true,
               name: true,
-              doctorId: true,
+              doctorInfoId: true,
               date: true,
               description: true,
               checked: true,
@@ -105,7 +105,7 @@ export const getAdminData = cache(async () => {
           },
         },
       }),
-    ]
+    ],
   );
 
   return {
@@ -121,3 +121,5 @@ export const getAdminData = cache(async () => {
 });
 
 export type AdminDataType = Awaited<ReturnType<typeof getAdminData>>;
+export type AdminDoctorType = AdminDataType["doctors"][number];
+export type AdminStudyType = AdminDataType["studies"][number];

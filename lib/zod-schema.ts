@@ -1,4 +1,5 @@
 import z from "zod";
+import { studySteps, type StudyStepField } from "@/constants/study-steps";
 
 const MIN_PASSWORD_LENGTH = 8;
 
@@ -35,11 +36,16 @@ export const confirmUserSchema = z.object({
     .min(3, { message: "Study must be at least 3 characters long" }),
 });
 
+const studyStepFields = studySteps.map((step) => step.field) as [
+  StudyStepField,
+  ...StudyStepField[],
+];
+
 export const studyDetailSchema = z.object({
-  name: z.string().min(1, { message: "Name is required" }),
-  date: z.date().min(1, { message: "Please select a proper date" }),
+  name: z.enum(studyStepFields, { message: "Unknown study step" }),
+  date: z.date({ message: "Please select a proper date" }),
   description: z.string().optional(),
-  doctorId: z.string(),
+  doctorInfoId: z.string().min(1, { message: "Please provide a valid study" }),
   checked: z.boolean(),
 });
 

@@ -24,7 +24,7 @@ export default function StudyDetailsPage({ params }: { params: Params }) {
 async function RenderStudyDetail({ params }: { params: Params }) {
   const { id } = await params;
   const studyDetails = await getStudy(id);
-  const data = await getDoctor(studyDetails?.user.id as string);
+  const data = await getDoctor(studyDetails.user.id);
 
   return (
     <div className="flex flex-1 flex-col gap-4 lg:gap-6 py-4 lg:py-6">

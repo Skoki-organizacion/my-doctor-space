@@ -63,14 +63,14 @@ import {
 import { useId, useMemo, useRef, useState, useTransition } from "react";
 import { ChevronLeft, ChevronRight, Eye, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { GetAllStudiesType } from "@/app/data/admin/get-studies";
+import { AdminStudyType } from "@/app/data/admin/admin-data-service";
 import { deleteDoctors } from "../../doctors/actions";
 import { tryCatch } from "@/hooks/try-catch";
 import { toast } from "sonner";
 
 interface GetColumnsProps {
-  data: GetAllStudiesType[];
-  setData: React.Dispatch<React.SetStateAction<GetAllStudiesType[]>>;
+  data: AdminStudyType[];
+  setData: React.Dispatch<React.SetStateAction<AdminStudyType[]>>;
   isPending: boolean;
 }
 
@@ -78,7 +78,7 @@ const getColumns = ({
   data,
   setData,
   isPending,
-}: GetColumnsProps): ColumnDef<GetAllStudiesType>[] => [
+}: GetColumnsProps): ColumnDef<AdminStudyType>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -156,7 +156,7 @@ const getColumns = ({
 ];
 
 type iAppProps = {
-  studies: GetAllStudiesType[];
+  studies: AdminStudyType[];
 };
 
 export default function StudiusTable({ studies }: iAppProps) {
@@ -177,21 +177,21 @@ export default function StudiusTable({ studies }: iAppProps) {
     },
   ]);
 
-  const [data, setData] = useState<GetAllStudiesType[]>(studies);
+  const [data, setData] = useState<AdminStudyType[]>(studies);
 
   const columns = useMemo(
     () => getColumns({ data, setData, isPending }),
-    [data, isPending]
+    [data, isPending],
   );
 
   const handleDeleteRows = () => {
     const selectedRows = table.getSelectedRowModel().rows;
     const updatedData = data.filter((item) =>
-      selectedRows.some((row) => row.original.id === item.id)
+      selectedRows.some((row) => row.original.id === item.id),
     );
 
     const updatedDataAfterDeletion = data.filter(
-      (item) => !selectedRows.some((row) => row.original.id === item.id)
+      (item) => !selectedRows.some((row) => row.original.id === item.id),
     );
 
     startTransition(async () => {
@@ -242,7 +242,7 @@ export default function StudiusTable({ studies }: iAppProps) {
               ref={inputRef}
               className={cn(
                 "peer min-w-60 ps-9 bg-background bg-gradient-to-br from-accent/60 to-accent",
-                Boolean(table.getColumn("study")?.getFilterValue()) && "pe-9"
+                Boolean(table.getColumn("study")?.getFilterValue()) && "pe-9",
               )}
               value={
                 (table.getColumn("study")?.getFilterValue() ?? "") as string
@@ -352,7 +352,7 @@ export default function StudiusTable({ studies }: iAppProps) {
                       <div
                         className={cn(
                           header.column.getCanSort() &&
-                            "flex h-full cursor-pointer select-none items-center gap-2"
+                            "flex h-full cursor-pointer select-none items-center gap-2",
                         )}
                         onClick={header.column.getToggleSortingHandler()}
                         onKeyDown={(e) => {
@@ -368,7 +368,7 @@ export default function StudiusTable({ studies }: iAppProps) {
                       >
                         {flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                         {{
                           asc: (
@@ -390,7 +390,7 @@ export default function StudiusTable({ studies }: iAppProps) {
                     ) : (
                       flexRender(
                         header.column.columnDef.header,
-                        header.getContext()
+                        header.getContext(),
                       )
                     )}
                   </TableHead>
@@ -478,16 +478,16 @@ function RowActions({
   item,
   isPending,
 }: {
-  setData: React.Dispatch<React.SetStateAction<GetAllStudiesType[]>>;
-  data: GetAllStudiesType[];
-  item: GetAllStudiesType;
+  setData: React.Dispatch<React.SetStateAction<AdminStudyType[]>>;
+  data: AdminStudyType[];
+  item: AdminStudyType;
   isPending: boolean;
 }) {
   const router = useRouter();
   const [isUpdatePending, startUpdateTransition] = useTransition();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
-  const handleStatusToggle = ({ id }: GetAllStudiesType) => {
+  const handleStatusToggle = ({ id }: AdminStudyType) => {
     router.push(`/admin/studies/${id}`);
   };
 

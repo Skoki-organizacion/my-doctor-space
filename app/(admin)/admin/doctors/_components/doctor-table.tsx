@@ -61,7 +61,7 @@ import {
   RiMoreLine,
 } from "@remixicon/react";
 import { useId, useMemo, useRef, useState, useTransition } from "react";
-import { GetAllDoctorsType } from "@/app/data/admin/get-doctors";
+import { AdminDoctorType } from "@/app/data/admin/admin-data-service";
 import { tryCatch } from "@/hooks/try-catch";
 import { toast } from "sonner";
 import { deleteDoctors } from "../actions";
@@ -69,8 +69,8 @@ import { ChevronLeft, ChevronRight, Eye, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface GetColumnsProps {
-  data: GetAllDoctorsType[];
-  setData: React.Dispatch<React.SetStateAction<GetAllDoctorsType[]>>;
+  data: AdminDoctorType[];
+  setData: React.Dispatch<React.SetStateAction<AdminDoctorType[]>>;
   isPending: boolean;
 }
 
@@ -78,7 +78,7 @@ const getColumns = ({
   data,
   setData,
   isPending,
-}: GetColumnsProps): ColumnDef<GetAllDoctorsType>[] => [
+}: GetColumnsProps): ColumnDef<AdminDoctorType>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -183,7 +183,7 @@ const getColumns = ({
 ];
 
 type iAppProps = {
-  doctors: GetAllDoctorsType[];
+  doctors: AdminDoctorType[];
 };
 
 export default function DoctorsTable({ doctors }: iAppProps) {
@@ -204,7 +204,7 @@ export default function DoctorsTable({ doctors }: iAppProps) {
     },
   ]);
 
-  const [data, setData] = useState<GetAllDoctorsType[]>(doctors);
+  const [data, setData] = useState<AdminDoctorType[]>(doctors);
 
   const columns = useMemo(
     () => getColumns({ data, setData, isPending }),
@@ -508,16 +508,16 @@ function RowActions({
   item,
   isPending,
 }: {
-  setData: React.Dispatch<React.SetStateAction<GetAllDoctorsType[]>>;
-  data: GetAllDoctorsType[];
-  item: GetAllDoctorsType;
+  setData: React.Dispatch<React.SetStateAction<AdminDoctorType[]>>;
+  data: AdminDoctorType[];
+  item: AdminDoctorType;
   isPending: boolean;
 }) {
   const router = useRouter();
   const [isUpdatePending, startUpdateTransition] = useTransition();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
-  const handleStatusToggle = ({ id }: GetAllDoctorsType) => {
+  const handleStatusToggle = ({ id }: AdminDoctorType) => {
     router.push(`/admin/doctors/${id}`);
   };
 

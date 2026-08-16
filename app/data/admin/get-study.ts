@@ -31,7 +31,7 @@ export const getStudy = cache(async (id: string) => {
         select: {
           id: true,
           name: true,
-          doctorId: true,
+          doctorInfoId: true,
           date: true,
           description: true,
           checked: true,

@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { isAdmin } from "@/lib/roles";
+import { TOTAL_STUDY_STEPS } from "@/constants/study-steps";
 
 export default async function StudiesGrid({
   doctorData,
@@ -47,11 +48,14 @@ export default async function StudiesGrid({
                   <div className="flex gap-2 flex-wrap">
                     <Badge variant={"outline"} className="py-1 px-2">
                       Completed:{" "}
-                      <div className="font-bold text-primary tracking-wide">
+                      <div className="font-bold tracking-wide">
                         <span className="text-primary">
                           {study.items.length}
                         </span>{" "}
-                        / <span className="text-destructive">{21}</span>
+                        /{" "}
+                        <span className="text-destructive">
+                          {TOTAL_STUDY_STEPS}
+                        </span>
                       </div>
                     </Badge>
                   </div>

@@ -18,11 +18,11 @@ import {
 } from "@/components/ui/chart";
 import { GetStudyType } from "@/app/data/admin/get-study";
 
+type SelectedItemsForStudyProps = GetStudyType["items"];
+
 type iAppProps = {
   items: SelectedItemsForStudyProps;
 };
-
-type SelectedItemsForStudyProps = Pick<GetStudyType, "items">["items"];
 
 const chartConfig = {
   total: {
@@ -37,7 +37,7 @@ export function StudyChart({ items }: iAppProps) {
       ? items.reduce(
           (
             acc: Record<string, number>,
-            item: SelectedItemsForStudyProps[0]
+            item: SelectedItemsForStudyProps[0],
           ) => {
             const date = new Date(item.date);
             const month = date.toLocaleDateString("en-US", { month: "short" });
@@ -46,7 +46,7 @@ export function StudyChart({ items }: iAppProps) {
 
             return acc;
           },
-          {}
+          {},
         )
       : undefined;
 
@@ -60,7 +60,7 @@ export function StudyChart({ items }: iAppProps) {
   const mostActiveMonth =
     chartData &&
     chartData.reduce((max, current) =>
-      current.total > max.total ? current : max
+      current.total > max.total ? current : max,
     );
 
   const { minDate, maxDate } = items.reduce(
@@ -74,7 +74,7 @@ export function StudyChart({ items }: iAppProps) {
       }
       return acc;
     },
-    { minDate: null as Date | null, maxDate: null as Date | null }
+    { minDate: null as Date | null, maxDate: null as Date | null },
   );
 
   const formatDate = (date: Date | null) =>
@@ -101,7 +101,7 @@ export function StudyChart({ items }: iAppProps) {
       <CardContent className="pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
+          className="mx-auto aspect-square max-h-62.5"
         >
           <RadarChart data={chartData}>
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />

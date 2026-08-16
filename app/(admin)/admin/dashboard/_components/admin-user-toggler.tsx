@@ -11,11 +11,11 @@ import {
 import { SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { BookPlus } from "lucide-react";
-import { GetAllDoctorsType } from "@/app/data/admin/get-doctors";
+import { AdminDoctorType } from "@/app/data/admin/admin-data-service";
 import { useRouter } from "next/navigation";
 
 type iAppProps = {
-  doctors: GetAllDoctorsType[];
+  doctors: AdminDoctorType[];
 };
 
 export function UserSwitcher({ doctors }: iAppProps) {
@@ -23,7 +23,7 @@ export function UserSwitcher({ doctors }: iAppProps) {
 
   if (!doctors.length) return null;
 
-  function selectUser(doctor: GetAllDoctorsType) {
+  function selectUser(doctor: AdminDoctorType) {
     router.push(`/admin/dashboard/sign-up/${doctor.id}`);
   }
 

@@ -26,8 +26,12 @@ async function canEditStudy(studyId: string): Promise<boolean> {
   return ownedStudy !== null;
 }
 
-export async function saveDoctorInfo(
-  values: StudyDetailSchemaType,
+/**
+ * A study step exists at most once per study, so saving is an upsert keyed on
+ * (doctorInfoId, name) rather than separate create and update paths.
+ */
+export async function saveStudyStep(
+  values: StudyDetailSchemaType
 ): Promise<ApiResponse> {
   try {
     const validation = studyDetailSchema.safeParse(values);
@@ -39,78 +43,31 @@ export async function saveDoctorInfo(
       };
     }
 
-    if (!(await canEditStudy(validation.data.doctorId))) {
+    const { doctorInfoId, name, date, description, checked } = validation.data;
+
+    if (!(await canEditStudy(doctorInfoId))) {
       return {
         status: "error",
         message: "You are not allowed to edit this study",
       };
     }
 
-    await prisma.item.create({
-      data: {
-        ...validation.data,
-      },
+    await prisma.item.upsert({
+      where: { doctorInfoId_name: { doctorInfoId, name } },
+      create: { doctorInfoId, name, date, description, checked },
+      update: { date, description, checked },
     });
 
-    revalidatePath(`/dashboard/${validation.data.doctorId}`);
+    revalidatePath(`/dashboard/${doctorInfoId}`);
 
     return {
       status: "success",
-      message: "Item is successfully saved",
+      message: "Study step saved",
     };
   } catch {
     return {
       status: "error",
-      message: "Could not save item to the doctor info",
-    };
-  }
-}
-
-export async function updateDoctorInfo(
-  id: string,
-  values: StudyDetailSchemaType,
-): Promise<ApiResponse> {
-  try {
-    const validation = studyDetailSchema.safeParse(values);
-
-    if (!validation.success) {
-      return {
-        status: "error",
-        message: "Invalid form data",
-      };
-    }
-
-    if (!(await canEditStudy(validation.data.doctorId))) {
-      return {
-        status: "error",
-        message: "You are not allowed to edit this study",
-      };
-    }
-
-    const { count } = await prisma.item.updateMany({
-      where: { id, doctorId: validation.data.doctorId },
-      data: {
-        ...validation.data,
-      },
-    });
-
-    if (count === 0) {
-      return {
-        status: "error",
-        message: "Item not found",
-      };
-    }
-
-    revalidatePath(`/dashboard/${validation.data.doctorId}`);
-
-    return {
-      status: "success",
-      message: "Item is successfully updated",
-    };
-  } catch {
-    return {
-      status: "error",
-      message: "Could not update item",
+      message: "Could not save the study step",
     };
   }
 }

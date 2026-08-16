@@ -16,7 +16,7 @@ import {
   ChartTooltip,
 } from "@/components/ui/chart";
 import { CustomTooltipContent } from "@/components/ui/charts-extra";
-import { GetAllDoctorsType } from "@/app/data/admin/get-doctors";
+import { AdminDoctorType } from "@/app/data/admin/admin-data-service";
 
 const chartConfig = {
   actual: {
@@ -78,7 +78,7 @@ export function TotalStudies({
 }: {
   completed: boolean;
   title: string;
-  doctors: GetAllDoctorsType[];
+  doctors: AdminDoctorType[];
 }) {
   function transformToChartData1() {
     const currentYear = new Date().getFullYear();

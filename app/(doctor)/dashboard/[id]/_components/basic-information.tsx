@@ -1,5 +1,5 @@
 import StudyBasedInfo from "./study-based-info";
-import { dateFormat } from "@/utis/date-format";
+import { dateFormat } from "@/lib/date-format";
 import { StudyChart } from "./study-chart";
 import { GetStudyType } from "@/app/data/admin/get-study";
 
@@ -20,7 +20,7 @@ export default function BasicInformation({
         <StudyBasedInfo title="Study" info={studyDetails?.study} />
         <StudyBasedInfo
           title="Created at"
-          info={studyDetails ? dateFormat(studyDetails?.createdAt as Date) : ""}
+          info={studyDetails ? dateFormat(studyDetails.createdAt) : ""}
         />
       </div>
 

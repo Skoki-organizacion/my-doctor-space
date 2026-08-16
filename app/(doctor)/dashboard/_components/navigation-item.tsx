@@ -2,51 +2,33 @@
 
 import { GetStudyType } from "@/app/data/admin/get-study";
 import { cn } from "@/lib/utils";
+import type { StudyStep } from "@/constants/study-steps";
 
 type NavigationItemProps = {
-  id: number;
-  title: string;
-  checked: boolean;
-  field: string;
-  date: string | null;
-  current: SelectedNavigationItemProps | undefined;
-  selectedItem: (item: SelectedNavigationItemProps) => void;
-  items: SelectedItemsForStudyProps;
+  step: StudyStep;
+  items: GetStudyType["items"];
+  onSelect: (step: StudyStep) => void;
 };
 
-type SelectedNavigationItemProps = Pick<
-  NavigationItemProps,
-  "id" | "title" | "checked" | "field"
->;
-
-type SelectedItemsForStudyProps = Pick<GetStudyType, "items">["items"];
-
-export function NavigationItem({
-  id,
-  title,
-  field,
-  checked,
-  selectedItem,
-  items,
-}: NavigationItemProps) {
-  const element =
-    items.length > 0 ? items.find((el) => el.name === field) : undefined;
-  const iconColor =
-    element && element.checked
-      ? " bg-emerald-500/10  text-emerald-400"
-      : "bg-background  text-sidebar";
+export function NavigationItem({ step, items, onSelect }: NavigationItemProps) {
+  const completed = items.some(
+    (item) => item.name === step.field && item.checked
+  );
 
   return (
-    <div
-      className="w-full cursor-pointer"
-      onClick={() => selectedItem({ id, title, checked, field })}
+    <button
+      type="button"
+      className="w-full cursor-pointer text-left"
+      onClick={() => onSelect(step)}
     >
       <div className="relative p-4 lg:p-5 group before:absolute before:inset-x-8 before:bottom-0 before:h-px before:bg-gradient-to-r before:from-input/30 before:via-input before:to-input/30">
         <div className="relative flex items-center gap-4">
           <div
             className={cn(
-              "max-[480px]:hidden size-10 shrink-0 rounded-full flex items-center justify-center ",
-              iconColor
+              "max-[480px]:hidden size-10 shrink-0 rounded-full flex items-center justify-center",
+              completed
+                ? "bg-emerald-500/10 text-emerald-400"
+                : "bg-background text-sidebar"
             )}
           >
             <svg
@@ -59,7 +41,7 @@ export function NavigationItem({
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="lucide lucide-circle-check-big-icon lucide-circle-check-big"
+              aria-hidden="true"
             >
               <path d="M21.801 10A10 10 0 1 1 17 3.335" />
               <path d="m9 11 3 3L22 4" />
@@ -67,11 +49,11 @@ export function NavigationItem({
           </div>
           <div className="w-full">
             <div className="font-normal text-sm leading-normal tracking-normal before:absolute before:inset-0">
-              {title}
+              {step.title}
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </button>
   );
 }

@@ -1,11 +1,12 @@
 import { cn } from "@/lib/utils";
+import { TOTAL_STUDY_STEPS } from "@/constants/study-steps";
 
 export default function AnswerChartBar({
   answerCount,
 }: {
   answerCount: number | null;
 }) {
-  const maxAnswers = 21;
+  const maxAnswers = TOTAL_STUDY_STEPS;
   if (answerCount === null || answerCount === undefined) {
     return (
       <div className="flex h-5 w-full" role="progressbar" aria-valuenow={0}>
