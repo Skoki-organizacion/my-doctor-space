@@ -27,7 +27,7 @@ async function canEditStudy(studyId: string): Promise<boolean> {
 }
 
 export async function saveDoctorInfo(
-  values: StudyDetailSchemaType
+  values: StudyDetailSchemaType,
 ): Promise<ApiResponse> {
   try {
     const validation = studyDetailSchema.safeParse(values);
@@ -68,7 +68,7 @@ export async function saveDoctorInfo(
 
 export async function updateDoctorInfo(
   id: string,
-  values: StudyDetailSchemaType
+  values: StudyDetailSchemaType,
 ): Promise<ApiResponse> {
   try {
     const validation = studyDetailSchema.safeParse(values);
@@ -87,8 +87,6 @@ export async function updateDoctorInfo(
       };
     }
 
-    // updateMany lets the item id be constrained by its owning study, so an id
-    // belonging to someone else's study matches nothing.
     const { count } = await prisma.item.updateMany({
       where: { id, doctorId: validation.data.doctorId },
       data: {

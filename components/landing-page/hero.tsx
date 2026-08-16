@@ -21,7 +21,6 @@ export function Hero() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Set canvas size
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -30,7 +29,6 @@ export function Hero() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Particle system
     const particles: Array<{
       x: number;
       y: number;
@@ -40,7 +38,6 @@ export function Hero() {
       opacity: number;
     }> = [];
 
-    // Create particles
     for (let i = 0; i < 100; i++) {
       particles.push({
         x: Math.random() * canvas.width,
@@ -52,22 +49,18 @@ export function Hero() {
       });
     }
 
-    // Animation loop
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Update and draw particles
       particles.forEach((particle) => {
         particle.x += particle.vx;
         particle.y += particle.vy;
 
-        // Wrap around edges
         if (particle.x < 0) particle.x = canvas.width;
         if (particle.x > canvas.width) particle.x = 0;
         if (particle.y < 0) particle.y = canvas.height;
         if (particle.y > canvas.height) particle.y = 0;
 
-        // Draw particle
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(255, 255, 255, ${particle.opacity})`;
@@ -111,7 +104,7 @@ export function Hero() {
         />
       </div>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-background to-background/25" />
+      <div className="absolute inset-0 bg-linear-to-t from-background to-background/25" />
 
       <div className="absolute bottom-32 left-1/2 transform -translate-x-1/2 z-10 w-full">
         <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">

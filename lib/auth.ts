@@ -20,8 +20,6 @@ export const auth = betterAuth({
       "/sign-in/email": { window: 15 * 60, max: 5 },
     },
   },
-  // `role` is owned by the admin plugin, so it must not be redeclared as a
-  // user additional field.
   plugins: [admin({ defaultRole: DEFAULT_ROLE, adminRoles: [ADMIN_ROLE] })],
   session: {
     expiresIn: 60 * 60 * 24 * 7,

@@ -9,7 +9,6 @@ import { requireDoctor } from "../doctor/require-doctor";
 export const getDoctor = cache(async (id: string) => {
   const session = await requireDoctor();
 
-  // Doctors may only read their own profile; admins may read any.
   if (!isAdmin(session.user.role) && id !== session.user.id) {
     notFound();
   }

@@ -1,6 +1,5 @@
 import z from "zod";
 
-// Keep in sync with `emailAndPassword.minPasswordLength` in lib/auth.ts.
 const MIN_PASSWORD_LENGTH = 8;
 
 export const signInSchema = z.object({

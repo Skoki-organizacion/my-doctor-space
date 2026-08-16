@@ -9,8 +9,6 @@ import { requireDoctor } from "../doctor/require-doctor";
 export const getStudy = cache(async (id: string) => {
   const session = await requireDoctor();
 
-  // Scoping the query by owner means a guessed id reads as "not found" rather
-  // than leaking another doctor's study.
   const study = await prisma.doctorInfo.findFirst({
     where: isAdmin(session.user.role)
       ? { id }
