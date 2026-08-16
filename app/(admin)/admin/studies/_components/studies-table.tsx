@@ -241,7 +241,7 @@ export default function StudiusTable({ studies }: iAppProps) {
               id={`${id}-input`}
               ref={inputRef}
               className={cn(
-                "peer min-w-60 ps-9 bg-background bg-gradient-to-br from-accent/60 to-accent",
+                "peer min-w-60 ps-9 bg-background bg-linear-to-br from-accent/60 to-accent",
                 Boolean(table.getColumn("study")?.getFilterValue()) && "pe-9",
               )}
               value={
@@ -254,12 +254,12 @@ export default function StudiusTable({ studies }: iAppProps) {
               type="text"
               aria-label="Search by study"
             />
-            <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-2 text-muted-foreground/60 peer-disabled:opacity-50">
+            <div className="pointer-events-none absolute inset-y-0 inset-s-0 flex items-center justify-center ps-2 text-muted-foreground/60 peer-disabled:opacity-50">
               <RiSearch2Line size={20} aria-hidden="true" />
             </div>
             {Boolean(table.getColumn("study")?.getFilterValue()) && (
               <button
-                className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/60 outline-offset-2 transition-colors hover:text-foreground cursor-pointer focus:z-10 focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+                className="absolute inset-y-0 inset-e-0 flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/60 outline-offset-2 transition-colors hover:text-foreground cursor-pointer focus:z-10 focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
                 aria-label="Clear filter"
                 onClick={() => {
                   table.getColumn("study")?.setFilterValue("");

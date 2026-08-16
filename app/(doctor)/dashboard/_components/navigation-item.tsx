@@ -12,7 +12,7 @@ type NavigationItemProps = {
 
 export function NavigationItem({ step, items, onSelect }: NavigationItemProps) {
   const completed = items.some(
-    (item) => item.name === step.field && item.checked
+    (item) => item.name === step.field && item.checked,
   );
 
   return (
@@ -21,14 +21,14 @@ export function NavigationItem({ step, items, onSelect }: NavigationItemProps) {
       className="w-full cursor-pointer text-left"
       onClick={() => onSelect(step)}
     >
-      <div className="relative p-4 lg:p-5 group before:absolute before:inset-x-8 before:bottom-0 before:h-px before:bg-gradient-to-r before:from-input/30 before:via-input before:to-input/30">
+      <div className="relative p-4 lg:p-5 group before:absolute before:inset-x-8 before:bottom-0 before:h-px before:bg-linear-to-r before:from-input/30 before:via-input before:to-input/30">
         <div className="relative flex items-center gap-4">
           <div
             className={cn(
               "max-[480px]:hidden size-10 shrink-0 rounded-full flex items-center justify-center",
               completed
                 ? "bg-emerald-500/10 text-emerald-400"
-                : "bg-background text-sidebar"
+                : "bg-background text-sidebar",
             )}
           >
             <svg

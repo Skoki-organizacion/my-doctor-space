@@ -208,17 +208,17 @@ export default function DoctorsTable({ doctors }: iAppProps) {
 
   const columns = useMemo(
     () => getColumns({ data, setData, isPending }),
-    [data, isPending]
+    [data, isPending],
   );
 
   const handleDeleteRows = () => {
     const selectedRows = table.getSelectedRowModel().rows;
     const updatedData = data.filter((item) =>
-      selectedRows.some((row) => row.original.id === item.id)
+      selectedRows.some((row) => row.original.id === item.id),
     );
 
     const updatedDataAfterDeletion = data.filter(
-      (item) => !selectedRows.some((row) => row.original.id === item.id)
+      (item) => !selectedRows.some((row) => row.original.id === item.id),
     );
 
     startTransition(async () => {
@@ -271,8 +271,8 @@ export default function DoctorsTable({ doctors }: iAppProps) {
               id={`${id}-input`}
               ref={inputRef}
               className={cn(
-                "peer min-w-60 ps-9 bg-background bg-gradient-to-br from-accent/60 to-accent",
-                Boolean(table.getColumn("name")?.getFilterValue()) && "pe-9"
+                "peer min-w-60 ps-9 bg-background bg-linear-to-br from-accent/60 to-accent",
+                Boolean(table.getColumn("name")?.getFilterValue()) && "pe-9",
               )}
               value={
                 (table.getColumn("name")?.getFilterValue() ?? "") as string
@@ -284,12 +284,12 @@ export default function DoctorsTable({ doctors }: iAppProps) {
               type="text"
               aria-label="Search by name"
             />
-            <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-2 text-muted-foreground/60 peer-disabled:opacity-50">
+            <div className="pointer-events-none absolute inset-y-0 inset-s-0 flex items-center justify-center ps-2 text-muted-foreground/60 peer-disabled:opacity-50">
               <RiSearch2Line size={20} aria-hidden="true" />
             </div>
             {Boolean(table.getColumn("name")?.getFilterValue()) && (
               <button
-                className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/60 outline-offset-2 transition-colors hover:text-foreground focus:z-10 focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+                className="absolute inset-y-0 inset-e-0 flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/60 outline-offset-2 transition-colors hover:text-foreground focus:z-10 focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
                 aria-label="Clear filter"
                 onClick={() => {
                   table.getColumn("name")?.setFilterValue("");
@@ -382,7 +382,7 @@ export default function DoctorsTable({ doctors }: iAppProps) {
                       <div
                         className={cn(
                           header.column.getCanSort() &&
-                            "flex h-full cursor-pointer select-none items-center gap-2"
+                            "flex h-full cursor-pointer select-none items-center gap-2",
                         )}
                         onClick={header.column.getToggleSortingHandler()}
                         onKeyDown={(e) => {
@@ -398,7 +398,7 @@ export default function DoctorsTable({ doctors }: iAppProps) {
                       >
                         {flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                         {{
                           asc: (
@@ -420,7 +420,7 @@ export default function DoctorsTable({ doctors }: iAppProps) {
                     ) : (
                       flexRender(
                         header.column.columnDef.header,
-                        header.getContext()
+                        header.getContext(),
                       )
                     )}
                   </TableHead>

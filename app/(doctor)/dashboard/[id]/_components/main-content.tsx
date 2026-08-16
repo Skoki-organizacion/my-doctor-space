@@ -26,7 +26,7 @@ export default function DoctorDashboardMainContent({
 
   return (
     <div className="grid grid-cols-1 min-[1200px]:grid-cols-3 gap-6">
-      <div className="flex flex-col rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">
+      <div className="flex flex-col rounded-xl bg-linear-to-br from-sidebar/60 to-sidebar">
         <div className="relative p-4 lg:p-5 group flex items-center justify-between">
           <h1 className="text-lg font-semibold">Navigation</h1>
           <Badge variant={"outline"} className="py-1 px-2">
@@ -48,7 +48,7 @@ export default function DoctorDashboardMainContent({
               className={cn(
                 currentStep.id === step.id &&
                   "bg-gradient-to-r bg-transparent from-sidebar-accent to-sidebar-accent/40",
-                "bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 rounded-xl"
+                "bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 rounded-xl",
               )}
             >
               <NavigationItem

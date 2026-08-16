@@ -173,7 +173,7 @@ export function TotalStudies({
   }
 
   return (
-    <Card className="gap-4 border-none bg-gradient-to-br from-sidebar/60 to-sidebar">
+    <Card className="gap-4 border-none bg-linear-to-br from-sidebar/60 to-sidebar">
       <CardHeader>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="space-y-0.5">

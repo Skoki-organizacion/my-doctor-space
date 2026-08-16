@@ -41,7 +41,7 @@ export default function AnswerChartBar({
       <div
         className={cn(
           completedWidth === 0 && "rounded-tl rounded-bl",
-          "h-full bg-gradient-to-r from-primary to-foreground"
+          "h-full bg-linear-to-r from-primary to-foreground",
         )}
         style={{ width: "15%" }}
       ></div>
@@ -49,7 +49,7 @@ export default function AnswerChartBar({
       <div
         className={cn(
           remainingWidth === 0 && "rounded-tr rounded-br",
-          "h-full bg-gradient-to-r from-foreground to-destructive"
+          "h-full bg-linear-to-r from-foreground to-destructive",
         )}
         style={{ width: "15%" }}
       ></div>
