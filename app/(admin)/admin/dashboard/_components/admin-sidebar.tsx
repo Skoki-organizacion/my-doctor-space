@@ -83,7 +83,7 @@ export function AdminDashboardSidebar({
           onError: (error) => {
             toast.success(
               error.error.message ??
-                "Unexpected error happen during logging out"
+                "Unexpected error happen during logging out",
             );
           },
         },

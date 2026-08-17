@@ -18,7 +18,7 @@ async function canEditStudy(studyId: string): Promise<boolean> {
     return true;
   }
 
-  const ownedStudy = await prisma.doctorInfo.findFirst({
+  const ownedStudy = await prisma.doctor_info.findFirst({
     where: { id: studyId, userId: session.user.id },
     select: { id: true },
   });
@@ -31,7 +31,7 @@ async function canEditStudy(studyId: string): Promise<boolean> {
  * (doctorInfoId, name) rather than separate create and update paths.
  */
 export async function saveStudyStep(
-  values: StudyDetailSchemaType
+  values: StudyDetailSchemaType,
 ): Promise<ApiResponse> {
   try {
     const validation = studyDetailSchema.safeParse(values);

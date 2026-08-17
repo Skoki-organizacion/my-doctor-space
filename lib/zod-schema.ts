@@ -27,6 +27,18 @@ export const signUpSchema = z
     path: ["password_confirm"],
   });
 
+export const adminSignUpSchema = signInSchema
+  .extend({
+    name: z
+      .string()
+      .min(3, { message: "Name must be at least 3 characters long" }),
+    password_confirm: z.string("Please confirm password"),
+  })
+  .refine((data) => data.password === data.password_confirm, {
+    message: "Passwords don't match",
+    path: ["password_confirm"],
+  });
+
 export const confirmUserSchema = z.object({
   userId: z.string().min(1, { message: "Please provide proper user" }),
   clinic: z.string().min(1, "Please select a clinic"),
@@ -51,5 +63,6 @@ export const studyDetailSchema = z.object({
 
 export type SignInSchemaType = z.infer<typeof signInSchema>;
 export type SignUpSchemaType = z.infer<typeof signUpSchema>;
+export type AdminSignUpSchemaType = z.infer<typeof adminSignUpSchema>;
 export type ConfirmUserSchemaType = z.infer<typeof confirmUserSchema>;
 export type StudyDetailSchemaType = z.infer<typeof studyDetailSchema>;

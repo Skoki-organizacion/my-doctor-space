@@ -18,6 +18,7 @@ export const auth = betterAuth({
     max: 100,
     customRules: {
       "/sign-in/email": { window: 15 * 60, max: 5 },
+      "/sign-up/email": { window: 15 * 60, max: 5 },
     },
   },
   plugins: [admin({ defaultRole: DEFAULT_ROLE, adminRoles: [ADMIN_ROLE] })],

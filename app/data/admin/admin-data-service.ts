@@ -40,7 +40,7 @@ export const getAdminData = cache(async () => {
         },
         orderBy: { createdAt: "desc" },
       }),
-      prisma.doctorInfo.findMany({
+      prisma.doctor_info.findMany({
         select: {
           id: true,
           clinic: true,
@@ -75,7 +75,7 @@ export const getAdminData = cache(async () => {
         },
       }),
 
-      prisma.doctorInfo.findFirst({
+      prisma.doctor_info.findFirst({
         orderBy: { createdAt: "desc" },
         select: {
           id: true,

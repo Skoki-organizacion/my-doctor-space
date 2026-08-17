@@ -6,7 +6,7 @@ import { prisma } from "@/lib/db";
 import { confirmUserSchema, ConfirmUserSchemaType } from "@/lib/zod-schema";
 
 export default async function addDoctorInfo(
-  values: ConfirmUserSchemaType
+  values: ConfirmUserSchemaType,
 ): Promise<ApiResponse> {
   try {
     await requireAdmin();
@@ -20,7 +20,7 @@ export default async function addDoctorInfo(
       };
     }
 
-    await prisma.doctorInfo.create({
+    await prisma.doctor_info.create({
       data: {
         ...validation.data,
       },

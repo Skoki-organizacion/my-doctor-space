@@ -5,12 +5,14 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { signUpSchema, SignUpSchemaType } from "@/lib/zod-schema";
-import { Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { adminSignUpSchema, AdminSignUpSchemaType } from "@/lib/zod-schema";
+import { Loader2, UserPlus } from "lucide-react";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -23,41 +25,48 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { authClient } from "@/lib/auth-client";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
+import { signUpAdmin } from "../actions";
 
 export default function SignUpForm() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<SignUpSchemaType>({
-    resolver: zodResolver(signUpSchema),
+  const form = useForm<AdminSignUpSchemaType>({
+    resolver: zodResolver(adminSignUpSchema),
     defaultValues: {
       name: "",
       email: "",
-      image: "",
       password: "",
       password_confirm: "",
     },
   });
 
-  function onSubmit({ name, email, password }: SignUpSchemaType) {
+  function onSubmit(values: AdminSignUpSchemaType) {
     startTransition(async () => {
-      await authClient.admin.createUser({
-        name,
-        email,
-        password,
-        role: "user",
-        fetchOptions: {
-          onSuccess: (user) => {
-            toast.success(
-              "New doctor is successfully registered. Please provide additional informations.",
-            );
+      const result = await signUpAdmin(values);
 
-            router.push(`/admin/dashboard/sign-up/${user.data.user.id}`);
+      if (result.status === "error") {
+        toast.error(result.message);
+        return;
+      }
+
+      await authClient.signIn.email({
+        email: values.email,
+        password: values.password,
+        fetchOptions: {
+          onSuccess: () => {
+            toast.success("Admin account created");
+            router.push("/admin/dashboard");
           },
           onError: (error) => {
-            toast.error(error.error.message ?? error.error.statusText);
+            toast.error(
+              error.error.message ?? "Account created. Please sign in.",
+            );
+            router.push("/sign-in");
           },
         },
       });
@@ -65,14 +74,21 @@ export default function SignUpForm() {
   }
 
   return (
-    <Card className="w-full sm:max-w-[550px]">
+    <Card>
       <CardHeader>
         <CardTitle>
-          <div className="flex items-center gap-2 w-full justify-center mb-6">
-            <h1 className="text-lg font-semibold">
-              <span className="text-xl font-bold">Create Doctor Profile</span>
-            </h1>
-          </div>
+          <Link
+            href={"/"}
+            className="flex items-center gap-2 w-full justify-center mb-6"
+          >
+            <Image
+              src={"/logo.png"}
+              alt={"Doctor space logo"}
+              width={153}
+              height={57}
+              priority
+            />
+          </Link>
         </CardTitle>
 
         <CardDescription>
@@ -151,18 +167,42 @@ export default function SignUpForm() {
             >
               {isPending ? (
                 <>
-                  <Loader2 className="animate-spin ml-1" size={16} />{" "}
-                  Registering...
+                  <Loader2 className="animate-spin ml-1" size={16} /> Creating
+                  admin...
                 </>
               ) : (
-                <>
-                  <span>Register</span>
-                </>
+                <span className="flex gap-3 items-center">
+                  <UserPlus
+                    className="text-white group-data-[active=true]/menu-button:text-primary"
+                    size={22}
+                    aria-hidden="true"
+                  />{" "}
+                  Create admin
+                </span>
               )}
             </Button>
           </form>
         </Form>
       </CardContent>
+
+      <CardFooter>
+        <div className={cn("flex flex-col gap-6 w-full")}>
+          <p className="text-muted-foreground text-center text-sm">
+            Already have an account?{" "}
+            <Link
+              href="/sign-in"
+              className="text-foreground hover:text-primary underline underline-offset-4"
+            >
+              Sign in
+            </Link>
+          </p>
+          <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
+            By clicking continue, you agree to our{" "}
+            <Link href={"/terms"}>Terms of Service</Link> and{" "}
+            <Link href={"/privacy"}>Privacy Policy</Link>.
+          </div>
+        </div>
+      </CardFooter>
     </Card>
   );
 }

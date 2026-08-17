@@ -148,11 +148,20 @@ export default function SignInForm() {
       </CardContent>
 
       <CardFooter>
-        <div className={cn("flex flex-col gap-6")}>
+        <div className={cn("flex flex-col gap-6 w-full")}>
+          <p className="text-muted-foreground text-center text-sm">
+            Need an admin account?{" "}
+            <Link
+              href="/sign-up"
+              className="text-foreground hover:text-primary underline underline-offset-4"
+            >
+              Sign up
+            </Link>
+          </p>
           <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
             By clicking continue, you agree to our{" "}
-            <Link href={"terms"}>Terms of Service</Link> and{" "}
-            <Link href={"privacy"}>Privacy Policy</Link>.
+            <Link href={"/terms"}>Terms of Service</Link> and{" "}
+            <Link href={"/privacy"}>Privacy Policy</Link>.
           </div>
         </div>
       </CardFooter>

@@ -1,10 +1,10 @@
 import { headers } from "next/headers";
-import SignInForm from "./_components/signin-form";
+import SignUpForm from "./_components/signup-form";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { dashboardPathForRole } from "@/lib/roles";
 
-export default async function SignInPage() {
+export default async function SignUpPage() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -13,5 +13,5 @@ export default async function SignInPage() {
     return redirect(dashboardPathForRole(session.user.role));
   }
 
-  return <SignInForm />;
+  return <SignUpForm />;
 }

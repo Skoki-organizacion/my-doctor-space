@@ -9,7 +9,7 @@ import { requireDoctor } from "../doctor/require-doctor";
 export const getStudy = cache(async (id: string) => {
   const session = await requireDoctor();
 
-  const study = await prisma.doctorInfo.findFirst({
+  const study = await prisma.doctor_info.findFirst({
     where: isAdmin(session.user.role)
       ? { id }
       : { id, userId: session.user.id },
