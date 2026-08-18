@@ -47,8 +47,8 @@ export default function DoctorDashboardMainContent({
               key={step.id}
               className={cn(
                 currentStep.id === step.id &&
-                  "bg-gradient-to-r bg-transparent from-sidebar-accent to-sidebar-accent/40",
-                "bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 rounded-xl",
+                  "bg-linear-to-r bg-transparent from-sidebar-accent to-sidebar-accent/40",
+                "bg-linear-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 rounded-xl",
               )}
             >
               <NavigationItem
@@ -61,7 +61,7 @@ export default function DoctorDashboardMainContent({
         </ScrollArea>
       </div>
 
-      <div className="flex flex-col rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">
+      <div className="flex flex-col rounded-xl bg-linear-to-br from-sidebar/60 to-sidebar">
         <div className="relative p-4 lg:p-5 group h-full overflow-hidden">
           <h1 className="text-lg font-semibold mb-4 lg:mb-5 truncate">
             {currentStep.title}
@@ -78,7 +78,7 @@ export default function DoctorDashboardMainContent({
         </div>
       </div>
 
-      <div className="flex flex-col rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">
+      <div className="flex flex-col rounded-xl bg-linear-to-br from-sidebar/60 to-sidebar">
         <BasicInformation studyDetails={studyDetails} />
       </div>
     </div>
