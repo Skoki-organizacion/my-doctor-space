@@ -1,16 +1,12 @@
 "use server";
 
-import { requireDoctor } from "@/app/data/doctor/require-doctor";
-import { ApiResponse } from "@/lib/api-response";
-import { prisma } from "@/lib/db";
-import { isAdmin } from "@/lib/roles";
-import { studyDetailSchema, StudyDetailSchemaType } from "@/lib/zod-schema";
-import { revalidatePath } from "next/cache";
+import {requireDoctor} from "@/app/data/doctor/require-doctor";
+import {ApiResponse} from "@/lib/api-response";
+import {prisma} from "@/lib/db";
+import {isAdmin} from "@/lib/roles";
+import {studyDetailSchema, StudyDetailSchemaType} from "@/lib/zod-schema";
+import {revalidatePath} from "next/cache";
 
-/**
- * The study id arrives from the client, so it has to be re-checked against the
- * caller on every write. Admins may edit any study.
- */
 async function canEditStudy(studyId: string): Promise<boolean> {
   const session = await requireDoctor();
 
@@ -19,17 +15,13 @@ async function canEditStudy(studyId: string): Promise<boolean> {
   }
 
   const ownedStudy = await prisma.doctor_info.findFirst({
-    where: { id: studyId, userId: session.user.id },
-    select: { id: true },
+    where: {id: studyId, userId: session.user.id},
+    select: {id: true},
   });
 
   return ownedStudy !== null;
 }
 
-/**
- * A study step exists at most once per study, so saving is an upsert keyed on
- * (doctorInfoId, name) rather than separate create and update paths.
- */
 export async function saveStudyStep(
   values: StudyDetailSchemaType,
 ): Promise<ApiResponse> {
@@ -43,7 +35,7 @@ export async function saveStudyStep(
       };
     }
 
-    const { doctorInfoId, name, date, description, checked } = validation.data;
+    const {doctorInfoId, name, date, description, checked} = validation.data;
 
     if (!(await canEditStudy(doctorInfoId))) {
       return {
@@ -53,9 +45,9 @@ export async function saveStudyStep(
     }
 
     await prisma.item.upsert({
-      where: { doctorInfoId_name: { doctorInfoId, name } },
-      create: { doctorInfoId, name, date, description, checked },
-      update: { date, description, checked },
+      where: {doctorInfoId_name: {doctorInfoId, name}},
+      create: {doctorInfoId, name, date, description, checked},
+      update: {date, description, checked},
     });
 
     revalidatePath(`/dashboard/${doctorInfoId}`);

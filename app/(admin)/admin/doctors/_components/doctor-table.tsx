@@ -28,7 +28,6 @@ import {
   PaginationContent,
   PaginationItem,
 } from "@/components/ui/pagination";
-import { Popover, PopoverContent } from "@/components/ui/popover";
 import {
   Table,
   TableBody,
@@ -38,18 +37,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  ColumnDef,
   ColumnFiltersState,
   PaginationState,
+  RowSelectionState,
   SortingState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
+  createColumnHelper,
+  useTable,
 } from "@tanstack/react-table";
 import {
   RiArrowDownSLine,
@@ -60,26 +53,23 @@ import {
   RiSearch2Line,
   RiMoreLine,
 } from "@remixicon/react";
-import { useId, useMemo, useRef, useState, useTransition } from "react";
+import { useId, useRef, useState, useTransition } from "react";
 import { AdminDoctorType } from "@/app/data/admin/admin-data-service";
 import { tryCatch } from "@/hooks/try-catch";
 import { toast } from "sonner";
 import { deleteDoctors } from "../actions";
 import { ChevronLeft, ChevronRight, Eye, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import {
+  adminTableFeatures,
+  columnFilterText,
+  type AdminTableFeatures,
+} from "@/app/(admin)/_lib/admin-table-features";
 
-interface GetColumnsProps {
-  data: AdminDoctorType[];
-  setData: React.Dispatch<React.SetStateAction<AdminDoctorType[]>>;
-  isPending: boolean;
-}
+const columnHelper = createColumnHelper<AdminTableFeatures, AdminDoctorType>();
 
-const getColumns = ({
-  data,
-  setData,
-  isPending,
-}: GetColumnsProps): ColumnDef<AdminDoctorType>[] => [
-  {
+const columns = columnHelper.columns([
+  columnHelper.display({
     id: "select",
     header: ({ table }) => (
       <Checkbox
@@ -100,167 +90,168 @@ const getColumns = ({
     ),
     size: 28,
     enableSorting: false,
-    enableHiding: false,
-  },
-  {
+  }),
+  columnHelper.accessor("name", {
     header: "Name",
-    accessorKey: "name",
-    cell: ({ row }) => (
+    cell: ({ getValue }) => (
       <div className="flex items-center gap-3">
-        <div className="font-medium">{row.getValue("name")}</div>
+        <div className="font-medium">{getValue()}</div>
       </div>
     ),
     size: 180,
-    enableHiding: false,
-  },
-  {
+  }),
+  columnHelper.accessor("email", {
     header: "Email",
-    accessorKey: "email",
-    cell: ({ row }) => (
-      <span className="text-muted-foreground">{row.getValue("email")}</span>
+    cell: ({ getValue }) => (
+      <span className="text-muted-foreground">{getValue()}</span>
     ),
     size: 150,
-  },
-  {
+  }),
+  columnHelper.accessor((row) => row.doctor.map(({ clinic }) => clinic), {
+    id: "clinic",
     header: "Clinic",
-    accessorKey: "clinic",
-    cell: ({ row }) => (
+    cell: ({ getValue }) => (
       <span className="text-muted-foreground">
-        {row.original.doctor.length > 2
-          ? row.original.doctor
-              .slice(0, 2)
-              .map(({ clinic }) => clinic)
-              .join(", ") + "..."
-          : row.original.doctor.map(({ clinic }) => clinic).join(", ")}
+        {previewJoinedValues(getValue(), 2)}
       </span>
     ),
     size: 130,
-  },
-  {
-    header: "Department",
-    accessorKey: "department",
-    cell: ({ row }) => (
+  }),
+  columnHelper.accessor(
+    (row) => row.doctor.map(({ department }) => department),
+    {
+      id: "department",
+      header: "Department",
+      cell: ({ getValue }) => (
+        <span className="text-muted-foreground">
+          {previewJoinedValues(getValue(), 3)}
+        </span>
+      ),
+      size: 180,
+    },
+  ),
+  columnHelper.accessor((row) => row.doctor.map(({ study }) => study), {
+    id: "studies",
+    header: "Studies",
+    cell: ({ getValue }) => (
       <span className="text-muted-foreground">
-        {row.original.doctor.length > 2
-          ? row.original.doctor
-              .slice(0, 3)
-              .map(({ department }) => department)
-              .join(", ") + "..."
-          : row.original.doctor.map(({ department }) => department).join(", ")}
+        {previewJoinedValues(getValue(), 3)}
       </span>
     ),
     size: 180,
-  },
-  {
-    header: "Stydies",
-    accessorKey: "studie",
-    cell: ({ row }) => (
-      <span className="text-muted-foreground">
-        {row.original.doctor.length > 2
-          ? row.original.doctor
-              .slice(0, 3)
-              .map(({ study }) => study)
-              .join(", ") + "..."
-          : row.original.doctor.map(({ study }) => study).join(", ")}
-      </span>
-    ),
-    size: 180,
-  },
-  {
+  }),
+  columnHelper.display({
     id: "actions",
     header: () => <span className="sr-only">Actions</span>,
-    cell: ({ row }) => (
-      <RowActions
-        setData={setData}
-        data={data}
-        item={row.original}
-        isPending={isPending}
-      />
-    ),
-    size: 60,
-    enableHiding: false,
-  },
-];
+    cell: ({ row, table }) => {
+      const meta = table.options.meta;
+      if (!meta) {
+        return null;
+      }
 
-type iAppProps = {
+      return (
+        <RowActions
+          item={row.original}
+          isPending={meta.isPending}
+          onDelete={meta.onDelete}
+        />
+      );
+    },
+    size: 60,
+    enableSorting: false,
+  }),
+]);
+
+function previewJoinedValues(values: string[], previewCount: number) {
+  if (values.length <= 2) {
+    return values.join(", ");
+  }
+
+  return `${values.slice(0, previewCount).join(", ")}...`;
+}
+
+type DoctorsTableProps = {
   doctors: AdminDoctorType[];
 };
 
-export default function DoctorsTable({ doctors }: iAppProps) {
+export default function DoctorsTable({ doctors }: DoctorsTableProps) {
   const [isPending, startTransition] = useTransition();
   const id = useId();
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const inputRef = useRef<HTMLInputElement>(null);
-
   const [sorting, setSorting] = useState<SortingState>([
     {
       id: "name",
       desc: false,
     },
   ]);
-
-  const [data, setData] = useState<AdminDoctorType[]>(doctors);
-
-  const columns = useMemo(
-    () => getColumns({ data, setData, isPending }),
-    [data, isPending],
+  const [removedIds, setRemovedIds] = useState<ReadonlySet<string>>(
+    () => new Set(),
   );
+  const data = doctors.filter((doctor) => !removedIds.has(doctor.id));
 
-  const handleDeleteRows = () => {
-    const selectedRows = table.getSelectedRowModel().rows;
-    const updatedData = data.filter((item) =>
-      selectedRows.some((row) => row.original.id === item.id),
-    );
-
-    const updatedDataAfterDeletion = data.filter(
-      (item) => !selectedRows.some((row) => row.original.id === item.id),
-    );
-
-    startTransition(async () => {
-      const ids = updatedData.map(({ id }) => id);
-
-      const { data: result, error } = await tryCatch(deleteDoctors(ids));
-
-      if (error) {
-        toast.error("An unexpected error occured");
-      }
-
-      if (result?.status === "success") {
-        toast.success(result.message);
-      } else if (result?.status === "error") {
-        toast.error(result.message);
-      }
-    });
-
-    setData(updatedDataAfterDeletion);
-    table.resetRowSelection();
-  };
-
-  const table = useReactTable({
-    data: doctors,
+  const table = useTable({
+    features: adminTableFeatures,
+    data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    onSortingChange: setSorting,
+    getRowId: (row) => row.id,
     enableSortingRemoval: false,
-    getPaginationRowModel: getPaginationRowModel(),
+    onSortingChange: setSorting,
     onPaginationChange: setPagination,
     onColumnFiltersChange: setColumnFilters,
-    onColumnVisibilityChange: setColumnVisibility,
-    getFilteredRowModel: getFilteredRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
+    onRowSelectionChange: setRowSelection,
     state: {
       sorting,
       pagination,
       columnFilters,
-      columnVisibility,
+      rowSelection,
+    },
+    meta: {
+      isPending,
+      onDelete: handleDeleteIds,
     },
   });
+
+  function handleDeleteIds(ids: string[]) {
+    if (ids.length === 0) {
+      return;
+    }
+
+    startTransition(async () => {
+      const { data: result, error } = await tryCatch(deleteDoctors(ids));
+
+      if (error) {
+        toast.error("An unexpected error occured");
+        return;
+      }
+
+      if (result.status === "success") {
+        toast.success(result.message);
+        setRemovedIds((current) => {
+          const next = new Set(current);
+          for (const id of ids) {
+            next.add(id);
+          }
+          return next;
+        });
+        table.resetRowSelection();
+        return;
+      }
+
+      toast.error(result.message);
+    });
+  }
+
+  const nameFilter = columnFilterText(
+    table.getColumn("name")?.getFilterValue(),
+  );
+  const selectedCount = table.getSelectedRowModel().rows.length;
+  const rows = table.getRowModel().rows;
 
   return (
     <div className="space-y-4">
@@ -272,11 +263,9 @@ export default function DoctorsTable({ doctors }: iAppProps) {
               ref={inputRef}
               className={cn(
                 "peer min-w-60 ps-9 bg-background bg-linear-to-br from-accent/60 to-accent",
-                Boolean(table.getColumn("name")?.getFilterValue()) && "pe-9",
+                nameFilter !== "" && "pe-9",
               )}
-              value={
-                (table.getColumn("name")?.getFilterValue() ?? "") as string
-              }
+              value={nameFilter}
               onChange={(e) =>
                 table.getColumn("name")?.setFilterValue(e.target.value)
               }
@@ -287,15 +276,13 @@ export default function DoctorsTable({ doctors }: iAppProps) {
             <div className="pointer-events-none absolute inset-y-0 inset-s-0 flex items-center justify-center ps-2 text-muted-foreground/60 peer-disabled:opacity-50">
               <RiSearch2Line size={20} aria-hidden="true" />
             </div>
-            {Boolean(table.getColumn("name")?.getFilterValue()) && (
+            {nameFilter !== "" && (
               <button
                 className="absolute inset-y-0 inset-e-0 flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/60 outline-offset-2 transition-colors hover:text-foreground focus:z-10 focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
                 aria-label="Clear filter"
                 onClick={() => {
                   table.getColumn("name")?.setFilterValue("");
-                  if (inputRef.current) {
-                    inputRef.current.focus();
-                  }
+                  inputRef.current?.focus();
                 }}
               >
                 <RiCloseCircleLine size={16} aria-hidden="true" />
@@ -304,67 +291,56 @@ export default function DoctorsTable({ doctors }: iAppProps) {
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          {table.getSelectedRowModel().rows.length > 0 && (
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button className="ml-auto" variant="outline">
-                  <RiDeleteBinLine
-                    className="-ms-1 opacity-60"
-                    size={16}
-                    aria-hidden="true"
-                  />
-                  Delete
-                  <span className="-me-1 ms-1 inline-flex h-5 max-h-full items-center rounded border border-border bg-background px-1 font-[inherit] text-[0.625rem] font-medium text-muted-foreground/70">
-                    {table.getSelectedRowModel().rows.length}
-                  </span>
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <div className="flex flex-col gap-2 max-sm:items-center sm:flex-row sm:gap-4">
-                  <div
-                    className="flex size-9 shrink-0 items-center justify-center rounded-full border border-border"
-                    aria-hidden="true"
-                  >
-                    <RiErrorWarningLine className="opacity-80" size={16} />
-                  </div>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you absolutely sure?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete{" "}
-                      {table.getSelectedRowModel().rows.length} selected{" "}
-                      {table.getSelectedRowModel().rows.length === 1
-                        ? "row"
-                        : "rows"}
-                      .
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
+        {selectedCount > 0 && (
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button className="ml-auto" variant="outline">
+                <RiDeleteBinLine
+                  className="-ms-1 opacity-60"
+                  size={16}
+                  aria-hidden="true"
+                />
+                Delete
+                <span className="-me-1 ms-1 inline-flex h-5 max-h-full items-center rounded border border-border bg-background px-1 font-[inherit] text-[0.625rem] font-medium text-muted-foreground/70">
+                  {selectedCount}
+                </span>
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <div className="flex flex-col gap-2 max-sm:items-center sm:flex-row sm:gap-4">
+                <div
+                  className="flex size-9 shrink-0 items-center justify-center rounded-full border border-border"
+                  aria-hidden="true"
+                >
+                  <RiErrorWarningLine className="opacity-80" size={16} />
                 </div>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={handleDeleteRows}
-                    className="bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40"
-                  >
-                    Delete
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          )}
-          <Popover>
-            <PopoverContent className="w-auto min-w-36 p-3" align="end">
-              <div className="space-y-3">
-                <div className="text-xs font-medium uppercase text-muted-foreground/60">
-                  Status
-                </div>
-                <div className="space-y-3"></div>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete{" "}
+                    {selectedCount} selected {selectedCount === 1 ? "row" : "rows"}
+                    .
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
               </div>
-            </PopoverContent>
-          </Popover>
-        </div>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() =>
+                    handleDeleteIds(
+                      table
+                        .getSelectedRowModel()
+                        .rows.map((row) => row.original.id),
+                    )
+                  }
+                  className="bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40"
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        )}
       </div>
 
       <Table className="table-fixed border-separate border-spacing-0 [&_tr:not(:last-child)_td]:border-b">
@@ -372,6 +348,8 @@ export default function DoctorsTable({ doctors }: iAppProps) {
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id} className="hover:bg-transparent">
               {headerGroup.headers.map((header) => {
+                const sorted = header.column.getIsSorted();
+
                 return (
                   <TableHead
                     key={header.id}
@@ -380,48 +358,33 @@ export default function DoctorsTable({ doctors }: iAppProps) {
                   >
                     {header.isPlaceholder ? null : header.column.getCanSort() ? (
                       <div
-                        className={cn(
-                          header.column.getCanSort() &&
-                            "flex h-full cursor-pointer select-none items-center gap-2",
-                        )}
+                        className="flex h-full cursor-pointer select-none items-center gap-2"
                         onClick={header.column.getToggleSortingHandler()}
                         onKeyDown={(e) => {
-                          if (
-                            header.column.getCanSort() &&
-                            (e.key === "Enter" || e.key === " ")
-                          ) {
+                          if (e.key === "Enter" || e.key === " ") {
                             e.preventDefault();
                             header.column.getToggleSortingHandler()?.(e);
                           }
                         }}
-                        tabIndex={header.column.getCanSort() ? 0 : undefined}
+                        tabIndex={0}
                       >
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                        {{
-                          asc: (
-                            <RiArrowUpSLine
-                              className="shrink-0 opacity-60"
-                              size={16}
-                              aria-hidden="true"
-                            />
-                          ),
-                          desc: (
-                            <RiArrowDownSLine
-                              className="shrink-0 opacity-60"
-                              size={16}
-                              aria-hidden="true"
-                            />
-                          ),
-                        }[header.column.getIsSorted() as string] ?? null}
+                        <table.FlexRender header={header} />
+                        {sorted === "asc" ? (
+                          <RiArrowUpSLine
+                            className="shrink-0 opacity-60"
+                            size={16}
+                            aria-hidden="true"
+                          />
+                        ) : sorted === "desc" ? (
+                          <RiArrowDownSLine
+                            className="shrink-0 opacity-60"
+                            size={16}
+                            aria-hidden="true"
+                          />
+                        ) : null}
                       </div>
                     ) : (
-                      flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )
+                      <table.FlexRender header={header} />
                     )}
                   </TableHead>
                 );
@@ -431,16 +394,16 @@ export default function DoctorsTable({ doctors }: iAppProps) {
         </TableHeader>
         <tbody aria-hidden="true" className="table-row h-1"></tbody>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
+          {rows.length ? (
+            rows.map((row) => (
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
                 className="border-0 [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg h-px hover:bg-accent/50"
               >
-                {row.getVisibleCells().map((cell) => (
+                {row.getAllCells().map((cell) => (
                   <TableCell key={cell.id} className="last:py-0 h-[inherit]">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    <table.FlexRender cell={cell} />
                   </TableCell>
                 ))}
               </TableRow>
@@ -456,7 +419,7 @@ export default function DoctorsTable({ doctors }: iAppProps) {
         <tbody aria-hidden="true" className="table-row h-1"></tbody>
       </Table>
 
-      {table.getRowModel().rows.length > 0 && (
+      {rows.length > 0 && (
         <div className="flex items-center justify-between gap-3">
           <p
             className="flex-1 whitespace-nowrap text-sm text-muted-foreground"
@@ -464,7 +427,7 @@ export default function DoctorsTable({ doctors }: iAppProps) {
           >
             Page{" "}
             <span className="text-foreground">
-              {table.getState().pagination.pageIndex + 1}
+              {table.state.pagination.pageIndex + 1}
             </span>{" "}
             of <span className="text-foreground">{table.getPageCount()}</span>
           </p>
@@ -503,46 +466,16 @@ export default function DoctorsTable({ doctors }: iAppProps) {
 }
 
 function RowActions({
-  setData,
-  data,
   item,
   isPending,
+  onDelete,
 }: {
-  setData: React.Dispatch<React.SetStateAction<AdminDoctorType[]>>;
-  data: AdminDoctorType[];
   item: AdminDoctorType;
   isPending: boolean;
+  onDelete: (ids: string[]) => void;
 }) {
   const router = useRouter();
-  const [isUpdatePending, startUpdateTransition] = useTransition();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-
-  const handleStatusToggle = ({ id }: AdminDoctorType) => {
-    router.push(`/admin/doctors/${id}`);
-  };
-
-  const handleDelete = () => {
-    const updatedData = data.filter((dataItem) => dataItem.id !== item.id);
-
-    startUpdateTransition(async () => {
-      const ids = [item.id];
-
-      const { data: result, error } = await tryCatch(deleteDoctors(ids));
-
-      if (error) {
-        toast.error("An unexpected error occured");
-      }
-
-      if (result?.status === "success") {
-        toast.success(result.message);
-      } else if (result?.status === "error") {
-        toast.error(result.message);
-      }
-    });
-
-    setData(updatedData);
-    setShowDeleteDialog(false);
-  };
 
   return (
     <>
@@ -562,8 +495,8 @@ function RowActions({
         <DropdownMenuContent align="end" className="w-auto">
           <DropdownMenuGroup>
             <DropdownMenuItem
-              onClick={() => handleStatusToggle(item)}
-              disabled={isUpdatePending}
+              onClick={() => router.push(`/admin/doctors/${item.id}`)}
+              disabled={isPending}
             >
               <Eye className="size-4" /> View
             </DropdownMenuItem>
@@ -590,23 +523,21 @@ function RowActions({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isUpdatePending}>
-              Cancel
-            </AlertDialogCancel>
+            <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              onClick={handleDelete}
-              disabled={isUpdatePending}
+              onClick={() => {
+                onDelete([item.id]);
+                setShowDeleteDialog(false);
+              }}
+              disabled={isPending}
               className="bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40"
             >
               {isPending ? (
                 <>
-                  <Loader2 className="animate-spin ml-1" size={16} />{" "}
-                  Deleting...
+                  <Loader2 className="animate-spin ml-1" size={16} /> Deleting...
                 </>
               ) : (
-                <>
-                  <span>Delete</span>
-                </>
+                <span>Delete</span>
               )}
             </AlertDialogAction>
           </AlertDialogFooter>
