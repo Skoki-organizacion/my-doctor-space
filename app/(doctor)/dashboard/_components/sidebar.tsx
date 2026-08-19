@@ -78,7 +78,7 @@ export function DoctorDashboardSidebar({
           onError: (error) => {
             toast.success(
               error.error.message ??
-                "Unexpected error happen during logging out"
+                "Unexpected error happen during logging out",
             );
           },
         },
@@ -112,7 +112,7 @@ export function DoctorDashboardSidebar({
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       asChild
-                      className="group/menu-button font-medium gap-3 h-9 rounded-md bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto"
+                      className="group/menu-button font-medium gap-3 h-9 rounded-md bg-linear-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto"
                       isActive={pathname === item.url}
                     >
                       <Link href={item.url}>
@@ -138,7 +138,7 @@ export function DoctorDashboardSidebar({
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
-              className="font-medium gap-3 h-9 rounded-md bg-gradient-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto"
+              className="font-medium gap-3 h-9 rounded-md bg-linear-to-r hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto"
               onClick={onLogout}
               disabled={isPending}
             >
