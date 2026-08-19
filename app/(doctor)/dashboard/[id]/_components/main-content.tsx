@@ -23,7 +23,7 @@ export default function DoctorDashboardMainContent({
   const [currentStep, setCurrentStep] = useState<StudyStep>(studySteps[0]);
 
   const selectedItem = items.find((item) => item.name === currentStep.field);
-
+    
   return (
     <div className="grid grid-cols-1 min-[1200px]:grid-cols-3 gap-6">
       <div className="flex flex-col rounded-xl bg-linear-to-br from-sidebar/60 to-sidebar">
