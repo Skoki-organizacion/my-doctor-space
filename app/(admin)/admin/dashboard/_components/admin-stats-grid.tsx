@@ -1,7 +1,6 @@
 import { Book, Library, User2, Users } from "lucide-react";
 import AdminStatsItem from "./admin-stats-item";
 import { AdminDataType } from "@/app/data/admin/admin-data-service";
-import Link from "next/link";
 
 interface AdminStatsGridProps {
   adminData: AdminDataType;
