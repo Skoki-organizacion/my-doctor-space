@@ -25,6 +25,7 @@ export default function DoctorDashboardTitle(data: iAppProps) {
             <Skeleton className="h-8 w-37.5 rounded-full" />
           )}
         </h1>
+
         <p className="text-sm text-muted-foreground">
           Here&rsquo;s an overview of your clinical insights. Track your
           progress and add new data with ease!
