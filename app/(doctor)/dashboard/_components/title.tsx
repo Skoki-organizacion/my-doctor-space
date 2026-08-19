@@ -1,5 +1,4 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import Link from "next/link";
 
 type iAppProps = {
   user: {
