@@ -10,7 +10,7 @@ export default function AdminStatsGrid({ adminData }: AdminStatsGridProps) {
   const { doctors, studies, latestUser, latestStudy } = adminData;
 
   return (
-    <div className="grid grid-cols-2 min-[1200px]:grid-cols-4 rounded-xl bg-gradient-to-br from-sidebar/60 to-sidebar">
+    <div className="grid grid-cols-2 min-[1200px]:grid-cols-4 rounded-xl bg-linear-to-br from-sidebar/60 to-sidebar">
       <AdminStatsItem
         icon={Users}
         link={"/admin/doctors"}

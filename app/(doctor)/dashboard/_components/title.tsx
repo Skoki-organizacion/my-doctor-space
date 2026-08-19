@@ -1,4 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 
 type iAppProps = {
   user: {
@@ -21,7 +22,7 @@ export default function DoctorDashboardTitle(data: iAppProps) {
           {data?.user ? (
             `${data.user.name}!`
           ) : (
-            <Skeleton className="h-8 w-[150px] rounded-full" />
+            <Skeleton className="h-8 w-37.5 rounded-full" />
           )}
         </h1>
         <p className="text-sm text-muted-foreground">
