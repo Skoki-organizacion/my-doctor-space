@@ -15,7 +15,7 @@ ENV BETTER_AUTH_SECRET=ci-placeholder-secret-not-for-production-use
 ENV DATABASE_URL=postgresql://ci:ci@localhost:5432/ci
 ENV DIRECT_DATABASE_URL=postgresql://ci:ci@localhost:5432/ci
 
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml prisma.config.ts ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml prisma.config.ts .npmrc ./
 COPY prisma ./prisma
 
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store \
