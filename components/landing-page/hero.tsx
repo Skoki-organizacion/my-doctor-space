@@ -111,7 +111,7 @@ export function Hero() {
           <h1
             className={`${playfairDisplay.className} text-4xl sm:text-5xl lg:text-8xl font-bold text-white mb-6 leading-tight`}
           >
-            Where Quality Meets
+            Where Quality Meets!
             <span className="text-primary"> Care</span>.
           </h1>
 
